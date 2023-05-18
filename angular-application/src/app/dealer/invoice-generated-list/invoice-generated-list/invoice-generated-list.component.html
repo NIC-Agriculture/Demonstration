@@ -1,125 +1,125 @@
 
-    <mat-tab-group animationDuration="0ms">
-        <mat-tab label="Date wise Invoice Generated Lists">
-            <div>
-              <div class="card">
-                <div class="card-block">
-                  <div class="row">
-                      <div class="col-lg-6 col md-6">
-                          <div class="form-group row">
-                              <label class="col-sm-4 col-lg-4 col-form-label" >Select Date <label class="asterik">*</label>:</label>
-                              <div class="col-sm-4 col-lg-8">
-                                  <div>
-                                     <input type="date" [(ngModel)]="date" class="form-control form-control-default mat-elevation-z6">
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-
-                      <div class="col-lg-6 col md-6">
-                          <div class="form-group row">
-                              <div class="col-sm-1 col-lg-1">
-                                  <button type="button" class="btn btn-primary mat-elevation-z6" (click)="getGeneratedInvoiceLists()" [disabled] = "!this.date" > Get Invoice Lists </button>
-                              </div>
-                          </div>
-                      </div>
-
-                  
-                  </div>
-                  </div>
-                  </div>
-                  <div class="card" *ngIf="InvoiceListTable">
-                    <div class="card-block">
-                  <div class="card-block table-border-style">
-                      <mat-form-field>
-                          <mat-label>Filter</mat-label>
-                          <input matInput (keyup)="applyFilter($event)" placeholder="Search any" #input>
-                        </mat-form-field>
-                      <div class="mat-elevation-z8">
-                          <table mat-table [dataSource]="dataSource">
-                        
-                            <!-- Position Column -->
-                            <ng-container matColumnDef="position">
-                              <th mat-header-cell *matHeaderCellDef> SL. </th>
-                              <td mat-cell *matCellDef="let element ; let i = index "> {{ i + 1 }} </td>
-                            </ng-container>
-                        
-                            <!-- Name Column -->
-                            <ng-container matColumnDef="DemonstrationId">
-                              <th mat-header-cell *matHeaderCellDef> Demonstration ID </th>
-                              <td mat-cell *matCellDef="let element"> {{element.DemonstrationId}} </td>
-                            </ng-container>
-                        
-                            <!-- Weight Column -->
-                            <ng-container matColumnDef="Permit_NO">
-                              <th mat-header-cell *matHeaderCellDef> Permit No </th>
-                              <td mat-cell *matCellDef="let element"> {{element.Permit_NO}} </td>
-                            </ng-container>
-                        
-                            <!-- Symbol Column -->
-                            <ng-container matColumnDef="InvoiceNo">
-                              <th mat-header-cell *matHeaderCellDef> Invoice No </th>
-                              <td mat-cell *matCellDef="let element"> {{element.InvoiceNo}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="FarmerId">
-                              <th mat-header-cell *matHeaderCellDef> Farmer Id </th>
-                              <td mat-cell *matCellDef="let element"> {{element.FarmerId}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="FarmerName">
-                              <th mat-header-cell *matHeaderCellDef> Farmer Name </th>
-                              <td mat-cell *matCellDef="let element"> {{element.FarmerName}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="Farmer_Category">
-                              <th mat-header-cell *matHeaderCellDef> Category </th>
-                              <td mat-cell *matCellDef="let element"> {{element.Farmer_Category}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="LandArea">
-                              <th mat-header-cell *matHeaderCellDef> Land(in ha) </th>
-                              <td mat-cell *matCellDef="let element"> {{element.LandArea}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="TotalPrice">
-                              <th mat-header-cell *matHeaderCellDef> Total Cost </th>
-                              <td mat-cell *matCellDef="let element"> {{element.TotalPrice}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="EligibleSubsidy">
-                              <th mat-header-cell *matHeaderCellDef> Eligible Subsidy </th>
-                              <td mat-cell *matCellDef="let element"> {{element.EligibleSubsidy}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="Status">
-                              <th mat-header-cell *matHeaderCellDef> Status </th>
-                              <td mat-cell *matCellDef="let element"> Status </td>
-                            </ng-container>
-                            <ng-container matColumnDef="View">
-                              <th mat-header-cell *matHeaderCellDef> View Invoice Bill </th>
-                              <td mat-cell *matCellDef="let element">  
-                                <!-- <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="getDealerSaleReciept(element.InvoiceNo)" data-toggle="modal"  data-target="#exampleModal"> -->
-                                <mat-icon class="icon" color="success" (click)="getDealerSaleReciept(element.InvoiceNo)" data-toggle="modal"  data-target="#exampleModal">visibility</mat-icon>
-                              <!-- </button>  -->
-                            </td>
-                            </ng-container>
-                        
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                          </table><br>
-                          <div *ngIf="this.invoiceLists.length == 0">
-                            <h4 style="text-align: center; color: red;">There is no Input sell record on this date.</h4>
+<mat-tab-group animationDuration="0ms">
+  <mat-tab label="Date wise Invoice Generated Lists">
+      <div>
+        <div class="card">
+          <div class="card-block">
+            <div class="row">
+                <div class="col-lg-6 col md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-lg-4 col-form-label" >Select Date <label class="asterik">*</label>:</label>
+                        <div class="col-sm-4 col-lg-8">
+                            <div>
+                               <input type="date" [(ngModel)]="date" class="form-control form-control-default mat-elevation-z6">
+                            </div>
                         </div>
-                          <mat-paginator [pageSizeOptions]="[10,50,100]"
-                                         showFirstLastButtons
-                                         aria-label="Select page of periodic elements">
-                          </mat-paginator>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col md-6">
+                    <div class="form-group row">
+                        <div class="col-sm-1 col-lg-1">
+                            <button type="button" class="btn btn-primary mat-elevation-z6" (click)="getGeneratedInvoiceLists()" [disabled] = "!this.date" > Get Invoice Lists </button>
                         </div>
-                  </div>
-                 
-                 
-             </div>
-              </div>
+                    </div>
+                </div>
+
+            
             </div>
-        </mat-tab>
-        <mat-tab label="Delete Invoice">  
-             <app-delete-invoice></app-delete-invoice>
-        </mat-tab> 
-      </mat-tab-group>
+            </div>
+            </div>
+            <div class="card" *ngIf="InvoiceListTable">
+              <div class="card-block">
+            <div class="card-block table-border-style">
+                <mat-form-field>
+                    <mat-label>Filter</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="Search any" #input>
+                  </mat-form-field>
+                <div class="mat-elevation-z8">
+                    <table mat-table [dataSource]="dataSource">
+                  
+                      <!-- Position Column -->
+                      <ng-container matColumnDef="position">
+                        <th mat-header-cell *matHeaderCellDef> SL. </th>
+                        <td mat-cell *matCellDef="let element ; let i = index "> {{ i + 1 }} </td>
+                      </ng-container>
+                  
+                      <!-- Name Column -->
+                      <ng-container matColumnDef="DemonstrationId">
+                        <th mat-header-cell *matHeaderCellDef> Demonstration ID </th>
+                        <td mat-cell *matCellDef="let element"> {{element.DemonstrationId}} </td>
+                      </ng-container>
+                  
+                      <!-- Weight Column -->
+                      <ng-container matColumnDef="Permit_NO">
+                        <th mat-header-cell *matHeaderCellDef> Permit No </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Permit_NO}} </td>
+                      </ng-container>
+                  
+                      <!-- Symbol Column -->
+                      <ng-container matColumnDef="InvoiceNo">
+                        <th mat-header-cell *matHeaderCellDef> Invoice No </th>
+                        <td mat-cell *matCellDef="let element"> {{element.InvoiceNo}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="FarmerId">
+                        <th mat-header-cell *matHeaderCellDef> Farmer Id </th>
+                        <td mat-cell *matCellDef="let element"> {{element.FarmerId}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="FarmerName">
+                        <th mat-header-cell *matHeaderCellDef> Farmer Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.FarmerName}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="Farmer_Category">
+                        <th mat-header-cell *matHeaderCellDef> Category </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Farmer_Category}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="LandArea">
+                        <th mat-header-cell *matHeaderCellDef> Land(in ha) </th>
+                        <td mat-cell *matCellDef="let element"> {{element.LandArea}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="TotalPrice">
+                        <th mat-header-cell *matHeaderCellDef> Total Cost </th>
+                        <td mat-cell *matCellDef="let element"> {{element.TotalPrice}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="EligibleSubsidy">
+                        <th mat-header-cell *matHeaderCellDef> Eligible Subsidy </th>
+                        <td mat-cell *matCellDef="let element"> {{element.EligibleSubsidy}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="Status">
+                        <th mat-header-cell *matHeaderCellDef> Status </th>
+                        <td mat-cell *matCellDef="let element"> Status </td>
+                      </ng-container>
+                      <ng-container matColumnDef="View">
+                        <th mat-header-cell *matHeaderCellDef> View Invoice Bill </th>
+                        <td mat-cell *matCellDef="let element">  
+                          <!-- <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="getDealerSaleReciept(element.InvoiceNo)" data-toggle="modal"  data-target="#exampleModal"> -->
+                          <mat-icon class="icon" color="success" (click)="getDealerSaleReciept(element.InvoiceNo)" data-toggle="modal"  data-target="#exampleModal">visibility</mat-icon>
+                        <!-- </button>  -->
+                      </td>
+                      </ng-container>
+                  
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table><br>
+                    <div *ngIf="invoiceLists.length == 0">
+                      <h4 style="text-align: center; color: red;">There is no Input sell record on this date.</h4>
+                  </div>
+                    <mat-paginator [pageSizeOptions]="[10,50,100]"
+                                   showFirstLastButtons
+                                   aria-label="Select page of periodic elements">
+                    </mat-paginator>
+                  </div>
+            </div>
+           
+           
+       </div>
+        </div>
+      </div>
+  </mat-tab>
+  <mat-tab label="Delete Invoice">  
+       <app-delete-invoice></app-delete-invoice>
+  </mat-tab> 
+</mat-tab-group>
 
 
 
@@ -135,134 +135,134 @@
 <!-- -------------------------MODAL----------------------------------- -->
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content" style="width: 1000px;">
-      <div class="modal-header">
-        <h4 class="modal-title" id="exampleModalLabel">Invoice Details</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      
-      <div class="modal-body" >
-        <div>
-          
-          <div class="card-block" id="print-section">
-            <div class="row" >
-              <div class="col-md-12">
-                <h4 style="text-align: center">
-                  କୃଷି ଓ କୃଷକ ସଶକ୍ତିକରଣ ବିଭାଗ <br />DEPARTMENT OF AGRICULTURE AND FARMER'S
-                  EMPOWERMENT
-                </h4>
-                <h4 style="text-align: center"><u>Dealer Sale Receipt</u></h4>
-                <!-- <div style="margin-top: -124px">
-                  <qrcode [width]="200" [qrdata]="qrData" [errorCorrectionLevel]="'M'" style="text-align: right">
-                  </qrcode>
-                </div> -->
-              </div>
-            </div><br>
-            <div class="row">
-              <div class="col-sm-6 col-lg-6">
-                <label >Dealer Licence No : {{ dealerLicenNo }}
-                </label>
-              </div>
-              <div class="col-sm-2 col-lg-2"></div>
-              <div class="col-sm-4 col-lg-4">
-                <label >Sale Date : {{date}} </label><br>
-                <label >Invoice No :  {{ invoiceNo }} </label>
-              </div>
-            </div>
-            <br />
-            <div class="row">
-              <div class="table-responsive">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <!-- <th>Trade Name</th> -->
-                      <th>Technical Name</th>
-                      <th>Qauntity</th>
-                      <th>Total Price(In Rs)</th>
-                      <th>Farmer's Share(In Rs)</th>
-                      <th>Eligible Amount(In Rs)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let x of dealerSaleResult; let i=index ;">
-                      <th scope="row">{{i+1}}</th>
-                      <!-- <td></td> -->
-                      <td style="text-align: center;"> {{x.Technical_Name}} </td>
-                      <td style="text-align: center;"> {{ x.packageSize }} {{ x.unit }} * {{x.packageQuantity}} </td>
-                      <td style="text-align: center;"> {{x.totalPrice}} </td>
-                      <td style="text-align: center;"> {{x.totalPrice - x.eligibleSubsidy}} </td>
-                      <td style="text-align: center;"> {{x.eligibleSubsidy}} </td>
-                    </tr>
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <td style="font-weight: bold;"> Total </td>
-                      <td></td>
-                      <td></td>
-                      <td style="font-weight: bold;text-align: center;"> {{ totalPricesum }}</td>
-                      <td></td>
-                      <td style="font-weight: bold;text-align: center;"> {{ totaleligibleamount }} </td> 
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <h4 style="color: red; text-align: center"><u>Conditions</u></h4>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <p>
-                  1. One copy of the receipt to be given to the farmer.<br />2. Second
-                  copy of the receipt to be kept with the dealer.
-                </p>
-              </div>
-            </div>
-            <br /><br />
-            <div class="row">
-              <div class="col-sm-6 col-lg-6">
-                <h4><u>Signature of Registered Dealer</u><br />Name: {{ soldby }} <br /></h4>
-              </div>
-              <div class="col-sm-2 col-lg-2"></div>
-              <div class="col-sm-4 col-lg-4">
-                <h4><u>Signature of Benificiary(Farmer)</u><br/>
-                  Name: {{ FarmerName }} <br />
-                  FarmerId: {{ FarmerId  }} <br />
-                  Permit No: {{ permitNo }}
-                </h4>
-              </div>
-            </div>
-            <br />
-          
-          </div>
-          <div class="card-block">
-            <div class="row">
-              <div class="col-md-7">
-                <div class="vertical-center">
-                  <button type="button" class="btn btn-primary" id="primary-popover-content" data-container="body"
-                    data-toggle="popover" title="Primary color states" data-placement="bottom"
-                    style="float: right; margin-right: 30px"  styleSheetFile="node_modules/bootstrap/dist/css/bootstrap.min.css"
-                    class="btn btn-primary mat-elevation-z8 float-right" printSectionId="print-section" ngxPrint>
-                    Print
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        
+<div class="modal-dialog modal-lg" role="document">
+<div class="modal-content" style="width: 1000px;">
+<div class="modal-header">
+  <h4 class="modal-title" id="exampleModalLabel">Invoice Receipt</h4>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body" >
+  <div>
+    
+    <div class="card-block" id="print-section">
+      <div class="row" >
+        <div class="col-md-12">
+          <h4 style="text-align: center">
+            କୃଷି ଓ କୃଷକ ସଶକ୍ତିକରଣ ବିଭାଗ <br />DEPARTMENT OF AGRICULTURE AND FARMER'S
+            EMPOWERMENT
+          </h4>
+          <h4 style="text-align: center"><u>Dealer Sale Receipt</u></h4>
+          <!-- <div style="margin-top: -124px">
+            <qrcode [width]="200" [qrdata]="qrData" [errorCorrectionLevel]="'M'" style="text-align: right">
+            </qrcode>
+          </div> -->
         </div>
-        
-        
+      </div><br>
+      <div class="row">
+        <div class="col-sm-6 col-lg-6">
+          <label >Dealer Licence No : {{ dealerLicenNo }}
+          </label>
+        </div>
+        <div class="col-sm-2 col-lg-2"></div>
+        <div class="col-sm-4 col-lg-4">
+          <label >Sale Date : {{date}} </label><br>
+          <label >Invoice No :  {{ invoiceNo }} </label>
+        </div>
       </div>
-      <!-- <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div> -->
+      <br />
+      <div class="row">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>#</th>
+                <!-- <th>Trade Name</th> -->
+                <th>Technical Name</th>
+                <th>Qauntity</th>
+                <th>Total Price(In Rs)</th>
+                <th>Farmer's Share(In Rs)</th>
+                <th>Eligible Amount(In Rs)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of dealerSaleResult; let i=index ;">
+                <th scope="row">{{i+1}}</th>
+                <!-- <td></td> -->
+                <td style="text-align: center;"> {{x.Technical_Name}} </td>
+                <td style="text-align: center;"> {{ x.packageSize }} {{ x.unit }} * {{x.packageQuantity}} </td>
+                <td style="text-align: center;"> {{x.totalPrice}} </td>
+                <td style="text-align: center;"> {{x.totalPrice - x.eligibleSubsidy}} </td>
+                <td style="text-align: center;"> {{x.eligibleSubsidy}} </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td style="font-weight: bold;"> Total </td>
+                <td></td>
+                <td></td>
+                <td style="font-weight: bold;text-align: center;"> {{ totalPricesum }}</td>
+                <td></td>
+                <td style="font-weight: bold;text-align: center;"> {{ totaleligibleamount }} </td> 
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h4 style="color: red; text-align: center"><u>Conditions</u></h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p>
+            1. One copy of the receipt to be given to the farmer.<br />2. Second
+            copy of the receipt to be kept with the dealer.
+          </p>
+        </div>
+      </div>
+      <br /><br />
+      <div class="row">
+        <div class="col-sm-6 col-lg-6">
+          <h4><u>Signature of Registered Dealer</u><br />Name: {{ soldby }} <br /></h4>
+        </div>
+        <div class="col-sm-2 col-lg-2"></div>
+        <div class="col-sm-4 col-lg-4">
+          <h4><u>Signature of Benificiary(Farmer)</u><br/>
+            Name: {{ FarmerName }} <br />
+            FarmerId: {{ FarmerId  }} <br />
+            Permit No: {{ permitNo }}
+          </h4>
+        </div>
+      </div>
+      <br />
+    
     </div>
+    <div class="card-block">
+      <div class="row">
+        <div class="col-md-7">
+          <div class="vertical-center">
+            <button type="button" class="btn btn-primary" id="primary-popover-content" data-container="body"
+              data-toggle="popover" title="Primary color states" data-placement="bottom"
+              style="float: right; margin-right: 30px"  styleSheetFile="node_modules/bootstrap/dist/css/bootstrap.min.css"
+              class="btn btn-primary mat-elevation-z8 float-right" printSectionId="print-section" ngxPrint>
+              Print
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
   </div>
+  
+  
+</div>
+<!-- <div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div> -->
+</div>
+</div>
 </div>

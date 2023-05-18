@@ -13,6 +13,6 @@ router.get('/getTechnicalName', dealerBal.getTechnicalName);
 router.get('/getPurchasedTechnicalName' , dealerBal.getPurchasedTechnicalName);
 router.get('/getItemPrice' , dealerBal.getItemPrice);
 router.post('/submitDealerSale' , dealerBal.submitDealerSale);
-router.get('/getGeneratedInvoiceLists' , dealerBal.getALLGeneratedInvoiceLists);
+router.get('/getALLGeneratedInvoiceLists' , dealerBal.getALLGeneratedInvoiceLists);
 router.get('/getInputDetails' , dealerBal.getInputDetails);
 router.get('/deleteInvoice' , dealerBal.deleteInvoice);

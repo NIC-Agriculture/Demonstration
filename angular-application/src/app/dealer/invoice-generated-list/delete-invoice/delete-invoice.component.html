@@ -92,14 +92,16 @@
                                 <td> {{ x.eligibleSubsidy }} </td>
                                 <td> {{ x.verifyStatus }} </td>
                                 <td>
-                                    <mat-icon (click)="openDialog(x);" class="icon" color="danger" disabled="x.verifyStatus!='NotVerified'">delete</mat-icon>
+                                  <button mat-icon-button  disabled="x.verifyStatus != 'NotVerified'">
+                                    <mat-icon (click)="openDialog(x);" color="danger" class="icon"  >delete</mat-icon>
+                                  </button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div *ngIf="this.InputDetails.length == 0">
+                <div *ngIf="InputDetails.length == 0">
                     <h4 style="text-align: center; color: red;">There is no Input sell record against this Farmer Id / Invoice no.</h4>
                 </div>
 

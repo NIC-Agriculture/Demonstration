@@ -46,7 +46,7 @@ app.use('/ado', verifyAccessToken, permission('ADO') , require('./routes/ado.rou
 app.use('/vaw', verifyAccessToken, multipleRolePermission(['SCHEME','CDAO', 'BAO', 'ADO', 'VAW']),  require('./routes/vaw.route'));
 app.use('/vawMobileApp',  require('./routes/vawMobileApp.route'));
 app.use('/ossc',  require('./routes/ossc.route'));
-app.use('/api', verifyAccessToken, multipleRolePermission(['SCHEME','CDAO', 'BAO', 'ADO', 'VAW','DAFE']), require('./routes/api.route'));
+app.use('/api', verifyAccessToken, multipleRolePermission(['SCHEME','CDAO', 'BAO', 'ADO', 'VAW','DAFE','DEALER']), require('./routes/api.route'));
 app.use('/dafe', require('./routes/dafe.route'));
 
 app.get('*', (req, res) => res.status(200).send({

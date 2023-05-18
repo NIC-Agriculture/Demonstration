@@ -14,7 +14,7 @@ export class DeleteInvoiceComponent implements OnInit {
   farmerId: any
   InvoiceNo: string = ''
   prefixOfFarmerID: any;
-  InputDetails: any;
+  InputDetails: Array<any> = [];
   FinYear: any;
   FinYears: any;
   Season: any;
@@ -64,12 +64,12 @@ export class DeleteInvoiceComponent implements OnInit {
      }
     }
 
-  deleteInvoice = async(InvoiceNo: any, FarmerId: any,ItemId: any,Technical_Code: any) => {
+  deleteInvoice = async(InvoiceNo: any, FarmerId: any,ItemId: any,Technical_Code: any,FinYear: any) => {
       try {
-        const result = await this.dealerService.deleteInvoice(InvoiceNo, FarmerId, ItemId, Technical_Code).toPromise()
-        console.log(result);
-        
-    
+        const result = await this.dealerService.deleteInvoice(InvoiceNo, FarmerId, ItemId, Technical_Code ,FinYear ).toPromise()
+        this.toastr.success(result.message) 
+        this.InputDetails = [] 
+        this.InvoiceListTable = false  
       } catch (e) {
         this.toastr.error('Sorry. Server problem. Please try again.');
         console.error(e)
@@ -90,7 +90,7 @@ export class DeleteInvoiceComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if(result == true ){
-        this.deleteInvoice(x.InvoiceNo,x.FarmerId,x.ItemId,x.Technical_Code);
+        this.deleteInvoice(x.InvoiceNo,x.FarmerId,x.ItemId,x.Technical_Code,this.FinYear);
       }
     });
   }

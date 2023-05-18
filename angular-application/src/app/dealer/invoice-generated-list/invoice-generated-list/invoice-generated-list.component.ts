@@ -28,7 +28,7 @@ export class InvoiceGeneratedListComponent implements OnInit {
   pageTitle: string;
   pageDesc: string;
   breadcrumbList: Array<string>;
-  invoiceLists: any;
+  invoiceLists: Array<any>=[];
   dataSource : any;
   InvoiceListTable: boolean = false;
 
@@ -69,7 +69,7 @@ export class InvoiceGeneratedListComponent implements OnInit {
   getGeneratedInvoiceLists = async()=>{
     try {
       this.InvoiceListTable = true
-      this.invoiceLists = await this.dealerService.getGeneratedInvoiceLists(this.date).toPromise()
+      this.invoiceLists = await this.dealerService.getALLGeneratedInvoiceLists(this.date).toPromise()
       this.dataSource = new MatTableDataSource<PeriodicElement>(this.invoiceLists);
       this.dataSource.paginator = this.paginator;
     } catch (e) {

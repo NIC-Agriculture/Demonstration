@@ -54,8 +54,8 @@ export class DealerService {
     return this.http.post(`${this.serverUrl}/${this.route}/submitDealerSale`,data)
   }
 
-  getGeneratedInvoiceLists(date: any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getGeneratedInvoiceLists?Date=${date}`)
+  getALLGeneratedInvoiceLists(date: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getALLGeneratedInvoiceLists?Date=${date}`)
   }
 
   getDealerSaleReciept(InvoiceNo: any ): Observable<any> {
@@ -65,7 +65,7 @@ export class DealerService {
   getInputDetails(FarmerId: any, InvoiceNo: any ): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getInputDetails?FarmerId=${FarmerId}&InvoiceNo=${InvoiceNo}`)
   }
-  deleteInvoice(InvoiceNo: any, FarmerId: any, ItemId: any, Technical_Code: any ): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/deleteInvoice?FarmerId=${FarmerId}&InvoiceNo=${InvoiceNo}&ItemId=${ItemId}&Technical_Code=${Technical_Code}`)
+  deleteInvoice(InvoiceNo: any, FarmerId: any, ItemId: any, Technical_Code: any ,Fin_year: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/deleteInvoice?FarmerId=${FarmerId}&InvoiceNo=${InvoiceNo}&ItemId=${ItemId}&Technical_Code=${Technical_Code}&Fin_year=${Fin_year}`)
   }
 }

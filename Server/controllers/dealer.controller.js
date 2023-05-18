@@ -260,7 +260,7 @@ exports.getInputDetails = async(req,res) => {
                            a."totalPrice", a."eligibleSubsidy", a."verifyStatus",a."ItemId",a."Technical_Code"
                            FROM "DealerSale" a
                            INNER JOIN "ItemMaster" b on a."ItemId" = b."ItemId" AND a."CompId" = b."CompId"
-                           WHERE a."FarmerId" = 'KEN/83364' AND (a."InvoiceNo" = '${InvoiceNo}' or '${InvoiceNo}'='0')`
+                           WHERE a."FarmerId" = '${req.query.FarmerId}' AND (a."InvoiceNo" = '${InvoiceNo}' or '${InvoiceNo}'='0')`
         const result = await db.sequelize.query(queryText); 
         res.send(result[0])
      } catch (e) {
@@ -271,17 +271,32 @@ exports.getInputDetails = async(req,res) => {
 
 exports.deleteInvoice = async(req,res) => {
      try {
+        const queryText = `DELETE FROM "DealerSale"
+                           WHERE "InvoiceNo" = '${req.query.InvoiceNo}'
+                           AND "FarmerId" = '${req.query.FarmerId}'
+                           AND "Fin_year" = '${req.query.Fin_year}'
+                           AND "ItemId" = '${req.query.ItemId}'
+                           AND "Technical_Code" IN (
+                           SELECT "Technical_Code"
+                           FROM "DealerSale"
+                           WHERE  "FarmerId" = '${req.query.FarmerId}' AND "InvoiceNo" = '${req.query.InvoiceNo}'
+                           AND "ItemId" = '${req.query.ItemId}'
+                           AND "Technical_Code" = '${req.query.Technical_Code}'
+                           AND "Fin_year" = '${req.query.Fin_year}'
+                           AND "verifyStatus" = 'NotVerified'
+                           LIMIT 1
+                           )`
+        const result = await db.sequelize.query(queryText); 
 
-        console.log(req.query);
+        const queryText1 = `SELECT exists (SELECT 1 FROM "DealerSale" WHERE "InvoiceNo" = '${req.query.InvoiceNo}' LIMIT 1)`
+        const result1 = await db.sequelize.query(queryText1); 
 
-        // const InvoiceNo = req.query.InvoiceNo == '' ? 0 : req.query.InvoiceNo
-        // const queryText = `SELECT a."InvoiceNo", a."Permit_NO" , a."DemonstrationId" ,a."FarmerId" ,a."LandArea",b."ItemName", a."Technical_Name",
-        //                    a."totalPrice", a."eligibleSubsidy", a."verifyStatus",a."ItemId",a."Technical_Code"
-        //                    FROM "DealerSale" a
-        //                    INNER JOIN "ItemMaster" b on a."ItemId" = b."ItemId" AND a."CompId" = b."CompId"
-        //                    WHERE a."FarmerId" = 'KEN/83364' AND (a."InvoiceNo" = '${InvoiceNo}' or '${InvoiceNo}'='0')`
-        // const result = await db.sequelize.query(queryText); 
-        // res.send(result[0])
+        if(result1[0][0].exists == true) return res.send(result[0])
+
+        const queryText2 = `DELETE FROM "DealerSaleToAction" WHERE "InvoiceNo" = '${req.query.InvoiceNo}'`
+        const result2 = await db.sequelize.query(queryText2); 
+
+        res.send({message :" Deleted Succesfully."})
      } catch (e) {
         res.status(500).send('Unexpected error')
         console.error(e);
