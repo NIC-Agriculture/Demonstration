@@ -445,9 +445,9 @@ exports.getAvailableTarget = async (req,res) => {
         INNER JOIN "SchemeMaster" b ON a."schemeId" = b."schemeId"
         INNER JOIN "SubSchemeMaster" c ON a."SubschemeId" = c."SubschemeId"
         INNER JOIN "ComponentMaster" d ON a."CompId" = d."CompId"
-        where a."Block_Code" = '${req.payload.Block_Code}'`
+        where a."Block_Code" = '${req.payload.Block_Code}' AND a."Fin_Year" = '${req.query.Fin_Year}' AND a."schemeId" = '${req.query.schemeId}' `
+        // console.log(queryText);
         const result = await db.sequelize.query(queryText);
-        // console.log(result);
         res.send(result[0]);
     } catch (e){
         res.status(500).send('Unexpected error');
@@ -463,9 +463,12 @@ exports.getclusterDemonstration = async (req,res) => {
         FROM "DemonstrationPatchMaster" a
         INNER JOIN "ComponentMaster" b ON a."CompId" = b."CompId"
         LEFT JOIN "Farmer_Permit" c ON a."DemostrationId" = c."DemonstrationId"
-        WHERE a."Block_Code" = '${req.payload.Block_Code}' AND a."Fin_Year" = '${req.query.Fin_Year}' group by a."DemostrationId",a."Gp_Code",a."lgd_wardcode",a."vaw_userId",
+        WHERE a."Block_Code" = '${req.payload.Block_Code}' AND a."Fin_Year" = '${req.query.Fin_Year}' AND a."schemeId" = '${req.query.schemeId}' 
+        group by a."DemostrationId",a."Gp_Code",a."lgd_wardcode",a."vaw_userId",
         b."CompName",a."PhyGen", a."PhySCP", a."PhyTasp",a."AvlPhyGen", a."AvlPhySCP", a."AvlPhyTASP";`
+        console.log(queryText);
         const result = await db.sequelize.query(queryText);
+        console.log(result[0]);
         const GpData = []
         result[0].forEach(async(e, key) => {
             if (e.Gp_Code != null) {

@@ -1033,9 +1033,9 @@ exports.getAvailableTarget = async (req,res) => {
         INNER JOIN "SchemeMaster" b ON a."schemeId" = b."schemeId"
         INNER JOIN "SubSchemeMaster" c ON a."SubschemeId" = c."SubschemeId"
         INNER JOIN "ComponentMaster" d ON a."CompId" = d."CompId"
-        where a."Dist_Code" = '${req.payload.Dist_Code}' AND a."Fin_Year" = '${req.query.Fin_Year}'`
+        where a."Dist_Code" = '${req.payload.Dist_Code}' AND a."Fin_Year" = '${req.query.Fin_Year}' AND a."schemeId" = '${req.query.schemeId}' `
+        // console.log(queryText);
         const result = await db.sequelize.query(queryText);
-        // console.log(result);
         res.send(result[0]);
     } catch (e){
         res.status(500).send('Unexpected error');
@@ -1076,8 +1076,10 @@ exports.getItemNameAndTechnicalNameReport = async (req,res) => {
 
 exports.getDemonstrationStatusReport = async (req, res, next) => {
     try{
-        const queryText = `SELECT a."DemostrationId",a."SeedDistributionStatus",b."statusPhase1",b."statusPhase2",b."statusPhase3"
+        const queryText = `SELECT c."SubschemeName",d."CompName",a."DemostrationId",a."SeedDistributionStatus",b."statusPhase1",b."statusPhase2",b."statusPhase3"
         FROM "DemonstrationPatchMaster" a
+		INNER JOIN "SubSchemeMaster" c on c."SubschemeId" = a."SubschemeId"
+		INNER JOIN "ComponentMaster" d on d."CompId" = a."CompId"
         LEFT JOIN "FarmerLandDetails" b ON a."DemostrationId" = b."DemostrationId"
         WHERE "Dist_Code"='${req.payload.Dist_Code}' AND ('0'='${req.query.Block_Code}' or  a."Block_Code" = '${req.query.Block_Code}') AND a."Fin_Year" = '${req.query.Fin_Year}'`;
         // console.log(queryText);
@@ -1126,14 +1128,17 @@ exports.getDemonstrationStatusReport = async (req, res, next) => {
 
 exports.getclusterDemonstration = async (req,res) => {
     try{
-        const queryText = `  SELECT a."DemostrationId",a."Gp_Code",a."lgd_wardcode",a."vaw_userId", SUM(CASE WHEN c."Farmer_Category"  = 'General' THEN 1 ELSE 0 END) as "GenFarmer",
-        SUM(CASE WHEN c."Farmer_Category"  = 'SC' THEN 1 ELSE 0 END) as "SCFarmer", SUM(CASE WHEN c."Farmer_Category"  = 'ST' THEN 1 ELSE 0 END) as "STFarmer",
+        const queryText = `SELECT a."DemostrationId",d."SubschemeName" ,a."Gp_Code",a."lgd_wardcode",a."vaw_userId", SUM(CASE WHEN c."Farmer_Category"  = 'General' THEN 1 ELSE 0 END) as "GenFarmer",
+           SUM(CASE WHEN c."Farmer_Category"  = 'SC' THEN 1 ELSE 0 END) as "SCFarmer", SUM(CASE WHEN c."Farmer_Category"  = 'ST' THEN 1 ELSE 0 END) as "STFarmer",
            b."CompName",a."PhyGen", a."PhySCP", a."PhyTasp", a."AvlPhyGen", a."AvlPhySCP", a."AvlPhyTASP" 
            FROM "DemonstrationPatchMaster" a
+           INNER JOIN "SubSchemeMaster" d ON a."SubschemeId" = d."SubschemeId"
            INNER JOIN "ComponentMaster" b ON a."CompId" = b."CompId"
            LEFT JOIN "Farmer_Permit" c ON a."DemostrationId" = c."DemonstrationId"
-           WHERE a."Block_Code" = '${req.query.Block_Code}' AND a."Fin_Year"='${req.query.Fin_Year}' group by a."DemostrationId",a."Gp_Code",a."lgd_wardcode",a."vaw_userId",
+           WHERE a."Block_Code" = '${req.query.Block_Code}' AND a."Fin_Year"='${req.query.Fin_Year}' 
+           GROUP BY a."DemostrationId",d."SubschemeName",a."Gp_Code",a."lgd_wardcode",a."vaw_userId",
            b."CompName",a."PhyGen", a."PhySCP", a."PhyTasp",a."AvlPhyGen", a."AvlPhySCP", a."AvlPhyTASP";`
+        //    console.log("queryText",queryText);
         const result = await db.sequelize.query(queryText);
         const GpData = []
         result[0].forEach(async(e, key) => {
