@@ -1,0 +1,11 @@
+Select e."SubschemeName",f."CompName", c."Dist_Name" AS "District",
+count(a."FarmerId") AS "Benefited Beneficiary", sum(cast(b.totaleligiblesubsidy as numeric)) AS "SubsidyReleased", sum(cast(d."totalEligibleIncentive" as numeric)) AS "IncentiveReleased" from "Farmer_Permit" a 
+INNER JOIN "PaymentMaster" b on b."Permit_NO" = a."Permit_NO"
+LEFT JOIN "InctvPaymentMaster" d on d."Permit_NO" = a."Permit_NO"
+INNER JOIN "LGDistricts" c on c."Dist_Code" = a."Dist_Code" 
+INNER JOIN "SubSchemeMaster" e on e."SubschemeId" = a."SubschemeId"
+INNER JOIN "ComponentMaster" f on f."CompId" = a."CompId"
+where a."SubschemeId" = 'subscheme_31'
+--a."CompId" = 'comp_55' 
+and b."PymntFileGenerated" = '0'
+group by c."Dist_Name",f."CompName", e."SubschemeName"

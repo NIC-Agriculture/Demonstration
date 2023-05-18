@@ -1,0 +1,60 @@
+TODO CDAO module :
+Remove RKVY - Complete
+Completed - module(routing) & component: approve_deale _sale
+TODO child component: view_receipt <MatDialogue>
+TODO Bund Plantation
+TODO Report Page (Block wise)
+TODO Print Page (In all Report Page)
+=============================================/////////////////////////////
+TODO ADO Module:
+Completed - module(routing) & component: forward_deale _sale
+TODO child component: view_receipt <MatDialogue>
+TODO Report Page
+TODO Print Page (In all Report Page)
+
+==============================================/////////////////////////////
+TODO BAO module:
+Completed - Manage Demonstration module
+Completed - module(routing) & component: verify_deale _sale
+TODO child component: view_receipt  <MatDialogue>
+Completed - button: confirm
+TODO Report Page
+TODO Print Page (In all Report Page)
+
+===============================//////////////////////////////////////////////
+TODO Dealer Module:
+1. Completed - dealer sale receipt design
+2. Farmer Id wise get details 
+3. Multiple Technical name
+
+=============================================///////////////////////////////
+TODO Dashboard:
+Completed - Demonstration Id (count),Farmer Involved,GEN,SC,ST
+Subsidy Released(NFSM),(NFSM-OS), (State Plan)
+TODO Remove RKVY
+
+================================================//////////////////////////////
+TODO VAW :
+1. Seed Distribution - (Total land , Total seed required, Crop Variety)
+2. Check Farmer registration calculation
+3. minimum land area 0.4 ha
+4. Print Page (In all Report Page)
+
+
+
+
+////////////////////=========== MOBILE APP========================///////////////////////
+TODO Phase 1 ----
+1. Demonstration ID, DISTRICT , Block , GP, Generated On , No. Of Farmers Involved
+
+TODO Phase 2 ----
+1. Seed Sowing / Transplanting
+2. Date Of Sowing
+3. From Date   -----> to Date
+
+TODO Phase 3 ----
+1. 3 photo will b captured
+2. Documentation takenup - radio button (yes/no)
+3. Organising Field Day - radio button (yes/No)
+4. No. of Farmers attended - <input type>
+5. Avg. CC result of 10 No.(in gm) - <inpuy type>
