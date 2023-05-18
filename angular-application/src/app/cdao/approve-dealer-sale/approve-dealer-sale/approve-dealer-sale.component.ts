@@ -41,6 +41,7 @@ export class ApproveDealerSaleComponent implements OnInit {
   pageTitle: string;
   pageDesc: string;
   breadcrumbList: Array<string>;
+  dealerlistTable: boolean = false;
 
   @ViewChild('content') content: any;
   SubschemeData: any;
@@ -155,6 +156,7 @@ export class ApproveDealerSaleComponent implements OnInit {
 
   getAllDealerSale = async() => {
     try {
+      this.dealerlistTable = true;
       if(this.BlockAndSchemeForm.value.block  != null && this.BlockAndSchemeForm.value.scheme){
         const blockcode = this.BlockAndSchemeForm.value.block;
         const schemeId = this.BlockAndSchemeForm.value.scheme;
