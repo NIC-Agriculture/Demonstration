@@ -5,7 +5,7 @@
 
 <h2 mat-dialog-title>Print Of Sale Receipt 
   <mat-icon mat-dialog-close style="float: right;">close</mat-icon></h2>
-<mat-dialog-content class="mat-typography" id="print-section" >
+<mat-dialog-content class="mat-typography" id="print-section" style="width: 1000px;"  >
 
 
     <div class="row">
@@ -50,11 +50,21 @@
                 <!-- <td>  </td> -->
                 <td> {{x.Technical_Name  }} </td>
                 <td> {{ x.packageSize }} {{ x.unit }} * {{x.packageQuantity}} </td>
-                <td> {{ x.totalPrice }} </td>
-                <td> {{x.totalPrice - x.eligibleSubsidy}} </td>
-                <td> {{ x.eligibleSubsidy }} </td>
+                <td> {{ x.totalPrice | number }} </td>
+                <td> {{x.totalPrice - x.eligibleSubsidy | number}} </td>
+                <td> {{ x.eligibleSubsidy | number }} </td>
               </tr>
             </tbody>
+            <tfoot>
+              <tr>
+                <td style="font-weight: bold;"> Total </td>
+                <td></td>
+                <td></td>
+                <td style="font-weight: bold;"> {{ totalPricesum | number}}</td>
+                <td></td>
+                <td style="font-weight: bold;"> {{ totaleligibleamount | number }} </td> 
+              </tr>
+            </tfoot>
           </table>
         </div>
       </div>

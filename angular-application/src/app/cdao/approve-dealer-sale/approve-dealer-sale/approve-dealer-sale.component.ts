@@ -48,6 +48,7 @@ export class ApproveDealerSaleComponent implements OnInit {
   ComponentData: any;
   subschemeCompDiv:boolean = false;
   schemeIdvar: any;
+  rejecteddealerSale: any;
 
 
   constructor(
@@ -219,6 +220,21 @@ export class ApproveDealerSaleComponent implements OnInit {
           this.toastr.error('Sorry. Server problem. Please try again.')
           console.error(e);
       }
+  }
+
+  returnbackDealerSaleToBAO = async() => {
+    try {
+      const selectedDealerSale = this.allDealerSaleResult.filter((e:any)=>e.completed)
+      if (selectedDealerSale.length == 0) {
+        this.toastr.warning(`Please Select atleast one sale to approve`)
+      }else{
+        this.rejecteddealerSale = await this.cdaoService.returnbackDealerSaleToBAO(selectedDealerSale).toPromise()
+        this.toastr.success(this.rejecteddealerSale.message);
+      }
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.')
+      console.error(e);
+    }
   }
   
   openDialog(x: any) {

@@ -140,4 +140,8 @@ export class BaoServiceService {
     return this.http.get(`${this.serverUrl}/${this.route}/confirmTrapsData?DemonstrationId=${DemonstrationId}`)
   }
 
+  returnBackDealersaleToDealer(selectedDealerSale: any): Observable<any> {
+    return this.http.post(`${this.serverUrl}/${this.route}/returnBackDealersaleToDealer`, selectedDealerSale)
+  }
+
 }
