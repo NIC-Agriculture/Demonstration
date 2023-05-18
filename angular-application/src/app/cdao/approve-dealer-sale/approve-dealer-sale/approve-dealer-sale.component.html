@@ -89,71 +89,75 @@
             </div>
 
         </div>
-
+    </div>
+</div>
+<div class="card" *ngIf="dealerlistTable"> 
         <div class="card-header">
             <h5>Sale Details</h5>
         </div>
-        <div class="card-block table-border-style">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>
-                                <mat-checkbox class="example-margin" [checked]="allComplete" 
-                                    [indeterminate]="someComplete()" (change)="setAll($event.checked)">
-                                </mat-checkbox> Select All
-                            </th>
-                            <th>SL</th>
-                            <th>Permit No</th>
-                            <th>Invoice No</th>
-                            <th>Farmer Id</th>
-                            <th>Account No</th>
-                            <th>IFSC Code</th>
-                            <th>Total Sale Price</th>
-                            <th>Total Eligible Amount</th>
-                            <th>Catagory</th>
-                            <th>Sale Details</th>
-                            <!-- <th>Reject</th> -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let x of allDealerSaleResult; let i = index;">
-                            <th>
+        <div class="card-block">
+            <div class="card-block table-border-style">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>SL</th>
+                                <th>
+                                    <mat-checkbox class="example-margin" [checked]="allComplete" 
+                                        [indeterminate]="someComplete()" (change)="setAll($event.checked)">
+                                    </mat-checkbox> Select All
+                                </th>
+                                <th>Permit No</th>
+                                <th>Invoice No</th>
+                                <th>Farmer Id</th>
+                                <th>Account No</th>
+                                <th>IFSC Code</th>
+                                <th>Total Sale Price</th>
+                                <th>Total Eligible Amount</th>
+                                <th>Catagory</th>
+                                <th>Sale Details</th>
+                                <!-- <th>Reject</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let x of allDealerSaleResult; let i = index;">
+                                <th scope="row"> {{i+1}} </th>
+                                <th>
                                     <mat-checkbox [(ngModel)]="x.completed" (ngModelChange)="updateAllComplete()">
                                     </mat-checkbox>
-                            </th>
-                            <th scope="row"> {{i+1}} </th>
-                            <td > {{ x.Permit_NO }} </td>
-                            <td > {{ x.InvoiceNo }} </td>
-                            <td > {{ x.FarmerId }} </td>
-                            <td > {{ x.AccountNo }} </td>
-                            <td > {{ x.IFSC }} </td>
-                            <td > {{ x.totalsaleprice | number : '1.2-2'}} </td>
-                            <td > {{ x.totaleligiblesubsidy | number : '1.2-2' }} </td>
-                            <td > {{ x.Farmer_Category }} </td>
-                            <td><button class="btn btn-primary btn-round" (click)="openDialog(x);">View </button></td>
-                            <!-- <td><button class="btn btn-info btn-round">Reject</button></td> -->
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <br>
-        <div *ngIf="message">
-          <h4 style="text-align: center; color: red;">There is no delear sale for approve in this district.</h4>
-        </div><br>
-        <div class="card-block" *ngIf="showApprove">
-            <div class="row">
-                <div class="col-sm-5 col-lg-5"></div>
-                <div class="col-sm-3 col-lg-3">
-                    <button class="btn btn-success btn-round" [disabled]="!forwardButton" (click)="approveDealerSale();">Approve</button>
-                </div>
-                <div class="col-sm-4 col-lg-4">
-
+                                </th>
+                                <td > {{ x.Permit_NO }} </td>
+                                <td > {{ x.InvoiceNo }} </td>
+                                <td > {{ x.FarmerId }} </td>
+                                <td > {{ x.AccountNo }} </td>
+                                <td > {{ x.IFSC }} </td>
+                                <td > {{ x.totalsaleprice | number : '1.2-2'}} </td>
+                                <td > {{ x.totaleligiblesubsidy | number : '1.2-2' }} </td>
+                                <td > {{ x.Farmer_Category }} </td>
+                                <td><button class="btn btn-primary btn-round" (click)="openDialog(x);">View </button></td>
+                                <!-- <td><button class="btn btn-info btn-round">Reject</button></td> -->
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+            <br>
+            <div *ngIf="message">
+              <h4 style="text-align: center; color: red;">There is no delear sale for approve in this district.</h4>
+            </div><br>
+            <div class="card-block" *ngIf="showApprove">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-primary mat-elevation-z8" style="float: right;" [disabled]="!forwardButton">
+                            Return Back To BAO
+                         </button>
+                        <button class="btn btn-success mat-elevation-z8" [disabled]="!forwardButton" (click)="approveDealerSale();" style="float: right; margin-inline-end: 15px;" >Approve</button>&nbsp; &nbsp;
+                      
+                    </div>
+                </div>
+            </div>
         </div>
+ 
 
-    </div>
 </div>
 
