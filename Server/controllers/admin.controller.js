@@ -10,7 +10,7 @@ exports.getUserDetailsByUserId = (user_id) => {
     return new Promise( async (resolve, reject) => {
         try {
             let response = await UserModel.findOne({ where: { user_id: user_id}, raw: true });
-            // console.log(response);
+            console.log(response);
             resolve(response);
         } catch (e) {
             reject(e);
