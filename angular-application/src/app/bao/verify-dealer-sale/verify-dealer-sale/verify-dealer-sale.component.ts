@@ -29,6 +29,8 @@ export class VerifyDealerSaleComponent implements OnInit {
   pageTitle: string;
   pageDesc: string;
   breadcrumbList: Array<string>;
+  rejectedDealerSale: any;
+  DealerSaleListTable: boolean = false;
   
   constructor(
     private baoService:BaoServiceService,
@@ -87,6 +89,7 @@ export class VerifyDealerSaleComponent implements OnInit {
 
   getAllDealerSale = async() => {
     try {
+        this.DealerSaleListTable = true
         this.allDealerResult = await this.baoService.getAllDealerSale(this.demonstrationId).toPromise()
         this.allDealerResult.length > 0 ? (this.message = false, this.showConfirm = true) : (this.message = true, this.showConfirm = false  )
                     
@@ -103,6 +106,18 @@ export class VerifyDealerSaleComponent implements OnInit {
       this.toastr.success(this.confirmResult.message);
       this.allDealerResult = []
       this.showConfirm = false                
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.')
+      console.error(e);
+    }
+  }
+
+  returnBackToDealer = async() => {
+    try {
+      const selectedDealerSale = this.allDealerResult.filter((e:any)=> e.completed)
+      this.rejectedDealerSale =  await this.baoService.returnBackDealersaleToDealer(selectedDealerSale).toPromise()
+      this.toastr.success(this.rejectedDealerSale.message);
+      
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.')
       console.error(e);

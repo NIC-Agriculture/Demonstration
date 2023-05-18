@@ -152,4 +152,7 @@ export class CdaoService {
   getCalculatedIncentiveCost(): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getCalculatedIncentiveCost`)
   }
+  returnbackDealerSaleToBAO(data: any): Observable<any> {
+    return this.http.post(`${this.serverUrl}/${this.route}/returnbackDealerSaleToBAO`, data)
+  }
 }
