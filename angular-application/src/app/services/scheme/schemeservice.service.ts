@@ -1,0 +1,124 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SchemeserviceService {
+  // serverUrl:string='http://localhost:80'
+  serverUrl: string = environment.serverUrl
+
+  route: string = 'scheme';
+  withCredential: object = {
+    withCredentials: true
+  }
+
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) { }
+
+  getAllDistrict(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllDistrict`)
+  }
+
+  SubmitSubscheme(data: {}): Observable<any> {
+    return this.http.post(`${this.serverUrl}/${this.route}/addSubscheme`, data);
+  }
+
+  getAllScheme(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllScheme`)
+  }
+
+  getAllSubscheme(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllSubscheme`)
+  }
+
+  getAllComponent(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllComponent`)
+  }
+
+  getAllComponentType(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllComponentType`)
+  }
+
+  getSubscheme(schemeId: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getSubscheme?schemeId=${schemeId}`)
+  }
+
+  getComponent(CompId: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getComponent?SubschemeId=${CompId}`)
+  }
+
+  getComponentCost(CompId: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getComponentCost?CompId=${CompId}`)
+  }
+
+  getAllCrops(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllCrops`)
+  }
+
+  getCrops(SubschemeId: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getCrops?SubschemeId=${SubschemeId}`)
+  }
+
+  getAllSubCrops(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllSubCrops`)
+  }
+
+  getSubCrops(CropId: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getSubCrops?CropId=${CropId}`)
+  }
+
+  SubmitComponent(data: {}): Observable<any> {
+    return this.http.post(`${this.serverUrl}/${this.route}/addComponent`, data);
+  }
+
+  SubmitCompItemDetails(data: {}): Observable<any> {
+    return this.http.post(`${this.serverUrl}/${this.route}/addCompItemDetails`, data);
+  }
+  SubmitItemTechDetails(data: {}): Observable<any> {
+    return this.http.post(`${this.serverUrl}/${this.route}/addItemTechDetails`, data);
+  }
+
+  getAllDistrictTarget(SubschemeId: any , CompId: any , Fin_Year: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllDistrictTarget?SubschemeId=${SubschemeId}&CompId=${CompId}&Fin_Year=${Fin_Year}`)
+  }
+
+  SubmitDistrictTarget(data: {}): Observable<any> {
+    return this.http.post(`${this.serverUrl}/${this.route}/SubmitDistrictTarget`, data);
+  }
+  
+  UpdateDistrictTarget(data: {}): Observable<any> {
+    return this.http.post(`${this.serverUrl}/${this.route}/UpdateDistrictTarget`, data);
+  }
+
+  getDemonstrationIdCount(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getDemonstrationIdCount`)
+  }
+  getBlockTarget(DistCode: any,CompId: any,FinYear: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getBlockTarget?Dist_Code=${DistCode}&CompId=${CompId}&FinYear=${FinYear}`)
+  }
+  getBlocks(DistCode:any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getBlocks?Dist_Code=${DistCode}`)
+  }
+  getclusterDemonstration(Dist_Code:any, Block_Code:any, CompId:any, FinYear:any ): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getclusterDemonstration?Dist_Code=${Dist_Code}&Block_Code=${Block_Code}&CompId=${CompId}&Fin_Year=${FinYear}`)
+  }
+  getWardData( wardCode: any , DemostrationId: any ): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getWardData?WardCode=${wardCode}&DemostrationId=${DemostrationId}`)
+  }
+  getCalculatedInputCost(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getCalculatedInputCost`)
+  }
+  getCalculatedIncentiveCost(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getCalculatedIncentiveCost`)
+  }
+  getItemDetails(CompId:any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getItemDetails?CompId=${CompId}`)
+  }
+
+}

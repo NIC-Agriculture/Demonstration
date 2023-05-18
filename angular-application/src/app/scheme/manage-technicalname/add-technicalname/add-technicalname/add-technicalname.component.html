@@ -1,0 +1,197 @@
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+
+                <div class="card-header">
+                    <h4>Add Technicalname</h4>
+                    <span>Item Details</span>
+                    <div class="card-header-right">
+                        <i class="icofont icofont-rounded-down"></i>
+                        <i class="icofont icofont-refresh"></i>
+                        <i class="icofont icofont-close-circled"></i>
+                    </div>
+                </div>
+                <div class="card-block">
+                    <form [formGroup]="AddItemTechForm">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 col-lg-4">
+                                                <label class="block" for="scheme">Scheme<label class="asterik">*</label>:</label>
+                                            </div>
+                                            <div class="col-sm-4 col-lg-8">
+                                                <select formControlName="scheme" id="scheme"
+                                                    class="form-control form-control-default"
+                                                    (change)="getSubscheme();">
+                                                    <option value="" disabled>--Select--</option>
+                                                    <option [ngValue]="x" *ngFor="let x of AllSchemeData">{{
+                                                        x.schemeName }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 col-lg-4">
+                                                <label class="block" for="subscheme">Subscheme<label class="asterik">*</label>:</label>
+                                            </div>
+                                            <div class="col-sm-4 col-lg-8">
+                                                <select formControlName="subscheme" id="subscheme"
+                                                    class="form-control form-control-default"
+                                                    (change)="getComponent();">
+                                                    <option value="" disabled>--Select--</option>
+                                                    <option [ngValue]="x" *ngFor="let x of SubschemeData">{{
+                                                        x.SubschemeName }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 col-lg-4">
+                                                <label class="block" for="component">Component<label class="asterik">*</label>:</label>
+                                            </div>
+                                            <div class="col-sm-4 col-lg-8">
+                                                <select formControlName="componentName" id="component"
+                                                    class="form-control form-control-default" (change)="getItems();">
+                                                    <option value="">--Select--</option>
+                                                    <option [ngValue]="x" *ngFor="let x of ComponentData">
+                                                        {{ x.CompName }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 col-lg-4">
+                                                <label class="block" for="itemName">Item<label class="asterik">*</label>:</label>
+                                            </div>
+                                            <div class="col-sm-4 col-lg-8">
+                                                <select formControlName="itemName" id="itemName"
+                                                    class="form-control form-control-default">
+                                                    <option value="" disabled>--Select--</option>
+                                                    <option [ngValue]="x" *ngFor="let x of ItemData">{{ x.ItemName }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 col-lg-4">
+                                                <label class="block" for="Crop">Crop<label class="asterik">*</label>:</label>
+                                            </div>
+                                            <div class="col-sm-4 col-lg-8">
+                                                <select formControlName="Crop" id="Crop"
+                                                    class="form-control form-control-default">
+                                                    <option value="" disabled>--Select--</option>
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 col-lg-4">
+                                                <label class="block" for="component">Technical name <label class="asterik">*</label>:</label>
+                                            </div>
+                                            <div class="col-sm-4 col-lg-8">
+                                                <input type="text" formControlName="TechnicalName"
+                                                    class="form-control form-control-default" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 col-lg-4">
+                                                <label class="block" for="FinYear">Financial Year<label class="asterik">*</label>:</label>
+                                            </div>
+                                            <div class="col-sm-4 col-lg-8">
+                                                <select formControlName="FinYear" id="FinYear"
+                                                    class="form-control form-control-default" required>
+                                                    <option value="">--Select--</option>
+                                                    <option [ngValue]="x" *ngFor="let x of FinYears"> {{ x }} </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="card-block">
+                    <button type="button" class="btn btn-primary" style="background-color: #1abc9c;margin-left: 45%;"
+                        (click)="AddTechnicalname()">ADD <i class=" fa fa-plus"></i>
+                    </button><br><br>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <table class="table table-dark" *ngIf="showtable">
+                                <thead style="background-color: cadetblue;">
+                                    <tr>
+                                        <th scope="col">SL.</th>
+                                        <th scope="col">Scheme</th>
+                                        <th scope="col">Subscheme</th>
+                                        <th scope="col">Component</th>
+                                        <th scope="col">Item</th>
+                                        <th scope="col">Crop</th>
+                                        <th scope="col">Technical Name</th>
+                                        <th scope="col">Financial Year</th>
+                                        <th scope="col">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of ItemTechnicalList; let i=index;">
+                                        <td> {{i+1}} </td>
+                                        <td> {{x.scheme.schemeName}} </td>
+                                        <td> {{x.subscheme.SubschemeName}} </td>
+                                        <td> {{x.componentName.CompName}} </td>
+                                        <td> {{x.itemName.ItemName}} </td>
+                                        <td></td>
+                                        <td> {{x.TechnicalName}} </td>
+                                        <td> {{x.FinYear}} </td>
+
+                                        <td>
+                                            <button type="button" style="margin-top: -5px; color: red"
+                                                (click)="removeTechnicalList(i)"><i class=" fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-block">
+                    <div style="padding: 20px;" *ngIf="showtable">
+                        <button type="button" class="btn btn-primary mat-elevation-z8" style="float: right;"
+                            (click)="SubmitItemTechDetails()">Submit </button>
+                        <br>
+                        <br>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

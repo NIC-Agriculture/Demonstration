@@ -1,0 +1,59 @@
+<br>
+<div class="card">
+  <div class="card-block table-card">
+    <div class="table-responsive" id="print-section">
+      <table class="table table-striped table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Block Name </th>
+            <th>GP Name</th>
+            <th>Ward Name</th>
+            <th>VAW Name</th>
+            <th>Physical(Gen)</th>
+            <th>Physical(SC)</th>
+            <th>Physical(ST)</th>
+            <th>Demonstration Area(in Ha)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td class="tabledit-view-mode">
+              <span class="tabledit-span"> {{BlockName}} </span>
+            </td>
+            <td class="tabledit-view-mode" >
+              <span class="tabledit-span">
+                <ul  *ngFor="let x of GpTargetDetails.gpList">
+                  <li> {{x.Gp_Name}}, </li>
+                </ul>
+              </span>
+            </td>
+            <td class="tabledit-view-mode" >
+              <span class="tabledit-span">
+                <ul  *ngFor="let x of GpTargetDetails.wardList">
+                  <li> {{x.WardName || '--' }} , </li>
+                </ul>
+              </span>
+            </td>
+            <td class="tabledit-view-mode"><span class="tabledit-span">
+               {{GpTargetDetails.vawDetails.VAWCode}} , {{GpTargetDetails.vawDetails.Gp_Name}} </span>
+            </td>
+            <td class="tabledit-view-mode"><span class="tabledit-span">
+                {{GpTargetDetails.gpTarget.PhyGen}}</span>
+            </td>
+            <td class="tabledit-view-mode"><span class="tabledit-span">
+                {{GpTargetDetails.gpTarget.PhySCP}}</span>
+            </td>
+            <td class="tabledit-view-mode"><span class="tabledit-span">
+                {{GpTargetDetails.gpTarget.PhyTASP}}</span>
+            </td>
+            <td class="tabledit-view-mode"><span class="tabledit-span">
+                {{GpTargetDetails.gpTarget.Demonstration_Area}}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+th {
+    white-space: pre-wrap;
+}
+
+td {
+    white-space: pre-wrap;
+}
+
+
+.asterik{
+    content:"*" ;
+    color:red   
+    }

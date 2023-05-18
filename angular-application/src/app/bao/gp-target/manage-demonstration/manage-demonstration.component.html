@@ -1,0 +1,77 @@
+<div class="card">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <div class="col-sm-4 col-lg-2">
+                    <label class="block" for="farmerId">Demonstration ID <label class="asterik">*</label>:</label>
+                  </div>
+                  <div class="col-sm-4 col-lg-6">
+                    <select id="demonstrationId"  [(ngModel)]="demonstrationId"  class="required form-control" (change)="getDemonstrationStatus()">
+                      <option value="">--Select--</option>
+                      <option [ngValue]="x" *ngFor="let x of demonstrationData">{{x.DemostrationId}}</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-2 col-lg-2">
+                      
+                          <label>Seed Distribution : {{ status }}</label>
+                  
+                    <!-- <section class="example-section">
+                      <mat-checkbox class="example-margin" [(ngModel)] = "status"> {{status}}  </mat-checkbox>
+                    </section> -->
+                  </div>
+                <div class="col-sm-2 col-lg-2">
+                </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="card-block table-border-style" *ngIf="farmerListTable">
+        <div class="table-responsive">
+            <table class="table table-styling">
+                <thead>
+                    <tr class="table-primary">
+                        <th>#</th>
+                        <th>Farmer Id</th>
+                        <th>Farmer Name</th>
+                        <th>Catagory</th>
+                        <th>Gender</th>
+                        <!-- <th>Crop</th> -->
+                        <th>Land(in ha)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <tr *ngFor=" let x of farmer_list; let i = index;">
+                            <th scope="row"> {{i+1}} </th>
+                            <td> {{x.FarmerId}} </td>
+                            <td> {{x.FarmerName}} </td>
+                            <td> {{x.Farmer_Category}} </td>
+                            <td> {{x.Gender}} </td>
+                            <!-- <td> {{x.CropId}} </td> -->
+                            <td> {{x.LandArea}} </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <div *ngIf="message">
+      <h4 style="text-align: center; color: red;">There is no data in this DemonstrationId</h4>
+    </div><br>
+    <button type="button" class="btn btn-primary
+    mat-elevation-z8" *ngIf="confirmButton" style="float: right;" (click)="returnBackToVAW();">
+       Return Back To VAW
+    </button>
+    <button type="button" class="btn btn-primary 
+    mat-elevation-z8"  *ngIf="confirmButton" style="float: right; margin-right: 10px;" (click)="confirmDemonstrationPatch();" >
+       Confirm
+    </button>
+
+  
+    </div>
+  </div>

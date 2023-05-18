@@ -1,0 +1,65 @@
+<br>
+<div class="card">
+
+  <div class="card-block table-card">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Physical(GEN)<br>(in Hectare)</th>
+            <th>Physical(SCP)<br>(in Hectare)</th>
+            <th>Physical(TASP)<br>(in Hectare)</th>
+            <th>Total(PHY)<br>(in Hectare)</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th>Total Target</th>
+            <th>
+              <input class="tabledit-input form-control" type="text" [(ngModel)]="blockPhyGen" style=" background-color: #3CBC8D; color: white;" >
+              <span class="tabledit-span"></span>
+            </th>
+            <th>
+              <input class="tabledit-input form-control" type="text" [(ngModel)]="blockPhySCP" style=" background-color: #3CBC8D; color: white;">
+              <span class="tabledit-span"></span>
+            </th>
+            <th>
+              <input class="tabledit-input form-control" type="text" [(ngModel)]="blockPhyTASP" style=" background-color: #3CBC8D; color: white;">
+              <span class="tabledit-span"></span>
+            </th>
+            <th>
+              <input class="tabledit-input form-control" type="text" [(ngModel)]="blockTotalPhy" style=" background-color: #3CBC8D; color: white;">
+              <span class="tabledit-span"></span>
+            </th>
+          </tr>
+          <tr>
+            <th scope="row"> 1 </th>
+            <td class="tabledit-view-mode">
+              <input class="tabledit-input form-control" type="number" min="0" [(ngModel)]="PhyGen" (ngModelChange)="totalPhyGen();" (change)="selectedGpTarget();">
+              <span class="tabledit-span"></span>
+            </td>
+
+            <td class="tabledit-view-mode">
+              <input class="tabledit-input form-control" type="number" min="0" [(ngModel)]="PhySCP" (ngModelChange)="totalPhySCP();" (change)="selectedGpTarget();">
+              <span class="tabledit-span"></span>
+            </td>
+
+            <td class="tabledit-view-mode">
+              <input class="tabledit-input form-control" type="number" min="0" [(ngModel)]="PhyTASP" (ngModelChange)="totalPhyTASP();" (change)="selectedGpTarget();">
+              <span class="tabledit-span"></span>
+            </td>
+
+            <td class="tabledit-view-mode">
+              <input class="tabledit-input form-control" type="text" [(ngModel)]="totalPhy" disabled >
+              <span class="tabledit-span"></span>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

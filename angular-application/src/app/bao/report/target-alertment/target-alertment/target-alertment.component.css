@@ -1,0 +1,17 @@
+td {
+    white-space: pre-wrap;
+}
+@media print {
+    #print-section {
+      overflow-y: visible !important; position: relative;
+    }
+  }
+
+  html {
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+html::-webkit-scrollbar {
+    width: 0px; /* For Chrome, Safari, and Opera */
+}

@@ -1,0 +1,167 @@
+
+<div class="card">
+    <div class="card-header">
+        <h5>Farmer List</h5>
+        <div class="card-header-right">
+            <i class="icofont icofont-rounded-down"></i>
+            <i class="icofont icofont-refresh"></i>
+            <i class="icofont icofont-close-circled"></i>
+        </div>
+    </div>
+    <div class="card-block table-border-style">
+        <div class="card-block">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <div class="col-sm-4 col-lg-2">
+                            <label class="block" for="farmerId">Demonstration ID <label class="asterik">*</label>:</label>
+                          </div>
+                          <div class="col-sm-4 col-lg-6">
+                            <select id="demonstrationId" [(ngModel)]="demonstrationId" class="required form-control" (change)="getAllFarmerList()" >
+                              <option value="">--Select--</option>
+                              <option [ngValue]="x" *ngFor="let x of demonstrationData">{{x.DemostrationId}}</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-4 col-lg-4">
+                            <label class="block" for="TDA" style="font-weight: bold;" > Total Demonstration Area (in ha) : {{ demostrationArea }}</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+        </div>
+        
+         
+        <div class="table-responsive" *ngIf="farmerListTable">
+          <div class="card-block">
+            <!-- <div class="search-hero">
+              <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442; Search by FID or name or Catagory">
+            </div> -->
+            <table class="table table-hover">
+                <thead>
+                    <tr >
+                       <th>#</th>
+                        <th>Farmer Id</th>
+                        <th>Farmer Name</th>
+                        <th>Catagory</th>
+                        <th>Gender</th>
+                        <!-- <th>Crop</th> -->
+                        <th>Land(in ha)</th>
+                        <!-- <th>Edit</th> -->
+                        <th *ngIf="SubmitButton">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor=" let x of farmer_list | filter:searchText; let i = index;">
+                        <th scope="row">{{i+1}}</th>
+                        <td> {{x.FarmerId}} </td>
+                        <td> {{x.FarmerName}} </td>
+                        <td> {{x.Farmer_Category}} </td>
+                        <td> {{x.Gender}} </td>
+                        <!-- <td> {{x.CropId}} </td> -->
+                        <td> {{x.LandArea}} </td>
+                        <!-- <td>  <button class="btn btn-info btn-icon" (click)="editFarmerDetails(x)" data-toggle="modal"  data-target="#exampleModal"><i class="ion-edit"></i></button></td> -->
+                        <!-- <td> <button class="btn btn-danger btn-icon" (click)="DeleteFarmerDetails(i)"><i class="ion-trash-a"></i></button></td> -->
+                        <td *ngIf="SubmitButton"><button class="btn btn-danger btn-icon" (click)="openDialog(i)"><i class="ion-trash-a"></i></button></td>
+                    </tr>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th> Total : {{ totalArea }} </th>
+                    </tr>
+                </tbody>
+            </table>
+        </div><br>
+        <div *ngIf="message1">
+            <h4 style="text-align: center; color: red;">There is no data in this DemonstrationId</h4>
+        </div>
+        </div>
+        <div class="card-block" *ngIf="SubmitButton">
+            <button type="button" class="btn btn-primary
+            mat-elevation-z8" [disabled]="clicked" style="float: right;" (click)="FinalSubmitfarmerDetails()">Final Submit</button>
+        </div><br><br>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+<!-- ////////////=========================EDIT/UPDATE==========================///////////// -->
+
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Farmer Details</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="height: 350px;">
+            <form class="form-horizontal" [formGroup]="FarmerDetailsForm">
+          <div class="row">
+                <div class="col-md-12">
+                    <div class="card b-l-success business-info services m-b-20" style="height: 300px;">
+                        <div class="card-block">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="form-group row">
+                                      <div class="col-sm-4 col-lg-2">
+                                        <label class="block" for="farmerId">Farmer Name <label class="asterik">*</label>:</label>
+                                      </div>
+                                      <div class="col-sm-4 col-lg-4">
+                                         <input type="text" class="form-control" formControlName="farmerName" >
+                                      </div>
+                                      <div class="col-sm-4 col-lg-2">
+                                        <label class="block" for="farmerId">Gender<label class="asterik">*</label>:</label>
+                                      </div>
+                                      <div class="col-sm-4 col-lg-4">
+                                        <input type="text" class="form-control" formControlName="farmerGender" >
+                                    </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                      <div class="form-group row">
+                                        <div class="col-sm-4 col-lg-2">
+                                          <label class="block" for="farmerId">Catagory <label class="asterik">*</label>:</label>
+                                        </div>
+                                        <div class="col-sm-4 col-lg-4">
+                                        <input type="text" class="form-control" formControlName="farmerCatagory" >
+                                        </div>
+                                        <div class="col-sm-4 col-lg-2">
+                                          <label class="block" for="farmerId">Land Area <label class="asterik">*</label>:</label>
+                                        </div>
+                                        <div class="col-sm-4 col-lg-4">
+                                          <input type="text" class="form-control" formControlName="landArea">
+                                      </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="UpdateFarmerDetails()" data-dismiss="modal">Update</button>
+        </div>
+      </div>
+    </div>
+</div> -->
+

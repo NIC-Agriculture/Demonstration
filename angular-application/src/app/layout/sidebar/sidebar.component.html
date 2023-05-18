@@ -1,0 +1,745 @@
+<nav class="pcoded-navbar" pcoded-header-position="relative">
+    <div class="sidebar_toggle"><a href="javascript:void(0);"><i class="icon-close icons"></i></a></div>
+    
+    <div class="pcoded-inner-navbar main-menu" *ngIf="userRole === 'SCHEME'">
+        <div class="">
+            <div class="main-menu-header">
+                <img class="img-40" src="assets/assets/default/assets/images/user.png" alt="User-Profile-Image">
+                <div class="user-details">
+                    <span>{{ userName }}</span>
+                    <span id="more-details">{{ userRole }}<i class="ti-angle-down"></i></span>
+                </div>
+            </div>
+
+            <div class="main-menu-content">
+                <ul>
+                    <li class="more-details">
+                        <a href="javascript:void(0);"><i class="ti-user"></i>View Profile</a>
+                        <a href="javascript:void(0);"><i class="ti-settings"></i>Settings</a>
+                        <a href="javascript:void(0);" ><i class="ti-layout-sidebar-left"></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5" >Home</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/scheme/dashboard">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/scheme/add-Subscheme">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Add Subscheme</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/scheme/add-Component">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Add Component</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" data-i18n="nav.bootstrap-table.main">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i></span>
+                    <span class="pcoded-mtext">Manage Item </span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/scheme/manage-item/view-item">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext">View Item</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/scheme/manage-item/add-item">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext">Add Item</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="pcoded-navigatio-lavel" data-i18n="nav.category.ui-element" menu-title-theme="theme5" >Target</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <!-- <a> -->
+                <a routerLink="/scheme/district-target">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext">Set District Target</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <!-- <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a data-i18n="nav.advance-components.main">
+                    <span class="pcoded-micon"><i class="ti-target"></i></span>
+                    <span class="pcoded-mtext">Set Target</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li> -->
+        </ul>
+        <!-- <ul class="pcoded-item pcoded-left-item">
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/scheme/view-target">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext">View Target</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul> -->
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" data-i18n="nav.bootstrap-table.main">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i></span>
+                    <span class="pcoded-mtext">Report</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/scheme/view-target">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext">District Target Monitoring</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/scheme/report/block-target-monitoring">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext">Block Target Monitoring</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/scheme/report/cluster-details">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext">Cluster Details</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+  
+    </div>   
+
+    <div class="pcoded-inner-navbar main-menu" *ngIf="userRole === 'CDAO'">
+        <div class="">
+            <div class="main-menu-header">
+                <img class="img-40" src="assets/assets/default/assets/images/user.png" alt="User-Profile-Image">
+                <div class="user-details">
+                    <span>{{ userName }}</span>
+                    <span id="more-details">{{ userRole }}<i class="ti-angle-down"></i></span>
+                </div>
+            </div>
+
+            <div class="main-menu-content">
+                <ul>
+                    <li class="more-details">
+                        <a href="javascript:void(0);"><i class="ti-user"></i>View Profile</a>
+                        <a href="javascript:void(0);"><i class="ti-settings"></i>Settings</a>
+                        <a href="javascript:void(0);" ><i class="ti-layout-sidebar-left"></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5" >Home</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/cdao/dashboard">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a>
+                <!-- <a routerLink="/cdao/block-target"> -->
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext">Set Block Target</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/cdao/approve-dealer-sale">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext">Approve Dealer Sale</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <!-- <a> -->
+                <a routerLink="/cdao/approve-IncentiveORseedCost-sale">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext">Approve Incentive/Seed Cost</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <!-- <a> -->
+                <a routerLink="/cdao/generate-payment-file">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext">Generate Payment File</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <!-- <a> -->
+                <a routerLink="/cdao/payment-success-failure-entry">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext">Payment Success/Failure Entry</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <!-- <a> -->
+                <a routerLink="/cdao/add-cropvariety">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext">Add Crop Variety</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul>
+      
+        <ul class="pcoded-item pcoded-left-item"> 
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" data-i18n="nav.bootstrap-table.main">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i></span>
+                    <span class="pcoded-mtext">Reports </span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/cdao/report/target-allotment">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext">Target Allotment</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/cdao/view-target">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext"> Block Target Monitoring</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/cdao/report/cluster-details">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext">Cluster Details</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/cdao/report/seedDetails">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext">Seed Details</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/cdao/report/demonstration-report">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext">Demonstration Report</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/cdao/report/regenerate-payment-file">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext">Regenerate Payment File</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                
+            </li>
+            <!-- <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/cdao/view-target">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext">View Target</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li> -->
+        </ul>
+    </div>
+
+    <div class="pcoded-inner-navbar main-menu" *ngIf="userRole === 'BAO'">
+        <div class="">
+            <div class="main-menu-header">
+                <img class="img-40" src="assets/assets/default/assets/images/user.png" alt="User-Profile-Image">
+                <div class="user-details">
+                    <span>{{ userName }}</span>
+                    <span id="more-details">{{ userRole }}<i class="ti-angle-down"></i></span>
+                </div>
+            </div>
+
+            <div class="main-menu-content">
+                <ul>
+                    <li class="more-details">
+                        <a href="javascript:void(0);"><i class="ti-user"></i>View Profile</a>
+                        <a href="javascript:void(0);"><i class="ti-settings"></i>Settings</a>
+                        <a href="javascript:void(0);" ><i class="ti-layout-sidebar-left"></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5" >Home</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/bao/dashboard">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <!-- <a> -->
+                <a routerLink="/bao/gp-target">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext">GP Target</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/bao/gp-target/manage-demonstration">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext">Verify Demonstration Area</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/bao/verify-dealer-sale">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext"> Dealer Sale List</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/bao/distribute-light-trap">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext"> Distribute Light Trap </span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul>
+        <ul class="pcoded-item pcoded-left-item"> 
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" data-i18n="nav.bootstrap-table.main">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i></span>
+                    <span class="pcoded-mtext">Reports </span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <!-- <ul class="pcoded-submenu">
+                    <li class=" ">
+                        <a routerLink="/bao/report/demonstration-wise-details">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext">Demonstration Wise Details</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                </ul> -->
+              
+                <ul class="pcoded-submenu">
+                    <li class=" ">
+                        <a routerLink="/bao/report/target-alertment">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext">Target Allotment</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li class=" ">
+                        <a routerLink="/bao/report/demonstration-cluster-implementation">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext">Demonstration/Cluster Details</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li class=" ">
+                        <a routerLink="/bao/report/demonstration-report">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext">Demonstration Report</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li class=" ">
+                        <a routerLink="/bao/report/seed-required">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext">Seed Requirement Details</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li class=" ">
+                        <a routerLink="/bao/report/field-demonstration-report">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext">Field Demonstration Phase Details (Mobile App) </span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- <ul class="pcoded-submenu">
+                    <li class=" ">                        
+                        <a routerLink="/bao/report/delete-demonstration-patch">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext"> Delete Demonstration Patch</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul> -->
+            </li>
+        </ul>
+    </div>
+
+    <div class="pcoded-inner-navbar main-menu" *ngIf="userRole === 'ADO'">
+        <div class="">
+            <div class="main-menu-header">
+                <img class="img-40" src="assets/assets/default/assets/images/user.png" alt="User-Profile-Image">
+                <div class="user-details">
+                    <span>{{ userName }}</span>
+                    <span id="more-details">{{ userRole }}<i class="ti-angle-down"></i></span>
+                </div>
+            </div>
+
+            <div class="main-menu-content">
+                <ul>
+                    <li class="more-details">
+                        <a href="javascript:void(0);"><i class="ti-user"></i>View Profile</a>
+                        <a href="javascript:void(0);"><i class="ti-settings"></i>Settings</a>
+                        <a href="javascript:void(0);" ><i class="ti-layout-sidebar-left"></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5" >Home</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/ado/dashboard">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/ado/verify-dealer-sale">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext">View Dealer Sale</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" data-i18n="nav.bootstrap-table.main">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i></span>
+                    <span class="pcoded-mtext">Report </span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/ado/report/demonstration-report">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext">Demonstration Report</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+
+
+   </div>
+
+    <div class="pcoded-inner-navbar main-menu" *ngIf="userRole === 'VAW'">
+        <div class="">
+            <div class="main-menu-header">
+                <img class="img-40" src="assets/assets/default/assets/images/user.png" alt="User-Profile-Image">
+                <div class="user-details">
+                    <span>{{ userName }}</span>
+                    <span id="more-details">{{ userRole }}<i class="ti-angle-down"></i></span>
+                </div>
+            </div>
+
+            <div class="main-menu-content">
+                <ul>
+                    <li class="more-details">
+                        <a href="javascript:void(0);"><i class="ti-user"></i>View Profile</a>
+                        <a href="javascript:void(0);"><i class="ti-settings"></i>Settings</a>
+                        <a href="javascript:void(0);" ><i class="ti-layout-sidebar-left"></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5" >Home</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/vaw/dashboard">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <!-- <a> -->
+                <a routerLink="/vaw/farmer-registration">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext">Farmer Registration</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/vaw/farmer-list">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext">Farmer List</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/vaw/seed-distribution">
+                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                    <span class="pcoded-mtext">Seed Distribution</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" data-i18n="nav.bootstrap-table.main">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i></span>
+                    <span class="pcoded-mtext">Report </span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/vaw/demonstration-patch-list">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext">Demonstration Patch Report</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="pcoded-inner-navbar main-menu" *ngIf="userRole === 'DEALER'">
+        <div class="">
+            <div class="main-menu-header">
+                <img class="img-40" src="assets/assets/default/assets/images/user.png" alt="User-Profile-Image">
+                <div class="user-details">
+                    <span> {{ userName }} </span>
+                    <span id="more-details">{{ userRole }}<i class="ti-angle-down"></i></span>
+                </div>
+            </div>
+
+            <div class="main-menu-content">
+                <ul>
+                    <li class="more-details">
+                        <a href="javascript:void(0);"><i class="ti-user"></i>View Profile</a>
+                        <a href="javascript:void(0);"><i class="ti-settings"></i>Settings</a>
+                        <a href="javascript:void(0);" ><i class="ti-layout-sidebar-left"></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5" >Home</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <!-- <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a >
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li> -->
+            <!-- <ul class="pcoded-item pcoded-left-item"> -->
+                <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                    <!-- <a> -->
+                    <a routerLink="/dealer/permit-verification">
+                        <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                        <span class="pcoded-mtext">Permit Verification</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                </li>
+            <!-- </ul> -->
+        </ul>
+    </div>
+    
+    <div class="pcoded-inner-navbar main-menu" *ngIf="userRole === 'OSSC'">
+        <div class="">
+            <div class="main-menu-header">
+                <img class="img-40" src="assets/assets/default/assets/images/user.png" alt="User-Profile-Image">
+                <div class="user-details">
+                    <span>{{ userName }}</span>
+                    <span id="more-details">{{ userRole }}<i class="ti-angle-down"></i></span>
+                </div>
+            </div>
+
+            <div class="main-menu-content">
+                <ul>
+                    <li class="more-details">
+                        <a href="javascript:void(0);"><i class="ti-user"></i>View Profile</a>
+                        <a href="javascript:void(0);"><i class="ti-settings"></i>Settings</a>
+                        <a href="javascript:void(0);" ><i class="ti-layout-sidebar-left"></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5" >Home</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/cdao/dashboard">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/ossc/Report">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">District Report</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    
+    <div class="pcoded-inner-navbar main-menu" *ngIf="userRole === 'DAFE'">
+        <div class="">
+            <div class="main-menu-header">
+                <img class="img-40" src="assets/assets/default/assets/images/user.png" alt="User-Profile-Image">
+                <div class="user-details">
+                    <span>{{ userName }}</span>
+                    <span id="more-details">{{ userRole }}<i class="ti-angle-down"></i></span>
+                </div>
+            </div>
+
+            <div class="main-menu-content">
+                <ul>
+                    <li class="more-details">
+                        <a href="javascript:void(0);"><i class="ti-user"></i>View Profile</a>
+                        <a href="javascript:void(0);"><i class="ti-settings"></i>Settings</a>
+                        <a href="javascript:void(0);" ><i class="ti-layout-sidebar-left"></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5" >Home</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/dafe/dashboard">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>            
+        </ul>
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" data-i18n="nav.bootstrap-table.main">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i></span>
+                    <span class="pcoded-mtext">Report</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/dafe/report/district-target-monitoring">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext">District Target Monitoring</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/dafe/report/block-target-monitoring">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext">Block Target Monitoring</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/dafe/report/cluster-details">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                            <span class="pcoded-mtext">Cluster Details</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+  
+    </div>
+
+    <div class="pcoded-inner-navbar main-menu" *ngIf="userRole === 'ADMIN'">
+        <div class="">
+            <div class="main-menu-header">
+                <img class="img-40" src="assets/assets/default/assets/images/user.png" alt="User-Profile-Image">
+                <div class="user-details">
+                    <span>{{ userName }}</span>
+                    <span id="more-details">{{ userRole }}<i class="ti-angle-down"></i></span>
+                </div>
+            </div>
+
+            <div class="main-menu-content">
+                <ul>
+                    <li class="more-details">
+                        <a href="javascript:void(0);"><i class="ti-user"></i>View Profile</a>
+                        <a href="javascript:void(0);"><i class="ti-settings"></i>Settings</a>
+                        <a href="javascript:void(0);" ><i class="ti-layout-sidebar-left"></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5" >Home</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/admin/delete-invoice">
+                    <span class="pcoded-micon"><i class="ti-trash"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Delete Invoice</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                <a routerLink="/admin/modify-farmer-details">
+                    <span class="pcoded-micon"><i class="ti-pencil"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Modify Farmer Details</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+</nav>

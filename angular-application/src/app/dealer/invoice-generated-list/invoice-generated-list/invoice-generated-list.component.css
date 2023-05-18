@@ -1,0 +1,24 @@
+.asterik{
+  content:"*" ;
+  color:red   
+  }
+
+table {
+    width: 100%;
+  }
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+.mat-success {
+  background-color: #fff;
+  color: green;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  width: 120px;
+}
+

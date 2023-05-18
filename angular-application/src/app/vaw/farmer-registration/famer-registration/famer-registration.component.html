@@ -1,0 +1,330 @@
+<div class="card">
+  <div class="card-header">
+    <h5>Total area target</h5>
+    <span>Total area for demonstration Id</span>
+    <div class="card-header-right">
+      <i class="icofont icofont-rounded-down"></i>
+      <i class="icofont icofont-refresh"></i>
+      <i class="icofont icofont-close-circled"></i>
+    </div>
+  </div>
+  <div class="card-block">
+    <div class="card-block table-card">
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Physical(GEN)<br>(in Hectare)</th>
+              <th>Physical(SCP)<br>(in Hectare)</th>
+              <th>Physical(TASP)<br>(in Hectare)</th>
+              <th>Total(PHY)<br>(in Hectare)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Total Target</th>
+              <th>
+                <input class="tabledit-input form-control" type="number" style=" background-color: #3CBC8D; color: white;"
+                  [(ngModel)]="PhyGen" disabled>
+                <span class="tabledit-span"></span>
+              </th>
+              <th>
+                <input class="tabledit-input form-control" type="text" style=" background-color: #3CBC8D; color: white;"
+                  [(ngModel)]="PhyScp" disabled>
+                <span class="tabledit-span"></span>
+              </th>
+              <th>
+                <input class="tabledit-input form-control" type="text" style=" background-color: #3CBC8D; color: white;"
+                  [(ngModel)]="PhyTasp" disabled>
+                <span class="tabledit-span"></span>
+              </th>
+              <th>
+                <input class="tabledit-input form-control" type="text" style=" background-color: #3CBC8D; color: white;"
+                  [(ngModel)]="demonstrationArea" disabled>
+                <span class="tabledit-span"></span>
+              </th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-block">
+    <form [formGroup]="FarmerDetailsForm">
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group row">
+                <div class="col-sm-4 col-lg-2">
+                  <label class="block" for="farmerId">Demonstration ID <label class="asterik">*</label>:</label>
+                </div>
+                <div class="col-sm-4 col-lg-6">
+                  <select id="scheme" formControlName="demonstrationId" class="required form-control"
+                    (change)="getDemonstrationTarget();">
+                    <option value="">--Select--</option>
+                    <option [ngValue]="x" *ngFor="let x of demonstrationData">{{x.DemostrationId}}</option>
+                  </select>
+                  <div class="text-danger"
+                    *ngIf="vawFormValid.demonstrationId.touched && !vawFormValid.demonstrationId.valid">
+                    Please Select Demonstration Id.
+                  </div>
+                </div>
+                <div class="col-sm-4 col-lg-4">
+                  <button class="btn btn-primary"  data-toggle="modal"  data-target="#exampleModal" (click)="getDemonstrationReport()" *ngIf="vawFormValid.demonstrationId.valid" >View Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="showFarmerSearch">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-md-12">
+
+              <div class="form-group row">
+                <div class="col-sm-4 col-lg-2">
+                  <label class="block" for="farmerId">Farmer-ID <label class="asterik">*</label>:</label>
+                </div>
+                <div class="col-sm-4 col-lg-6">
+                  <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">{{ prefixOfFarmerID }} /</span>
+                    <input [(ngModel)]="searchFarmerID" [ngModelOptions]="{standalone: true}"
+                      (keyup.enter)="getFarmerDetails()" id="farmerId" name="farmerId" type="number"
+                      class="required form-control" aria-required="true" placeholder="Enter farmer-ID">
+                  </div>
+                </div>
+                <div class="col-sm-4 col-lg-4">
+                  <button class="btn btn-primary" (click)="getFarmerDetails();"><i
+                      class="icofont icofont-search"></i>Search</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center" *ngIf="loader">
+        <mat-progress-spinner mode="indeterminate">
+        </mat-progress-spinner>
+      </div>
+
+      <div class="row" *ngIf="showFarmerDetails">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-lg-6 col md-6">
+                  <div class="form-group row">
+                    <div class="col-sm-4 col-lg-4">
+                      <label class="block" for="gpCode">Name <label class="asterik">*</label>:</label>
+                    </div>
+                    <div class="col-sm-4 col-lg-8">
+                      <input type="text" class="form-control form-control-default" formControlName="farmerName">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-4 col-lg-4">
+                      <label class="block" for="gpCode">Gender <label class="asterik">*</label>:</label>
+                    </div>
+                    <div class="col-sm-4 col-lg-8">
+                      <input type="text" class="form-control form-control-default" formControlName="farmerGender">
+                    </div>
+                  </div>
+                  <!-- <div class="form-group row">
+                    <div class="col-sm-4 col-lg-4">
+                      <label class="block" for="gpCode">Crop Variety *:</label>
+                    </div>
+                    <div class="col-sm-4 col-lg-8">
+                      <select class="form-control form-control-default" formControlName="cropVariety"></select>
+                    </div>
+                  </div> -->
+                </div>
+                <div class="col-lg-6 col md-6">
+                  <div class="form-group row">
+                    <div class="col-sm-4 col-lg-4">
+                      <label class="block" for="gpCode">Catagory <label class="asterik">*</label>:</label>
+                    </div>
+                    <div class="col-sm-4 col-lg-8">
+                      <input type="text" class="form-control form-control-default" formControlName="farmerCatagory">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-4 col-lg-4">
+                      <label class="block" for="gpCode">Area (In Ha) <label class="asterik">*</label>:</label>
+                    </div>
+                    <div class="col-sm-4 col-lg-8">
+                      <input type="number" class="form-control form-control-default" formControlName="area" min="0" max="2">
+                      <div class="text-danger" *ngIf="vawFormValid.area.touched && !vawFormValid.area.valid">
+                        Area is required.
+                      </div>
+                      <div class="text-danger" *ngIf="vawFormValid.area.errors?.min">
+                       Minimum required number is {{minAreaMsg}}.
+                      </div>
+                      <div class="text-danger" *ngIf="vawFormValid.area.errors?.max">
+                        Maximum number can be 2.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-4 col-lg-4">
+                    </div>
+                    <div class="col-sm-4 col-lg-8">
+
+                      <div class="col-lg-1 col-md-2 col-sm-2 col-xs-2">
+                        <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                          ADD
+                        </button> -->
+                        <button type="button" class="btn btn-primary" (click)="calculateTarget();"
+                          [disabled]="!FarmerDetailsForm.valid">
+                          ADD
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+      <div style="width: 100%;text-align: center;">
+        <h5 style="color: red;font-weight: bold;">{{ invalidFarmerMessage }}</h5>
+      </div>
+    </form>
+
+    <div class="row" *ngIf="showtable">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <table class="table table-dark">
+          <thead style="background-color: cadetblue;">
+            <tr>
+              <th scope="col">#.</th>
+              <th scope="col">Beneficiary ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Catagory</th>
+              <th scope="col">Gender</th>
+              <th scope="col">Area</th>
+              <!-- <th scope="col">Crop Variety</th> -->
+              <!-- <th scope="col">Remove</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor=" let x of allFarmerData; let i = index; ">
+              <td> {{i+1}} </td>
+              <td> {{x.FarmerId}} </td>
+              <td> {{x.FarmerName}} </td>
+              <td> {{x.Farmer_Category}} </td>
+              <td> {{x.Gender}} </td>
+              <td> {{x.LandArea}} </td>
+              <!-- <td> {{x.Crop_Variety}} </td> -->
+              <!-- <td>
+                <button type="button" style="margin-top: -5px; color: red" (click)="remove(i);"><i
+                    class=" fa fa-trash"></i></button>
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="padding: 20px;" *ngIf="showtable">
+      <button type="button" class="btn btn-primary
+    mat-elevation-z8" style="float: right;" [disabled]="clicked" (click)="SubmitfarmerDetails();">Submit
+        Farmer Details</button>
+      <br>
+      <br>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content" style="width: 750px;">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel">DemonstrationId Details</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body" >
+        <div class="row">
+              <div class="col-md-12">
+                  <div class="card b-l-success business-info services m-b-20" >
+                      <!-- <div class="card-header">
+                          <div class="service-header">
+                              <a href="#"><h5 class="card-header-text">Farmer Details</h5></a>
+                          </div>
+                      </div> -->
+                      <div class="card-block">
+                          <div class="row">
+                              <div class="col-sm-12">
+                                  <div class="row">
+                                      <div class="col-md-12">
+                                          <table class="table table-hover table-striped view-table">
+                                              <tbody>
+                                                  <tr>
+                                                    <td> Scheme Name : {{Report.schemeName}}  </td>
+                                                    <td>
+                                                      Subscheme Name : {{Report.SubschemeName}} 
+                                                  </td>
+                                                      
+                                                  </tr>
+                                                  <tr>
+                                                    <td> Component Name : {{Report.CompName}} </td>
+                                                    <td>
+                                                      Crop Name : {{Report.SubCropName}}  
+                                                  </td>
+                                                  </tr>
+                                                  <tr >
+                                                  <td> District Name : {{Report.Dist_Name}}  </td>
+                                                  <td>
+                                                      Block Name : {{Report.Block_Name}} 
+                                                  </td>
+                                              </tr>
+                                              </tbody>
+                                          </table>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                        <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <table id="custom-btn" class="table table-striped table-bordered nowrap">
+                    <thead>
+                    <tr>
+                    <th>.#</th>
+                    <th> GP Name </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let GpDetail of GpDetails, let i = index;" >
+                        <th scope="row"> {{ i + 1 }} </th>
+                        <td>  {{GpDetail.Gp_Name}}  </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+                        </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div> -->
+    </div>
+  </div>
+</div>

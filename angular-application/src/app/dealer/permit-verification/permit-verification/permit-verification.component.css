@@ -1,0 +1,12 @@
+td
+{
+ max-width: 100px;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ white-space: pre-wrap;
+}
+
+.asterik{
+    content:"*" ;
+    color:red   
+    }

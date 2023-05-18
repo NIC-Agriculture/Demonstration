@@ -1,0 +1,283 @@
+<div class="card">
+  <div class="card-header">
+    <h5>Set Target</h5>
+    <!-- <span>Set target for district</span> -->
+    <div class="card-header-right">
+      <i class="icofont icofont-rounded-down"></i>
+      <i class="icofont icofont-refresh"></i>
+      <i class="icofont icofont-close-circled"></i>
+    </div>
+  </div>
+  <div>
+  
+
+    <div class="card-block" >
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="row">
+
+            <div *ngIf="targetClose">
+              <h3 style="color: red; align-items: center !important;"> &nbsp; Target has been ended for now.</h3>
+            </div>
+
+            <div class="col-md-12" *ngIf="!targetClose">
+              <form [formGroup]="DistrictTargetForm">
+                <div class="row">
+                  <div class="col-lg-6 col md-6">
+                    <div class="form-group row">
+                      <div class="col-sm-4 col-lg-3">
+                        <label class="block" for="fuel">Scheme <label class="asterik">*</label>:</label>
+                      </div>
+                      <div class="col-sm-4 col-lg-9">
+                        <select required formControlName="scheme" id="scheme" class="form-control form-control-default"
+                          (change)="getSubscheme()">
+                          <option value="">--Select--</option>
+                          <option [ngValue]="x" *ngFor="let x of AllSchemeData">
+                            {{ x.schemeName }}
+                          </option>
+                        </select>
+                        <div class="text-danger" *ngIf="DistFormValid.scheme.touched && !DistFormValid.scheme.valid">
+                          Scheme is required.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-sm-4 col-lg-3">
+                        <label class="block" for="component">Component <label class="asterik">*</label>:</label>
+                      </div>
+                      <div class="col-sm-4 col-lg-9">
+                        <select required formControlName="component" id="component"
+                          class="form-control form-control-default" (change)="getComponentCost(); ">
+                          <option value="">--Select--</option>
+                          <option [ngValue]="x" *ngFor="let x of ComponentData">
+                            {{ x.CompName }}
+                          </option>
+                        </select>
+                        <div class="text-danger" *ngIf="DistFormValid.component.touched && !DistFormValid.component.valid">
+                        Component is required.
+                      </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-sm-4 col-lg-3">
+                        <label class="block" for="FinYear">Financial Year <label class="asterik">*</label>:</label>
+                      </div>
+                      <div class="col-sm-4 col-lg-9">
+                        <select  formControlName="FinYear" id="FinYear"
+                          class="form-control form-control-default" required>
+                          <option value="">--Select--</option>
+                          <option [ngValue]="x" *ngFor="let x of FinYears"> {{ x }} </option>
+                        </select>
+                        <div class="text-danger" *ngIf="DistFormValid.FinYear.touched && !DistFormValid.FinYear.valid">
+                        Financial Year is required.
+                      </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6 col md-6">
+                    <div class="form-group row">
+                      <div class="col-sm-4 col-lg-3">
+                        <label class="block" for="subscheme">Subscheme <label class="asterik">*</label>:</label>
+                      </div>
+                      <div class="col-sm-4 col-lg-9">
+                        <select required formControlName="subscheme" id="subscheme"
+                          class="form-control form-control-default" (change)="getComponent();">
+                          <option value="">--Select--</option>
+                          <option [ngValue]="x" *ngFor="let x of SubschemeData">
+                            {{ x.SubschemeName }}
+                          </option>
+                        </select>
+                        <div class="text-danger" *ngIf="DistFormValid.subscheme.touched && !DistFormValid.subscheme.valid">
+                        Subscheme is required.
+                      </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-sm-4 col-lg-3">
+                        <label class="block" for="subsidy">Total Cost <label class="asterik">*</label>:</label>
+                      </div>
+                      <div class="col-sm-4 col-lg-9">
+                        <input type="text" required class="form-control form-control-default"
+                          formControlName="subsidy" />
+                          <div class="text-danger" *ngIf="DistFormValid.subsidy.touched && !DistFormValid.subsidy.valid">
+                          Total Cost is required.
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div>
+                      <button (click)="loadAllDistrictTarget();" class="btn btn-primary mat-elevation-z8 float-right">Set Target</button>
+                    </div> -->
+                    <div style="padding: 20px">
+                      <button (click)="loadAllDistrictTarget($event)" type="button" class="btn btn-primary mat-elevation-z8"
+                        style="float: right" [disabled]="!DistrictTargetForm.valid">
+                        Set Target </button>
+                    </div>
+
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div style="padding: 20px;">
+    <button (click)="updateAll()" type="button" class="btn btn-primary
+    mat-elevation-z8" style="float: right;"><i
+    class="icofont icofont-user-alt-3" aria-hidden="true"></i>Update All</button>
+    <button (click)="loadTargetListOfAllItda()" type="button" class="btn
+    btn-inverse mat-elevation-z8"
+    style="float: right;margin-right: 10px;"><i class="icofont icofont-ui-reply"
+    aria-hidden="true"></i>Reset All</button>
+    <br>
+    <br>
+    </div> -->
+  </div>
+</div>
+
+<div class="card" *ngIf="showSubmit">
+  <div class="card-header">
+    <h5>Set Target</h5>
+    <span>Set target for district</span>
+    <div class="card-header-right">
+      <i class="icofont icofont-rounded-down"></i>
+      <i class="icofont icofont-refresh"></i>
+      <i class="icofont icofont-close-circled"></i>
+    </div>
+  </div>
+  <div class="card-block table-card">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Districts</th>
+            <th>Physical-GEN (ha)</th>
+            <th>Financial-GEN (<i class="icofont icofont-cur-rupee"></i>) </th>
+            <th>Physical-SCP (ha)</th>
+            <th>Financial-SCP (<i class="icofont icofont-cur-rupee"></i>)</th>
+            <th>Physical-TASP (ha)</th>
+            <th>Financial-TASP (<i class="icofont icofont-cur-rupee"></i>)</th>
+            <th>Total-PHY (ha)</th>
+            <th>Total-FIN (<i class="icofont icofont-cur-rupee"></i>)</th>
+            <!-- <th>Action</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Total</th>
+            <th></th>
+            <th>
+              <input class="tabledit-input form-control" type="text" style=" background-color: #3CBC8D; color: white;"
+              [(ngModel)]="totalPhyGen" disabled>
+              <span class="tabledit-span"></span>
+            </th>
+            <th>
+              <input class="tabledit-input form-control" type="number" style=" background-color: #3CBC8D; color: white;"
+              [(ngModel)]="totalFinGen" disabled>
+              <span class="tabledit-span"></span>
+            </th>
+            <th>
+              <input class="tabledit-input form-control" type="text" style=" background-color: #3CBC8D; color: white;"
+              [(ngModel)]="totalPhySCP" disabled>
+              <span class="tabledit-span"></span>
+            </th>
+            <th>
+              <input class="tabledit-input form-control" type="number" style=" background-color: #3CBC8D; color: white;"
+              [(ngModel)]="totalFinSCP" disabled>
+              <span class="tabledit-span"></span>
+            </th>
+            <th>
+              <input class="tabledit-input form-control" type="text" style=" background-color: #3CBC8D; color: white;"
+              [(ngModel)]="totalPhyTASP" disabled>
+              <span class="tabledit-span"></span>
+            </th>
+            <th>
+              <input class="tabledit-input form-control" type="text" style=" background-color: #3CBC8D; color: white;"
+               [(ngModel)]="totalFinTASP" disabled>
+              <span class="tabledit-span"></span>
+            </th>
+            <th>
+              <input class="tabledit-input form-control" type="text" style=" background-color: #3CBC8D; color: white;"
+              [(ngModel)]="totalPhy" disabled>
+              <span class="tabledit-span"></span>
+            </th>
+            <th>
+              <input class="tabledit-input form-control" type="text" style=" background-color: #3CBC8D; color: white;"
+              [(ngModel)]="totalFin" disabled>
+              <span class="tabledit-span"></span>
+            </th>
+          </tr>
+          <tr *ngFor="let dist of AllDistrictData; let i = index">
+            <th scope="row">{{ i + 1 }}</th>
+            <th scope="row">{{ dist.Dist_Name }}</th>
+            <td class="tabledit-view-mode">
+              <input class="tabledit-input form-control" type="number" min="0" step="100" [(ngModel)]="dist.PhyGen"
+                (ngModelChange)="multiFinGen(i)" />
+              <span class="tabledit-span"></span>
+            </td>
+            <td class="tabledit-view-mode"> {{ dist.FinGen | number : '1.2-2' }} </td>
+            <td class="tabledit-view-mode">
+              <input class="tabledit-input form-control" type="number" min="0" step="100" [(ngModel)]="dist.PhySCP"
+                (ngModelChange)="multiFinSCP(i)" />
+              <span class="tabledit-span"></span>
+            </td>
+            <td class="tabledit-view-mode"> {{ dist.FinSCP | number : '1.2-2' }} </td>              
+            <td class="tabledit-view-mode">
+              <input class="tabledit-input form-control" type="number" min="0" step="100" [(ngModel)]="dist.PhyTASP"
+                (ngModelChange)="multiFinTASP(i)" />
+              <span class="tabledit-span"></span>
+            </td>
+            <td class="tabledit-view-mode"> {{ dist.FinTASP | number : '1.2-2' }} </td>
+            <td class="tabledit-view-mode"> {{ dist.totalPhyByDistrict | number }} </td>
+            <td class="tabledit-view-mode"> {{ dist.totalFinByDistrict | number }} </td>
+          </tr>
+          <tr>
+            <th>Total</th>
+            <th></th>
+            <th>{{ totalPhyGen | number : '1.2-2' }}</th>
+            <th>{{ totalFinGen | number : '1.2-2' }}</th>
+            <th>{{ totalPhySCP | number : '1.2-2' }}</th>
+            <th>{{ totalFinSCP | number : '1.2-2' }}</th>
+            <th>{{ totalPhyTASP | number : '1.2-2' }}</th>
+            <th>{{ totalFinTASP | number : '1.2-2' }}</th>
+            <th>{{ totalPhy | number : '1.2-2' }}</th>
+            <th>{{ totalFin | number : '1.2-2' }}</th>
+          </tr>
+        </tbody>
+        <!-- <tfoot>
+    <tr>
+    <th>Total Target</th>
+    <th></th>
+    <th> </th>
+    <th> </th>
+    </tr>
+    </tfoot> -->
+      </table>
+    </div>
+    <div style="padding: 20px">
+      <button *ngIf="showSubmit" (click)="SubmitDistrictTarget()" type="button" class="btn btn-primary mat-elevation-z8"
+        style="float: right">Submit
+      </button>
+
+      <!-- <button type="button" class="btn btn-inverse mat-elevation-z8" style="float: right; margin-right: 10px">
+        Freeze
+      </button> -->
+      <br />
+      <br />
+    </div>
+  </div>
+</div>
+
+
+<!-- page2 -->
+
+
+
+
+<app-district-target-update [AllDistrictTargetDetails]="AllDistrictTargetDetails" *ngIf="showUpdate">
+</app-district-target-update>

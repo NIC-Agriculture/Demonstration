@@ -1,0 +1,108 @@
+<div class="card">
+    <div class="card-block">
+        <div class="row">
+            <div class="col-sm-12">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-lg-6 col md-6">
+                        <div class="form-group row">
+                            <div class="col-sm-4 col-lg-3">
+                              <label class="block" for="subscheme">Farmer Id <label class="asterik">*</label>:</label>
+                            </div>
+                            <div class="col-sm-4 col-lg-9">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon1">{{ prefixOfFarmerID }} /</span>
+                                    <input [(ngModel)]="farmerId" [ngModelOptions]="{standalone: true}" id="farmerId" name="farmerId" type="number" class="required form-control" aria-required="true" placeholder="Enter farmer-ID" required>
+                                 </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-sm-4 col-lg-3">
+                              <label class="block" for="fuel">Invoice No:</label>
+                            </div>
+                            <div class="col-sm-4 col-lg-9">
+                                <input type="text" placeholder="Enter Invoice No." [(ngModel)]="InvoiceNo" class="form-control form-control-default ">
+                            </div>
+                          </div>
+                    </div>
+  
+                    <div class="col-lg-6 col md-6">
+                        <div class="form-group row">
+                            <div class="col-sm-4 col-lg-3">
+                              <label class="block" for="FinYear">Financial Year <label class="asterik">*</label>:</label>
+                            </div>
+                            <div class="col-sm-4 col-lg-9">
+                                <div class="input-group">
+                                    <select [(ngModel)]="FinYear" id="FinYear" class="form-control form-control-default" >
+                                        <option value="">--Select--</option>
+                                        <option [ngValue]="x" *ngFor="let x of FinYears">
+                                          {{ x }}
+                                        </option>
+                                      </select>
+                                </div>
+                            </div>
+                          </div>
+                      <div class="form-group row">
+                        <div class="col-sm-12 col-lg-12">
+                            <button #btn  type="button" class="btn btn-primary mat-elevation-z8" style="float: right;" (click)="getInputDetails()" [disabled]="!farmerId  || !FinYear" > 
+                                Get Invoice Details 
+                            </button>
+
+                        </div>
+                      </div>
+                      <br>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+          </div>
+          <div class="card" *ngIf="InvoiceListTable">
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <table id="custom-btn" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th> Sl. </th>
+                                <th> Invoice No </th>
+                                <th> Permit NO </th>
+                                <th> Farmer Id </th>
+                                <th> Land Area(ha) </th>
+                                <th> Item </th>
+                                <th> Technical Name </th>
+                                <th> Total Price </th>
+                                <th> Eligible Subsidy </th>
+                                <th> Status </th>
+                                <th> Delete </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let x of InputDetails ; let i = index">
+                                <td> {{ i + 1 }} </td>
+                                <td> {{ x.InvoiceNo }} </td>
+                                <td> {{ x.Permit_NO }} </td>
+                                <td> {{ x.FarmerId }} </td>
+                                <td> {{ x.LandArea }} </td>
+                                <td> {{ x.ItemName }} </td>
+                                <td> {{ x.Technical_Name }} </td>
+                                <td> {{ x.totalPrice }} </td>
+                                <td> {{ x.eligibleSubsidy }} </td>
+                                <td> {{ x.verifyStatus }} </td>
+                                <td>
+                                    <mat-icon (click)="openDialog(x);" class="icon" color="danger" disabled="x.verifyStatus!='NotVerified'">delete</mat-icon>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div *ngIf="this.InputDetails.length == 0">
+                    <h4 style="text-align: center; color: red;">There is no Input sell record against this Farmer Id / Invoice no.</h4>
+                </div>
+
+            </div>
+    </div>
+

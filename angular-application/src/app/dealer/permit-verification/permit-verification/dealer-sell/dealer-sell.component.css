@@ -1,0 +1,16 @@
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+  }
+
+td {
+    white-space: pre-wrap;
+}
+
+.asterik{
+  content:"*" ;
+  color:red   
+  }
+
+.mat-form-field{
+  width : 100%;
+}

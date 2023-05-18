@@ -1,0 +1,83 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { CdaoService } from 'src/app/services/cdao/cdao.service';
+import { LayoutserviceService } from 'src/app/services/layoutservice.service';
+
+@Component({
+  selector: 'app-demonstration-report',
+  templateUrl: './demonstration-report.component.html',
+  styleUrls: ['./demonstration-report.component.css']
+})
+export class DemonstrationReportComponent implements OnInit {
+  allBlocks: any
+  blockCode: any
+  pageTitle: string;
+  pageDesc: string;
+  breadcrumbList: Array<string>;
+  FinYear: any;
+  FinYears: any;
+  Season: any;
+
+  demonstrationReport:any;
+  demonstrationReportForm:any
+  message: boolean = false;
+
+
+  constructor(
+    private cdaoService : CdaoService,
+    private toastr : ToastrService,
+    private layoutService: LayoutserviceService,
+    private fb: FormBuilder,
+  ) {
+    this.pageTitle = 'Report';
+    this.pageDesc = 'Block wise report';
+    this.breadcrumbList = ['Block wise report'];
+    this.demonstrationReportForm = this.fb.group({
+        blockCode: ["", [Validators.required]],
+        FinYear: ["", [Validators.required]],
+     });
+   }
+
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.layoutService.setTitle(this.pageTitle);
+      this.layoutService.setPageHeadingDesc(this.pageDesc);
+      this.layoutService.setBreadcrumb(this.breadcrumbList);
+      });
+    this.getFinYear();
+    this.loadBlocks();
+  }
+
+  printThisPage() {
+    window.print();
+  }
+
+  loadBlocks = async () => {
+    this.allBlocks = await this.cdaoService.getBlocks().toPromise();
+  }
+
+  getFinYear = async() => {
+    try{
+      const result = await this.layoutService.getFinYear().toPromise()
+      this.FinYears = result.Years;
+      this.Season = result.Season;
+    } catch (e){
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
+  
+  getDemonstrationStatusReport = async () => {
+    try {
+      this.demonstrationReport = await this.cdaoService.getDemonstrationStatusReport(this.demonstrationReportForm.value.blockCode,this.demonstrationReportForm.value.FinYear).toPromise();
+      this.message = this.demonstrationReport.length == 0 ? true : false
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+    
+  }
+  
+}

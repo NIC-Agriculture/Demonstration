@@ -1,0 +1,67 @@
+<div class="card">
+    <div class="card-header">
+        <h5>Cluster Demonstration</h5>
+        <span>Cluster Demonstration For Block</span>
+        <div class="card-header-right">
+            <i class="icofont icofont-rounded-down"></i>
+            <i class="icofont icofont-refresh"></i>
+            <i class="icofont icofont-close-circled"></i>
+        </div>
+    </div>
+    <div class="card-block">
+        <div class="row">
+            <label class="col-sm-2 col-lg-2 col-form-label">Financial Year <label class="asterik">*</label>:</label>
+            <div class="col-sm-4 col-lg-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                    <select [(ngModel)]="FinYear" id="FinYear" class="form-control form-control-default" (change)="getclusterDemonstration()" >
+                        <option value="">--Select--</option>
+                        <option [ngValue]="x" *ngFor="let x of FinYears">
+                          {{ x }}
+                        </option>
+                      </select>
+                </div>
+            </div>
+        </div>
+        <div id="print-section">
+            <div class="card-block" *ngIf="demonstrationClusterTable" >
+                <div class="dt-responsive table-responsive">
+                    <table id="custom-btn" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">#</th>
+                                <th rowspan="2" style="vertical-align : middle;text-align:center;"> Demonstration Id </th>
+                                <th rowspan="2" style="vertical-align : middle;text-align:center;"> Component </th>
+                                <th rowspan="2" style="vertical-align : middle;text-align:center;"> GP </th>
+                                <th rowspan="2" style="vertical-align : middle;text-align:center;"> Ward Name </th>
+                                <th rowspan="2" style="vertical-align : middle;text-align:center;"> Assigned VAW </th>
+                                <th colspan="3" style="vertical-align : middle;text-align:center;"> Total Target Allotment </th>
+                                <th rowspan="2" style="vertical-align : middle;text-align:center;"> Remove </th>
+                            </tr>
+                            <tr>
+                                <th  style="vertical-align : middle;text-align:center;"> General </th>
+                                <th  style="vertical-align : middle;text-align:center;"> SCP </th>
+                                <th  style="vertical-align : middle;text-align:center;"> TASP </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor=" let x of clusterReport; let i = index;">
+                                <td> {{i+1}} </td>
+                                <td> {{ x.DemostrationId }} </td>
+                                <td> {{ x.CompName }} </td>
+                                <td> {{ x.Gp_Name || '--' }} </td>
+                                <td> {{x.WardName || '--' }} </td>
+                                <td> {{ x.vaw_userId }} </td>
+                                <td> {{ x.PhyGen }} </td>
+                                <td> {{ x.PhySCP }} </td>
+                                <td> {{ x.PhyTasp }} </td>
+                                <td>  <button class="btn btn-danger" (click)="openDialog(i)" ><i class="ion-trash-a"></i></button> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+    </div>
+    </div>
+

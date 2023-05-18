@@ -1,0 +1,28 @@
+/* You can add global styles to this file, and also import other style files */
+.table-card {
+    padding: 0 !important;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.view-table td {
+    width: 50%;
+}
+.stepper-card {
+    /* border: 1px solid #ccc;
+    border-radius: 2px;
+    background: #fff;
+    padding: 2.5%; */
+    margin: 27px 20px 40px 20px
+}
+
+.custom-dialog-container .mat-dialog-container {
+    margin-left: 120px;
+ }
+
+ .mat-form-field-flex{
+    height: 43px;
+  }
+
+  .mat-select-arrow{
+    padding-bottom: 10px;
+  }

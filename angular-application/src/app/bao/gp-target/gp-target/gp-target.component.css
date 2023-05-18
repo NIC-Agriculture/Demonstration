@@ -1,0 +1,68 @@
+
+::ng-deep .mat-horizontal-stepper-header {
+    background-color: #eee;
+    border-radius: 5px;
+    width: 22%;
+    
+}
+::ng-deep .mat-horizontal-stepper-header:hover {
+    /* background-color: #53bc9d; */
+}
+::ng-deep .mat-horizontal-stepper-header[aria-selected="true"] .mat-step-label .ng-star-inserted{
+    color: white;
+}
+::ng-deep .mat-step-header[aria-selected="true"]  {
+    background: #1abc9c;
+    transition: all ease-in .3s;
+    border-radius: 2px;
+    outline: 1px solid #fff;
+    outline-offset: -7px;
+}
+::ng-deep .mat-step-header[aria-selected="true"]:hover  {
+    background: #1cd5b0;
+    outline: 1px solid #fff;
+    outline-offset: 0;
+    
+}
+::ng-deep .mat-horizontal-content-container {
+    padding: 0 !important;
+}
+::ng-deep .mat-horizontal-stepper-header-container {
+    padding: 0 20px 0 20px;
+}
+.invalid-row {
+    background-color: darkred;
+    color: white;
+}
+.invalid-row:hover {
+    background-color: darkred;
+    color: white;
+}
+.valid-row {
+    background-color: darkseagreen;
+}
+.valid-row:hover {
+    background-color: darkseagreen;
+}
+  ::ng-deep .loader {
+      position: inherit !important;
+      margin: 0 !important;
+  }
+:host >>> ngx-skeleton-loader .loader {
+    background-color: #dee2ea;
+  }
+.footer-buttons{
+    float: right;
+    padding: 20px;
+}
+.mat-horizontal-stepper-header {
+    display: flex;
+    height: 50px !important;
+    overflow: hidden;
+    align-items: center;
+    padding: 0 24px;
+}
+.asterik{
+    content:"*" ;
+    color:red   
+    }

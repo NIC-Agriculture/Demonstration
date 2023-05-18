@@ -1,0 +1,82 @@
+<div class="card">
+  <div class="card-header">
+    <h4>Required Seed</h4>
+    <!-- <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit</span> -->
+    <div class="card-header-right">
+      <i class="icofont icofont-rounded-down"></i>
+      <i class="icofont icofont-refresh"></i>
+      <i class="icofont icofont-close-circled"></i>
+    </div>
+  </div>
+  <div class="card-block" id="print-section">
+    <div class="row">
+      <label class="col-sm-3 col-lg-3 col-form-label">Select District <label class="asterik">*</label>:</label>
+      <div class="col-sm-6 col-lg-5">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+          <select id="District" class="form-control" [(ngModel)]="distCode">
+            <option value="" disabled>--Select--</option>
+            <option [ngValue]="x.Dist_Code" *ngFor="let x of AllDistrictData"> {{x.Dist_Name}} </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-3 col-lg-4">
+        <button type="button" class="btn btn-primary" id="primary-popover-content" data-container="body"
+          data-toggle="popover" title="Primary color states" data-placement="bottom" (click)="getDistrictSeedReport();" [disabled]="distCode==null" >
+          Get Seed Report</button>
+      </div>
+
+    </div><br><br>
+
+  
+
+    <div class="card-block table-card" *ngIf="SeedReportTable">
+      <div class="table-responsive">
+          <table class="table table-striped table-bordered">
+              <thead>
+                  <tr>
+                   <th>Sl.</th>
+                      <th>Block</th>
+                      <th>Demonstration Id</th>
+                      <th>Component</th>
+                      <th>Farmer Involved</th>
+                      <th>Total Land(in ha)</th>
+                      <th> Crop</th>
+                      <!-- <th>Scheme</th> -->
+                      <th>Crop Variety</th>
+                      <th> Seed Required</th>
+                      <th> Crop (Bund Plant.)</th>
+                      <!-- <th>Scheme</th> -->
+                      <th>Crop Variety (Bund Plant.)</th>
+                      <th> Seed Required (Bund Plant.)</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let x of seedReportDetails; let i = index;">
+                      <th scope="row"> {{i+1}} </th>
+                      <td > {{ x.Block_Name}} </td>
+                      <td > {{ x.DemostrationId }} </td>
+                      <td > {{ x.CompName }} </td>
+                      <td > {{ x.totalfarmerinvolved }} </td>
+                      <td > {{ x.totalland }} </td>
+                      <td > {{ x.SubCropName }} </td>
+                      <td > {{ x.Variety_Name }} </td>
+                      <td > {{ x.totalseedrequired }} Kg</td>
+                      <td > {{ x.bpsubcropname }} </td>
+                      <td > {{ x.bpcropvarietyname }} </td>
+                      <td > {{ x.totalbpseedrequired }} Kg </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
+
+
+  </div>
+
+  <div class="card-block">
+    <button  [useExistingCss]="true"
+    styleSheetFile="node_modules/bootstrap/dist/css/bootstrap.min.css"
+    class="btn btn-primary mat-elevation-z8 float-right" printSectionId="print-section" ngxPrint *ngIf="SeedReportTable==true" ><i class="icofont icofont-print"></i>Print</button>
+  </div>
+</div>

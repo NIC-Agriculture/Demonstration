@@ -1,0 +1,14 @@
+.asterik{
+    content:"*" ;
+    color:red   
+    }
+   
+ mat-form-field {
+     width: 100%;
+    }
+
+.mr{
+     margin-block-end: 23px;
+     margin-block-start: 4px;
+   }
+    

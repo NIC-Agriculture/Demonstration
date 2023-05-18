@@ -1,0 +1,87 @@
+<div>
+    <div class="card-header">
+        <div>
+            <div class="card-header">
+                <div class="card-block">
+                    <div class="row">
+                        <label class="col-sm-3 col-lg-3 col-form-label" >Select Demonstration ID <label class="asterik">*</label>:</label>
+                        <div class="col-sm-6 col-lg-5">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="margin-top: 0px;" ><i class="ion-arrow-down-b"></i></span>
+                                <select id="demonstrationId" [(ngModel)]="demonstrationId" (change)="getAllFarmerTrapData()"
+                                    class="required form-control">
+                                    <option value="">--Select--</option>
+                                    <option *ngFor="let x of demonstrationData" [ngValue]="x.DemonstrationId" >{{ x.DemonstrationId }}</option>
+                                  </select>
+                            </div>
+                        </div>
+
+                        <!-- <div class="col-sm-3 col-lg-3" *ngIf="showSubmit">
+                            <button class="btn btn-primary btn-round"  style="margin-left: 5px;" (click)="ConfirmData()">Confirm</button>
+                        </div> -->
+                    </div>
+                    <br><br>   
+                  
+                    <div class="card-block table-border-style"  *ngIf="showTable">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>                                           
+                                        <th>SL</th>
+                                        <th>Permit No</th>
+                                        <th>Farmer Id</th>
+                                        <th>Farmer Name</th>
+                                        <th>Category</th>
+                                        <th>Land(in ha)</th>
+                                        <th>Light Trap</th>
+                                        <!-- <th>Pheromone Trap</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of allFarmerList.result; let i = index;">
+                                       
+                                        <th scope="row"> {{i+1}} </th>
+                                        <td > {{x.Permit_NO}} </td>
+                                        <td > {{x.FarmerId}} </td>
+                                        <td > {{x.FarmerName}} </td>
+                                        <td > {{x.Farmer_Category}} </td>
+                                        <td > {{x.LandArea}} </td>
+                                        <td (ngModelChange)="calculateTraps()"> {{x.LightTrap}} </td>
+                                        <!-- <td > <input type="number" min="0" [(ngModel)]="x.PheromoneTrap" (ngModelChange)="calculateTraps()"> </td> -->
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                    <th>Total Nos.</th>
+                                    <th> </th>
+                                    <th> </th>
+                                    <th> </th>
+                                    <th> </th>
+                                    <th> {{ totalLand | number : '1.2-2' }} </th>
+                                    <th> {{ this.totalLT | number : '1.2-2' }} </th>
+                                    <!-- <th> {{ this.totalPT | number : '1.2-2' }} </th> -->
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                    <div *ngIf="message">
+                      <h4 style="text-align: center; color: red;">Already Trap distribution has been over under this Demonstration ID. </h4>
+                    </div><br>
+                    <div class="card-block" *ngIf="showSubmit">
+                        <div class="row">
+                            <div class="col-sm-5 col-lg-5"></div>
+                            <div class="col-sm-3 col-lg-3">
+                              <button class="btn btn-primary btn-round"  style="margin-left: 5px;" (click)="ConfirmData()">Confirm</button>
+                            </div>
+                            <div class="col-sm-4 col-lg-4">            
+                            </div>
+                        </div>
+                    </div>
+                               
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

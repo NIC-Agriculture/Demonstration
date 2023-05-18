@@ -1,0 +1,40 @@
+<div class="dt-responsive table-responsive">
+    <table id="custom-btn" class="table table-striped table-bordered nowrap">
+        <thead>
+            <tr>
+               
+                <th>Sl.</th>
+                <th>Invoice No.</th>
+                <th>Reference No.</th>
+                <th>Scheme</th>
+                <th>Account Holder Name </th>
+                <th>Gender </th>
+                <th>Block Name</th>
+                <th>Gp Name</th>
+                <th>Catagory</th>
+                <th>Account No.</th>
+                <th>IFSC Code</th>
+                <th>Bank Name</th>
+                <th>Eligible Amount (Rs)(State Share)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let x of pymntDetails; let i = index;">
+                <th scope="row"> {{ i+1 }} </th>
+                <td> {{ x.InvoiceNo }} </td>
+                <td> {{ x.ReferenceNo }} </td>
+                <td> {{ x.schemeName }} </td>
+                <td> {{ x.AccountHolderName }} </td>
+                <td> {{ x.Gender }} </td>
+                <td> {{ x.Block_Name }} </td>
+                <td></td>
+                <td> {{ x.Farmer_Category }} </td>
+                <td> "{{ x.AccountNo }}" </td>
+                <td> {{ x.IFSC }} </td>
+                <td> {{ x.BankName }} </td>
+                <td> {{ x.totaleligiblesubsidy }} </td>
+              
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,100 @@
+<html>
+<body>
+
+<div class="container">
+  <form [formGroup] = "signupForm">
+    <div class="row">    
+        <div class="col-25">
+          <label for="name">Name</label>
+        </div>
+        <div class="col-75">
+          <input type="text" placeholder="Enter Name" formControlName ="name" >
+        </div>
+      </div>
+    <div class="row">    
+      <div class="col-25">
+        <label for="email">Email</label>
+      </div>
+      <div class="col-75">
+        <input type="text" placeholder="Enter Email" formControlName ="email" >
+      </div>
+    </div>
+    <div class="row">    
+        <div class="col-25">
+          <label for="uname">Username</label>
+        </div>
+        <div class="col-75">
+          <input type="text" placeholder="Enter Username" formControlName ="user_id" >
+        </div>
+      </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="psw">Password</label>
+      </div>
+      <div class="col-75">
+        <input type="password" placeholder="Enter Password" formControlName ="password" >
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-25">
+          <label for="psw">Confirm Password</label>
+        </div>
+        <div class="col-75">
+        <input type="password" placeholder="Repeat Password" formControlName ="pswrepeat" >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-25">
+          <label for="psw">Profile picture</label>
+        </div>
+        <div class="col-75">
+        <input type="file" id="myFile" name="filename">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-25">
+          <label for="gender">Gender</label>
+        </div>
+        <div class="col-75"> 
+           <input type="radio" id="gender" formControlName ="gender" value="female">
+           <label for="female">Female</label> &nbsp; &nbsp;
+           <input type="radio" id="gender" formControlName ="gender" value="male">
+           <label for="male">Male</label><br>
+        </div>
+      </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="education">Education</label>
+      </div>
+      <div class="col-75">
+        <select id="education" formControlName ="education" >
+          <option value="masters">Masters</option>
+          <option value="graduation">Graduation</option>
+          <option value="diploma">Diploma</option>
+        </select>
+      </div>
+    </div>
+</form>
+    <form [formGroup] = "userHobbiesForm">
+    <div class="row">
+        <div class="col-25">
+          <label for="hobbies">Hobbies</label>
+        </div>
+        <div class="col-75">
+            <div *ngFor="let data of Data; let i=index">
+                <label>
+                  <input type="checkbox" [value]="data.value" (change)="onCheckboxChange($event)" />
+                  {{data.name}}
+                </label>
+              </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <input type="submit" value="Submit" (click)='signUp();'>
+    </div>
+  
+</div>
+
+</body>
+</html>

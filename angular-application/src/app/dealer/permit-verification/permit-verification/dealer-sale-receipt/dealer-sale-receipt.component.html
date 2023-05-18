@@ -1,0 +1,108 @@
+<div>
+  <div class="card-header">
+    <h5>Print Of Sale Receipt</h5>
+    <div class="card-header-right">
+      <i class="icofont icofont-rounded-down"></i>
+      <i class="icofont icofont-refresh"></i>
+      <i class="icofont icofont-close-circled"></i>
+    </div>
+  </div>
+  
+  <div class="card-block" id="print-section">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 style="text-align: center">
+          କୃଷି ଓ କୃଷକ ସଶକ୍ତିକରଣ ବିଭାଗ <br />DEPARTMENT OF AGRICULTURE AND FARMER'S
+          EMPOWERMENT
+        </h4>
+        <h4 style="text-align: center"><u>Dealer Sale Receipt</u></h4>
+        <div style="margin-top: -124px">
+          <qrcode [width]="200" [qrdata]="qrData" [errorCorrectionLevel]="'M'" style="text-align: right">
+          </qrcode>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-lg-6">
+        <label >Dealer Licence No : {{ dealerSaleDetails.dealerResult[0].dealerLiscenseNo }}
+        </label>
+      </div>
+      <div class="col-sm-2 col-lg-2"></div>
+      <div class="col-sm-4 col-lg-4">
+        <label >Sale Date : {{ date }}</label><br>
+        <label >Invoice No : {{ dealerSaleDetails.dealerResult[0].InvoiceNo }} </label>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <!-- <th>Trade Name</th> -->
+              <th>Technical Name</th>
+              <th>Qauntity</th>
+              <th>Total Price(In Rs)</th>
+              <th>Farmer's Share(In Rs)</th>
+              <th>Eligible Amount(In Rs)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let x of dealerSaleDetails.dealerResult; let i=index ;">
+              <th scope="row">{{i+1}}</th>
+              <!-- <td></td> -->
+              <td> {{x.Technical_Name}} </td>
+              <td> {{ x.packageSize }} {{ x.unit }} * {{x.packageQuantity}} </td>
+              <td> {{x.totalPrice}} </td>
+              <td> {{x.totalPrice - x.eligibleSubsidy}} </td>
+              <td> {{x.eligibleSubsidy}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h4 style="color: red; text-align: center"><u>Conditions</u></h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <p>
+          1. One copy of the receipt to be given to the farmer.<br />2. Second
+          copy of the receipt to be kept with the dealer.
+        </p>
+      </div>
+    </div>
+    <br /><br />
+    <div class="row">
+      <div class="col-sm-6 col-lg-6">
+        <h4><u>Signature of Registered Dealer</u><br />Name: {{ dealerSaleDetails.dealerResult[0].SoldBy }}<br /></h4>
+      </div>
+      <div class="col-sm-3 col-lg-3"></div>
+      <div class="col-sm-3 col-lg-3">
+        <h4><u>Signature of Benificiary(Farmer)</u><br />
+          Name: {{ dealerSaleDetails.dealerResult[0].FarmerName }} <br />
+          FarmerId: {{ dealerSaleDetails.dealerResult[0].FarmerId }}</h4>
+      </div>
+    </div>
+    <br />
+  
+  </div>
+  <div class="card-block">
+    <div class="row">
+      <div class="col-md-7">
+        <div class="vertical-center">
+          <button type="button" class="btn btn-primary" id="primary-popover-content" data-container="body"
+            data-toggle="popover" title="Primary color states" data-placement="bottom"
+            style="float: right; margin-right: 30px"  styleSheetFile="node_modules/bootstrap/dist/css/bootstrap.min.css"
+            class="btn btn-primary mat-elevation-z8 float-right" printSectionId="print-section" ngxPrint>
+            Print
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

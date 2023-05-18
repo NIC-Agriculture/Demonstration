@@ -1,0 +1,8 @@
+td {
+    white-space: pre-wrap;
+}
+
+.asterik{
+    content:"*" ;
+    color:red   
+    }

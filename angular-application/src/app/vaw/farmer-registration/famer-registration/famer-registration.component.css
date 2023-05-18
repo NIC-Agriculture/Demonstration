@@ -1,0 +1,12 @@
+.asterik{
+    content:"*" ;
+    color:red   
+    }
+
+.fw-500{
+   font-weight: 500;
+ }
+
+td {
+  white-space: pre-wrap;
+}

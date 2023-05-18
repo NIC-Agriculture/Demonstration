@@ -1,0 +1,98 @@
+<div class="card">
+    <div class="card-header" *ngIf="dealerCardheader">
+        <h5>Permit Verification</h5>
+        <span>Permit verifiaction of Farmers</span>
+        <div class="card-header-right">
+            <i class="icofont icofont-rounded-down"></i>
+            <i class="icofont icofont-refresh"></i>
+            <i class="icofont icofont-close-circled"></i>
+        </div>
+    </div>
+    <div>
+        <div class="card-block" *ngIf="dealerPage">
+            <div class="row">
+                <label class="col-sm-3 col-lg-3 col-form-label">Select Farmer Id <label class="asterik">*</label>:</label>
+                <div class="col-sm-6 col-lg-5">
+                    <div class="input-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">{{ prefixOfFarmerID }} /</span>
+                            <input [(ngModel)]="farmerId" [ngModelOptions]="{standalone: true}" id="farmerId" name="farmerId" type="number" class="required form-control" aria-required="true" placeholder="Enter farmer-ID" required>
+                         </div>
+                        <!-- <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                        <select class="form-control" [(ngModel)]='farmerId'>
+                            <option value="" disabled>--Select--</option>
+                            <option [ngValue]="x" *ngFor="let x of FarmerId">{{ x.FarmerId }}</option>
+                        </select> -->
+                    </div>
+                </div>
+                <div class="col-sm-3 col-lg-4">
+                    <button type="button" class="btn btn-primary" id="primary-popover-content" data-container="body"
+                        data-toggle="popover" title="Primary color states" data-placement="bottom"
+                        (click)="getPermitList()" [disabled]="farmerId==null" >Get 
+                        List</button>
+                </div>
+
+            </div>
+            <!-- <div class="row">
+                <label class="col-sm-4 col-lg-3 col-form-label">Search Farmer Id *:</label>
+                <div class="col-sm-8 col-lg-5">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <table id="custom-btn" class="table table-striped table-bordered nowrap">
+                        <thead>
+                            <tr>
+                                <th>#.</th>
+                                <th>Demonstration Id</th>
+                                <th>Farmer Id</th>
+                                <th>Farmer Name</th>
+                                <th>Permit No</th>
+                                <th>Proceed To Sale </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let y of permitList; let i = index;">
+                                <th scope="row"> {{ i + 1 }} </th>
+                                <td> {{ y.DemonstrationId }} </td>
+                                <td> {{ y.FarmerId }} </td>
+                                <td> {{ y.FarmerName }} </td>
+                                <td> {{ y.Permit_NO }} </td>
+                                <td> <button type="button" class="btn btn-primary" id="primary-popover-content"
+                                        data-container="body" data-toggle="popover" title="Primary color states"
+                                        data-placement="bottom" (click)="goToDealerSellPage(y)"><i
+                                            class="ion-arrow-right-a"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-dealer-sell [permitList]="sell" *ngIf="dealerSell"></app-dealer-sell>
+    <div class="card-block">
+        <div class="row">
+            <div class="col-sm-2 col-lg-2">
+                <button type="button" *ngIf="backButton1" class="btn btn-inverse" data-container="body"
+                    data-toggle="popover" title="Inverse color states" data-placement="bottom"
+                    (click)="gobacktodealerPage()"><i class="ion-arrow-left-c"></i>Back</button>
+                <button type="button" *ngIf="backButton2" class="btn btn-inverse" data-container="body"
+                    data-toggle="popover" title="Inverse color states" data-placement="bottom"
+                    (click)="gobacktodealerSalePage()"><i class="ion-arrow-left-c"></i>Back</button>
+            </div>
+            <div class="col-sm-8 col-lg-8">
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+

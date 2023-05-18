@@ -1,0 +1,183 @@
+<div class="card">
+    <div class="card-header">
+      <h5>Set Target</h5>
+      <!-- <span>Set target for district</span> -->
+      <div class="card-header-right">
+        <i class="icofont icofont-rounded-down"></i>
+        <i class="icofont icofont-refresh"></i>
+        <i class="icofont icofont-close-circled"></i>
+      </div>
+    </div>
+    <div class="card-block table-card">
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>District</th>
+            <th>Target Details</th>
+            <th>Physical-GEN (ha)</th>
+            <th>Financial-GEN (<i class="icofont icofont-cur-rupee text-primary"></i>) </th>
+            <th>Physical-SCP (ha)</th>
+            <th>Financial-SCP (<i class="icofont icofont-cur-rupee text-primary"></i>)</th>
+            <th>Physical-TASP (ha)</th>
+            <th>Financial-TASP (<i class="icofont icofont-cur-rupee text-primary"></i>)</th>
+            <th>Total-PHY (ha)</th>
+            <th>Total-FIN (<i class="icofont icofont-cur-rupee text-primary"></i>)</th>
+              <!-- <th>Action</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Total <i class="icofont icofont-arrow-right float-right text-primary"></i></th>
+              <th></th>
+              <th>{{ totalPhyGen | number : '1.2-2' }}</th>
+              <th>{{ totalFinGen | number : '1.2-2' }}</th>
+              <th>{{ totalPhySCP | number : '1.2-2' }}</th>
+              <th>{{ totalFinSCP | number : '1.2-2' }}</th>
+              <th>{{ totalPhyTASP | number : '1.2-2' }}</th>
+              <th>{{ totalFinTASP | number : '1.2-2' }}</th>
+              <th>{{ totalPhy | number : '1.2-2' }}</th>
+              <th>{{ totalFin | number : '1.2-2' }}</th>
+            </tr>
+            <tr *ngFor="let dist of AllDistrictData; let i = index">
+              <th scope="row">{{ dist.Dist_Name }}</th>
+              <td scope="row">
+                <span class="tabledit-span"> Achieved: {{ dist.distributedTarget }} </span> 
+                <br>
+                <span class="tabledit-span"> Total: {{ dist.totalTarget }} </span>
+              </td>
+
+              <td class="tabledit-view-mode" (click)="editTarget(i, 'PhyGen', 'FinGen', 'modifiedPhyGen')" data-toggle="modal" data-target="#small-Modal">
+                <span class="tabledit-span"> {{ dist.PhyGen | number }} </span>
+                <i class="icofont icofont-edit float-right text-primary"></i>
+              </td>
+              <td class="tabledit-view-mode"> {{ dist.FinGen | number }} </td>
+
+              <td class="tabledit-view-mode" (click)="editTarget(i, 'PhySCP', 'FinSCP', 'modifiedPhySCP')" data-toggle="modal" data-target="#small-Modal">
+                <span class="tabledit-span"> {{ dist.PhySCP | number }} </span>
+                <i class="icofont icofont-edit float-right text-primary"></i>
+              </td>
+              <td class="tabledit-view-mode"> {{ dist.FinSCP | number }} </td>
+
+              <td class="tabledit-view-mode" (click)="editTarget(i, 'PhyTASP', 'FinTASP', 'modifiedPhyTASP')" data-toggle="modal" data-target="#small-Modal">
+                <span class="tabledit-span"> {{ dist.PhyTASP | number }} </span>
+                <i class="icofont icofont-edit float-right text-primary"></i>  
+              </td>
+              <td class="tabledit-view-mode"> {{ dist.FinTASP | number }} </td>
+
+              <td class="tabledit-view-mode">{{ dist.totalPhyByDistrict | number }} </td>
+              <td class="tabledit-view-mode"> {{ dist.totalFinByDistrict | number }}</td>
+            </tr>
+
+            <tr>
+              <th>Total</th>
+              <th></th>
+              <th>{{ totalPhyGen | number : '1.2-2' }}</th>
+              <th>{{ totalFinGen | number : '1.2-2' }}</th>
+              <th>{{ totalPhySCP | number : '1.2-2' }}</th>
+              <th>{{ totalFinSCP | number : '1.2-2' }}</th>
+              <th>{{ totalPhyTASP | number : '1.2-2' }}</th>
+              <th>{{ totalFinTASP | number : '1.2-2' }}</th>
+              <th>{{ totalPhy | number : '1.2-2' }}</th>
+              <th>{{ totalFin | number : '1.2-2' }}</th>
+            </tr>
+  
+          </tbody>
+  
+        </table>
+      </div>
+      <div style="padding: 20px">
+        
+        <button  type="button" class="btn btn-primary mat-elevation-z8"
+          style="float: right" (click)="UpdateDistrictTarget();">
+         Update
+        </button>
+  
+        <!-- <button type="button" class="btn btn-inverse mat-elevation-z8" style="float: right; margin-right: 10px">
+          <i class="icofont icofont-ui-reply" aria-hidden="true"></i>Freeze
+        </button> -->
+        <br />
+        <br />
+      </div>
+
+      <!-- <button type="button" class="btn btn-success waves-effect" data-toggle="modal" data-target="#small-Modal">Small</button> -->
+      <div class="modal fade" id="small-Modal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h4 class="modal-title">Modify Target for {{ selectedTarget.targetFor }}</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                    <table class="table table-hover">
+                      <tbody>
+                        <tr>
+                          <td scope="row">
+                            <span class="tabledit-span"> District: </span>
+                          </td>
+                          <td scope="row">
+                            <span class="tabledit-span"> {{ selectedTarget.Dist_Name }}</span> 
+                          </td>
+                        </tr>
+                        <tr>
+                          <td scope="row">
+                            <span class="tabledit-span"> Target for: </span>
+                          </td>
+                          <td scope="row">
+                            <span class="tabledit-span"> {{ selectedTarget.targetFor }}</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td scope="row">
+                            <span class="tabledit-span"> Previous Available Target: </span>
+                          </td>
+                          <td scope="row">
+                            <span class="tabledit-span"> {{ selectedTarget.target | number }}</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td scope="row">
+                            <span class="tabledit-span"> Current Available Target: </span>
+                          </td>
+                          <td scope="row">
+                            <strong class="tabledit-span"> {{ selectedTarget.currentTarget | number }} </strong>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td scope="row">
+                            <span class="tabledit-span">Add or Substract Target: </span>
+                          </td>
+                          <td scope="row">
+                            <input class="tabledit-input form-control" type="text" [(ngModel)]="selectedTarget.enteredTarget" placeholder="Enter Target"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td scope="row"></td>
+                          <td scope="row" style="float: right;">
+                                <button class="btn btn-sm btn-outline-primary" (click) ="addTarget();">
+                                  <i class="icofont icofont-plus text-outline-primary"></i>
+                                </button>&nbsp;&nbsp;
+                                <button class="btn btn-sm btn-outline-primary" (click)="substractTarget();">
+                                  <i class="icofont icofont-minus text-outline-primary"></i>
+                                </button>
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+                    <p>
+                      <strong>Note:</strong> Target must be divisible by 100 and it should be a positive number
+                    </p>
+                   
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary waves-effect" (click) ="modifyTarget();" data-dismiss="modal">Modify</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>

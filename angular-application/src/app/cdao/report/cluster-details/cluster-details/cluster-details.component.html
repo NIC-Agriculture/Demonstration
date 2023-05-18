@@ -1,0 +1,114 @@
+<div class="card">
+    <div class="card-header">
+        <h5>Cluster Details</h5>
+        <span>Block Wise Cluster Details</span>
+        <div class="card-header-right">
+            <i class="icofont icofont-rounded-down"></i>
+            <i class="icofont icofont-refresh"></i>
+            <i class="icofont icofont-close-circled"></i>
+        </div>
+    </div>
+
+    <div class="card-block">
+        <form [formGroup]="clusterForm">
+            <div class="row">
+                <label class="col-sm-2 col-lg-2 col-form-label">Financial Year *:</label>
+                <div class="col-sm-4 col-lg-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                        <select formControlName="FinYear" id="FinYear" class="form-control form-control-default">
+                            <option value="">--Select--</option>
+                            <option [ngValue]="x" *ngFor="let x of FinYears">
+                                {{ x }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <label class="col-sm-2 col-lg-2 col-form-label">Select Block *:</label>
+                <div class="col-sm-4 col-lg-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                        <select id="District" class="form-control" formControlName="blockCode"  >
+                            <option value="" disabled>--Select--</option>
+                            <option [ngValue]="x.Block_Code" *ngFor="let x of allBlocks"> {{ x.Block_Name }} </option>
+                        </select>
+                    </div>
+                </div>
+            </div><br>
+        </form>
+        <div class="row">
+            <div class="col-sm-5 col-lg-5"></div>
+            <div class="col-sm-2 col-lg-2"> <button type="button" class="btn btn-primary" id="primary-popover-content"
+                    data-container="body" data-toggle="popover" title="Primary color states" data-placement="bottom"
+                      (click)="getclusterDemonstration()" [disabled]="!clusterForm.valid" >Get List</button></div>
+            <div class="col-sm-5 col-lg-5"></div>
+
+        </div>
+    </div>
+    <div id="print-section">
+        <div class="card-block" *ngIf="demonstrationClusterTable" >
+            <div class="dt-responsive table-responsive">
+                <table id="custom-btn" class="table table-striped table-bordered nowrap" id="excel-table">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">#</th>
+                            <th rowspan="2" style="vertical-align : middle;text-align:center;">Demonstration Id</th>
+                            <th rowspan="2" style="vertical-align : middle;text-align:center;">Subscheme </th>
+                            <th rowspan="2" style="vertical-align : middle;text-align:center;">Component </th>
+                            <th rowspan="2" style="vertical-align : middle;text-align:center;"> GP Name </th>
+                            <th rowspan="2" style="vertical-align : middle;text-align:center;">VAW Name</th>
+                            <th colspan="3" style="vertical-align : middle;text-align:center;">Total Target Allotment</th>
+                            <th colspan="3" style="vertical-align : middle;text-align:center;">Total Available Target</th>
+                            <th colspan="3" style="vertical-align : middle;text-align:center;">Benificiary Tagged</th>
+                        </tr>
+                        <tr>
+                            <th  style="vertical-align : middle;text-align:center;">General</th>
+                            <th  style="vertical-align : middle;text-align:center;">SCP</th>
+                            <th  style="vertical-align : middle;text-align:center;">TASP</th>
+                            <th  style="vertical-align : middle;text-align:center;">General</th>
+                            <th  style="vertical-align : middle;text-align:center;">SCP</th>
+                            <th  style="vertical-align : middle;text-align:center;">TASP</th>
+                            <th  style="vertical-align : middle;text-align:center;">General</th>
+                            <th  style="vertical-align : middle;text-align:center;">SCP</th>
+                            <th  style="vertical-align : middle;text-align:center;">TASP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor=" let x of clusterReport; let i = index;">
+                            <td> {{i+1}} </td>
+                            <td> {{ x.DemostrationId }} </td>
+                            <td> {{ x.SubschemeName }} </td>
+                            <td> {{ x.CompName }} </td>
+                            <td> {{ x.Gp_Name }} </td>
+                            <td> {{ x.vaw_userId }} </td>
+                            <td> {{ x.PhyGen }} </td>
+                            <td> {{ x.PhySCP }} </td>
+                            <td> {{ x.PhyTasp }} </td>
+                            <td> {{ x.AvlPhyGen }} </td>
+                            <td> {{ x.AvlPhySCP }} </td>
+                            <td> {{ x.AvlPhyTASP }} </td>
+                            <td> {{ x.GenFarmer }} </td>
+                            <td> {{ x.SCFarmer }} </td>
+                            <td> {{ x.STFarmer }} </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-md-12">
+                    <button 
+                    class="btn btn-primary mat-elevation-z8 float-right"  [useExistingCss]="true" 
+                    styleSheetFile="assets/css/custom1.css,assets/css/custom2.css"  printSectionId="print-section"  ngxPrint ><i class="icofont icofont-print"></i>Print</button>
+                    
+                    <button 
+                    class="btn btn-primary mat-elevation-z8 float-right" (click)="exportexcel()" style="margin-right:10px;" ><i class="ion-ios-upload"></i> Export to Excel </button>
+                    
+                </div>
+                <div class="col-md-12">
+                </div>
+            </div>
+        </div>
+</div>

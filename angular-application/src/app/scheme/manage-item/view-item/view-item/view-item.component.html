@@ -1,0 +1,127 @@
+<div class="card">
+    <div class="card-header">
+        <h5>View Item</h5>
+        <span>View Item Details</span>
+        <div class="card-header-right">
+          <i class="icofont icofont-rounded-down"></i>
+          <i class="icofont icofont-refresh"></i>
+          <i class="icofont icofont-close-circled"></i>
+        </div>
+      </div>
+      <div class="card-block">
+        <form [formGroup]="ViewItemForm">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-lg-6 col md-6">
+                            <div class="form-group row">
+                              <div class="col-sm-4 col-lg-3">
+                                <label class="block" for="fuel">Scheme <label class="asterik">*</label>:</label>
+                              </div>
+                              <div class="col-sm-4 col-lg-9">
+                                <select id="scheme" class="form-control form-control-default" (change)="getSubscheme();"
+                                  formControlName="scheme">
+                                  <option value="" disabled>--Select--</option>
+                                  <option [ngValue]="x" *ngFor="let x of AllSchemeData">{{ x.schemeName }}</option>
+                                </select>
+                                <div class="text-danger" *ngIf="ViewItemFormValid.scheme.touched && !ViewItemFormValid.scheme.valid">
+                                    Scheme  is required.
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-6 col md-6">
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-lg-3">
+                                  <label class="block" for="subscheme">Subscheme <label class="asterik">*</label>:</label>
+                                </div>
+                                <div class="col-sm-4 col-lg-9">
+                                  <select id="subscheme" class="form-control form-control-default" (change)="getComponent();"
+                                    formControlName="subscheme" >
+                                    <option value="" disabled>--Select--</option>
+                                    <option [ngValue]="x" *ngFor="let x of SubschemeData">{{ x.SubschemeName }}</option>
+                                  </select>
+                                  <div class="text-danger" *ngIf="ViewItemFormValid.subscheme.touched && !ViewItemFormValid.subscheme.valid">
+                                    Subscheme is required.
+                                  </div>
+                                </div>
+                              </div>
+                          </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col md-6">
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-lg-3">
+                                  <label class="block" for="component">Component <label class="asterik">*</label>:</label>
+                                </div>
+                                <div class="col-sm-4 col-lg-9">
+                                  <select id="component" class="form-control form-control-default" formControlName="component" >
+                                    <option value="" disabled>--Select--</option>
+                                    <option [ngValue]="x" *ngFor="let x of ComponentData">{{ x.CompName }}</option>
+                                  </select>
+                                  <div class="text-danger" *ngIf="ViewItemFormValid.component.touched && !ViewItemFormValid.component.valid">
+                                    Component is required.
+                                  </div>
+                                </div>
+                              </div>
+                          </div>
+                          <!-- <div class="col-lg-6 col md-6">
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-lg-3">
+                                  <label class="block" for="Financialyear"> Financial Year <label class="asterik">*</label>:</label>
+                                </div>
+                                <div class="col-sm-4 col-lg-9">
+                                    <select formControlName="FinYear" id="FinYear" class="form-control form-control-default">
+                                      <option value="" >--Select--</option>
+                                      <option [ngValue]="x" *ngFor="let x of FinYears">
+                                        {{ x }}
+                                      </option>
+                                    </select>
+                                </div>
+                              </div>
+                          </div> -->
+                    </div>
+                </div>
+            </div>
+        </form>
+      </div>
+      <div class="card-block">
+        <button #btn  type="button" class="btn btn-primary
+        mat-elevation-z8"  style="float: right;" (click)="getItemDetails()" [disabled]="!ViewItemForm.valid"> View Item </button><br><br>
+    </div>
+    <div *ngIf="viewTargetTable">
+        <div id="print-section">
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <table id="custom-btn" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th > # </th>
+                                <th> Component </th>
+                                <th> Item Name </th>
+                                <th> Item Price </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor=" let x of ItemDtails; let i = index;">
+                                <td> {{ i+1 }} </td>
+                                <td> {{ x.CompName }}  </td>
+                                <td> {{ x.ItemName }} </td>
+                                <td> {{ x.IndicativeCost }} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-md-12">
+                    <button 
+                    class="btn btn-primary mat-elevation-z8 float-right"  [useExistingCss]="true" 
+                    styleSheetFile="assets/css/custom1.css,assets/css/custom2.css"  printSectionId="print-section"  ngxPrint ><i class="icofont icofont-print"></i>Print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
