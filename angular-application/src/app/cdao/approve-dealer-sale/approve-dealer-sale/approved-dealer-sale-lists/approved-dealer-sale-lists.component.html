@@ -1,0 +1,136 @@
+<div class="card">
+    <div class="card-block">
+    <form [formGroup]="BlockAndSchemeForm">
+        <div class="row">
+            <label class="col-sm-3 col-lg-3 col-form-label">Select Block *:</label>
+            <div class="col-sm-6 col-lg-5">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                    <select class="form-control" formControlName="block">
+                        <option value="" >--Select--</option>
+                        <option [ngValue]="x.Block_Code" *ngFor="let x of BlockData"> {{x.Block_Name}} </option>
+                    </select>
+                    <div class="text-danger" *ngIf="BlockSchemeFormValid.block.touched && !BlockSchemeFormValid.block.valid">
+                        Block is required.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <label class="col-sm-3 col-lg-3 col-form-label">Select Scheme *:</label>
+            <div class="col-sm-9 col-lg-9">
+                <mat-radio-group aria-label="Select an option" formControlName="scheme" (change)="getSubscheme();">
+                    <!-- <mat-radio-button value="1">All Scheme</mat-radio-button> -->
+                    <mat-radio-button value="2">NFSM</mat-radio-button>
+                    <mat-radio-button value="3">NFSM-OS</mat-radio-button>
+                    <mat-radio-button value="4">STATE PLAN</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+        </div><br>
+        <div *ngIf="subschemeCompDiv">
+            <div class="row">
+                <label class="col-sm-3 col-lg-3 col-form-label">Select Subscheme *:</label>
+                <div class="col-sm-6 col-lg-5">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                        <select class="form-control" formControlName="subScheme" (change)="getComponent();" >
+                            <option value="" >--Select--</option>
+                            <option [ngValue]="x.SubschemeId" *ngFor="let x of SubschemeData"> {{ x.SubschemeName }} </option>
+                        </select>
+                        <div class="text-danger" *ngIf="BlockSchemeFormValid.block.touched && !BlockSchemeFormValid.block.valid">
+                            Block is required.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3 col-lg-3 col-form-label">Select Component *:</label>
+                <div class="col-sm-6 col-lg-5">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                        <select class="form-control" formControlName="component">
+                            <option value="" >--Select--</option>
+                            <option [ngValue]="x.CompId" *ngFor="let x of ComponentData"> {{ x.CompName }}  </option>
+                        </select>
+                        <div class="text-danger" *ngIf="BlockSchemeFormValid.block.touched && !BlockSchemeFormValid.block.valid">
+                            Block is required.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </form>
+        <div class="row">
+            <div class="col-sm-3 col-lg-3"></div>
+            <div class="col-sm-9 col-lg-9">
+                <button type="button" class="btn btn-primary" id="primary-popover-content" data-container="body"
+                data-toggle="popover" title="Primary color states" data-placement="bottom"
+                (click)="getAllApprovedDealerSale();" [disabled]="!BlockAndSchemeForm.valid">
+                Get Approved Sale Lists
+                </button>  
+            </div>
+
+        </div>
+    </div>  
+  </div>
+
+  <div class="card" *ngIf="dealerlistTable"> 
+    <div class="card-header">
+        <h5>Sale Details</h5>
+    </div>
+    <div class="card-block">
+        <div class="card-block table-border-style" id="excel-table">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Reference No</th>
+                            <th>Permit No</th>
+                            <th>Invoice No</th>
+                            <th>Farmer Id</th>
+                            <th>Account No</th>
+                            <th>IFSC Code</th>
+                            <th>Total Sale Price</th>
+                            <th>Total Eligible Amount</th>
+                            <th>Catagory</th>
+                            <th>Sale Details</th>
+                            <!-- <th>Reject</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let x of AllApprovedDealerSale; let i = index;">
+                            <th scope="row"> {{i+1}} </th>
+                            <td > {{ x.ReferenceNo }} </td>
+                            <td > {{ x.Permit_NO }} </td>
+                            <td > {{ x.InvoiceNo }} </td>
+                            <td > {{ x.FarmerId }} </td>
+                            <td > {{ x.AccountNo }} </td>
+                            <td > {{ x.IFSC }} </td>
+                            <td > {{ x.totalsaleprice | number : '1.2-2'}} </td>
+                            <td > {{ x.totaleligiblesubsidy | number : '1.2-2' }} </td>
+                            <td > {{ x.Farmer_Category }} </td>
+                            <td><button class="btn btn-success btn-round" (click)="openDialog(x);">View </button></td>
+                            <!-- <td><button class="btn btn-info btn-round">Reject</button></td> -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br>
+        <div *ngIf="message">
+          <h4 style="text-align: center; color: red;">There is no approved sale .</h4>
+        </div><br>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-md-12" style="text-align: center;">
+                    <button class="btn btn-primary mat-elevation-z8 " (click)="exportexcel()"><i class="ion-ios-upload"></i>Export To
+                        Excel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>

@@ -49,6 +49,7 @@ export class ApproveDealerSaleComponent implements OnInit {
   subschemeCompDiv:boolean = false;
   schemeIdvar: any;
   rejecteddealerSale: any;
+  approvedInvoiceLists: boolean = false
 
 
   constructor(
@@ -226,10 +227,12 @@ export class ApproveDealerSaleComponent implements OnInit {
     try {
       const selectedDealerSale = this.allDealerSaleResult.filter((e:any)=>e.completed)
       if (selectedDealerSale.length == 0) {
-        this.toastr.warning(`Please Select atleast one sale to approve`)
+        this.toastr.warning(`Please Select atleast one sale to return to BAO.`)
       }else{
-        this.rejecteddealerSale = await this.cdaoService.returnbackDealerSaleToBAO(selectedDealerSale).toPromise()
+        this.rejecteddealerSale = await this.cdaoService.returnDealerSaleToBAO(selectedDealerSale).toPromise()
         this.toastr.success(this.rejecteddealerSale.message);
+        this.allDealerSaleResult= []
+        this.getAllDealerSale()
       }
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.')
@@ -247,6 +250,4 @@ export class ApproveDealerSaleComponent implements OnInit {
     });
   }
   
-
-   
 }

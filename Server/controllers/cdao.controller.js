@@ -559,8 +559,10 @@ exports.getAllDealerSale = async (req, res, next) => {
                 SUM(cast(a."eligibleSubsidy" as numeric)) AS TotalEligibleSubsidy , a."schemeId"
                 FROM "DealerSale" a
                 INNER JOIN "DemonstrationPatchMaster" b ON a."DemonstrationId"= b."DemostrationId"
+                INNER JOIN "DealerSaleToAction" c ON c."InvoiceNo" = a."InvoiceNo"
                 WHERE a."verifyStatus" = 'Verifying' AND a."Block_Code" = '${req.query.Block_Code}' AND ('0'='${schemeId}' OR  a."schemeId" = '${schemeId}')
                 AND ('0'='${SubschemeId}' OR b."SubschemeId"='${SubschemeId}') AND ('0'='${CompId}' OR b."CompId"='${CompId}')
+                AND c."ddaRemark" is null
                 GROUP BY a."InvoiceNo", a."DemonstrationId" , a."Permit_NO" , a."FarmerId" , a."Farmer_Category",a."dealerLiscenseNo",
                 a."SoldBy" , a."SoldOn" , a."FarmerName" , a."schemeId" , a."Block_Code"`;
         // console.log(queryText);
@@ -687,6 +689,84 @@ exports.approveDealerSale = async (req, res, next) => {
         next(createError.InternalServerError())
         logController.addAuditLog( req.payload.user_id, req.protocol + '://' + req.get('host') + req.originalUrl , "Failure", req.originalUrl.split("?").shift(), 'Approve' , req.method , req.socket.remoteAddress , parser.setUA(req.headers['user-agent']).getOS().name , parser.setUA(req.headers['user-agent']).getOS().version , parser.setUA(req.headers['user-agent']).getBrowser().name, parser.setUA(req.headers['user-agent']).getBrowser().version , req.device.type.toUpperCase())
 
+    }
+}
+
+exports.returnDealerSaleToBAO = async (req, res, next) => {
+    const t = await sequelize.transaction();
+    try {
+        const data = req.body
+        const promiseArray1= []
+       
+        data.forEach(async(e) => {
+            const CDAOdata = {
+                ddaRemark : 'Returned_To_BAO',
+                dda_UserId : req.payload.user_id,
+                ddaTime : Date(),
+                ddaIp : req.socket.remoteAddress
+            }
+           
+            const udpateDealerSaleStatus = db.dealerSaleAction.update( CDAOdata , { where: { InvoiceNo: e.InvoiceNo } , transaction: t })
+            promiseArray1.push(udpateDealerSaleStatus)
+
+        });
+        const result2 = await Promise.all(promiseArray1)
+        res.send({message:"Successfully Returned to BAO."})
+        logController.addAuditLog( req.payload.user_id, req.protocol + '://' + req.get('host') + req.originalUrl , "Success", req.originalUrl.split("?").shift(), 'ReturnedToBAO' , req.method , req.socket.remoteAddress , parser.setUA(req.headers['user-agent']).getOS().name , parser.setUA(req.headers['user-agent']).getOS().version , parser.setUA(req.headers['user-agent']).getBrowser().name, parser.setUA(req.headers['user-agent']).getBrowser().version , req.device.type.toUpperCase())
+
+        await t.commit();
+    } catch (e) {
+        await t.rollback();
+        console.log(e);
+        next(createError.InternalServerError())
+        logController.addAuditLog( req.payload.user_id, req.protocol + '://' + req.get('host') + req.originalUrl , "Failure", req.originalUrl.split("?").shift(), 'ReturnedToBAO' , req.method , req.socket.remoteAddress , parser.setUA(req.headers['user-agent']).getOS().name , parser.setUA(req.headers['user-agent']).getOS().version , parser.setUA(req.headers['user-agent']).getBrowser().name, parser.setUA(req.headers['user-agent']).getBrowser().version , req.device.type.toUpperCase())
+
+    }
+}
+
+exports.getAllApprovedDealerSale = async (req, res, next) => {
+    try {
+        const schemeCode = req.query.schemeId
+        if (schemeCode == 2){
+            var schemeId = 'scheme_1'
+        }else if(schemeCode == 3){
+            var schemeId = 'scheme_2'
+        } else if (schemeCode == 4) {
+            var schemeId = 'scheme_3'
+        }else {
+            var schemeId = 0
+        }
+
+        if (req.query.SubschemeId == '') {
+            var SubschemeId = 0
+        }else{
+            var SubschemeId = req.query.SubschemeId;
+        }
+        if (req.query.CompId == '') {
+            var CompId = 0
+        }else{
+            var CompId = req.query.CompId; 
+        }
+
+        const queryText = `SELECT a."Block_Code", a."InvoiceNo", a."DemonstrationId" , a."Permit_NO" , a."FarmerId" , a."Farmer_Category",
+                a."dealerLiscenseNo", a."SoldBy" , a."SoldOn" , a."FarmerName",d."AccountNo" ,d."IFSC",d."AccountHolderName",d."BankName",d."aadhaarNo",d."ReferenceNo",
+                SUM(cast(a."totalPrice" as numeric)) AS TotalSalePrice ,
+                SUM(cast(a."eligibleSubsidy" as numeric)) AS TotalEligibleSubsidy , a."schemeId"
+                FROM "DealerSale" a
+                INNER JOIN "DemonstrationPatchMaster" b ON a."DemonstrationId"= b."DemostrationId"
+                INNER JOIN "DealerSaleToAction" c ON c."InvoiceNo" = a."InvoiceNo"
+                INNER JOIN "PaymentMaster" d ON d."InvoiceNo" = a."InvoiceNo"
+                WHERE a."verifyStatus" = 'Approved_By_CDAO'  AND a."Block_Code" = '${req.query.Block_Code}' AND ('0'='${schemeId}' OR  a."schemeId" = '${schemeId}')
+                AND ('0'='${SubschemeId}' OR b."SubschemeId"='${SubschemeId}') AND ('0'='${CompId}' OR b."CompId"='${CompId}')
+                AND c."ddaAction" = 'Approved'
+                GROUP BY a."InvoiceNo", a."DemonstrationId" , a."Permit_NO" , a."FarmerId" , a."Farmer_Category",a."dealerLiscenseNo",
+                a."SoldBy" , a."SoldOn" , a."FarmerName" , a."schemeId" , a."Block_Code",d."AccountNo" ,d."IFSC",d."AccountHolderName",d."BankName",d."aadhaarNo",d."ReferenceNo"`
+        
+        const result = await db.sequelize.query(queryText);
+        res.send(result[0]);
+    } catch (e) {
+        console.log(e);
+        next(createError.InternalServerError())
     }
 }
 

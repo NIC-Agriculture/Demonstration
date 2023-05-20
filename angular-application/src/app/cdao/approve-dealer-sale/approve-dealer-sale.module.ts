@@ -10,12 +10,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPrintModule } from 'ngx-print';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ApprovedDealerSaleListsComponent } from './approve-dealer-sale/approved-dealer-sale-lists/approved-dealer-sale-lists.component';
 
 
 @NgModule({
   declarations: [
     ApproveDealerSaleComponent,
-    ViewReceiptComponent
+    ViewReceiptComponent,
+    ApprovedDealerSaleListsComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +29,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatRadioModule,
     MatDialogModule,
     MatIconModule,
-    NgxPrintModule
+    NgxPrintModule,
+    MatTabsModule
   ]
 })
 export class ApproveDealerSaleModule { }

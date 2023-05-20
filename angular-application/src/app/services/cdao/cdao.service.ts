@@ -80,6 +80,9 @@ export class CdaoService {
   getAllDealerSale(Block_Code: any , scheme: any, SubschemeId:any, CompId:any ): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getAllDealerSale?Block_Code=${Block_Code}&schemeId=${scheme}&SubschemeId=${SubschemeId}&CompId=${CompId}`)
   }
+  getAllApprovedDealerSale(Block_Code: any , scheme: any, SubschemeId:any, CompId:any ): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllApprovedDealerSale?Block_Code=${Block_Code}&schemeId=${scheme}&SubschemeId=${SubschemeId}&CompId=${CompId}`)
+  }
   getAllIncentive(Block_Code: any , scheme: any ): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getIncetiveList?Block_Code=${Block_Code}&schemeId=${scheme}`)
   }
@@ -152,7 +155,7 @@ export class CdaoService {
   getCalculatedIncentiveCost(): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getCalculatedIncentiveCost`)
   }
-  returnbackDealerSaleToBAO(data: any): Observable<any> {
-    return this.http.post(`${this.serverUrl}/${this.route}/returnbackDealerSaleToBAO`, data)
+  returnDealerSaleToBAO(data: any): Observable<any> {
+    return this.http.post(`${this.serverUrl}/${this.route}/returnDealerSaleToBAO`, data)
   }
 }
