@@ -25,6 +25,12 @@ export class FieldDemonstrationReportComponent implements OnInit {
   phase3image1: any;
   phase3image2: any;
   phase3image3: any;
+  Season: any;
+  FinYears: any;
+  FinYear:any;
+  AllSchemeData: any;
+  schemeName: any;
+  reportTable: boolean = false
   
   
   constructor(
@@ -38,17 +44,39 @@ export class FieldDemonstrationReportComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fieldDemonstrationId();
     setTimeout(() => {
       this.layoutService.setTitle(this.pageTitle);
       this.layoutService.setPageHeadingDesc(this.pageDesc);
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
+      this.getFinYear();
+      this.getAllScheme();
+  }
+
+  getFinYear = async() => {
+    try{
+      const result = await this.layoutService.getFinYear().toPromise()
+      this.FinYears = result.Years;
+      this.Season = result.Season;
+    } catch (e){
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
+  getAllScheme = async() => {
+    try {
+      this.AllSchemeData = await this.baoService.getAllScheme().toPromise()
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
   }
 
   fieldDemonstrationId = async () => {
     try {
-      this.demonstrationId = await this.baoService.fieldDemonstrationIdPhaseDetails().toPromise();
+      this.reportTable = true
+      this.demonstrationId = await this.baoService.fieldDemonstrationIdPhaseDetails(this.FinYear,this.schemeName.schemeId).toPromise();
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);

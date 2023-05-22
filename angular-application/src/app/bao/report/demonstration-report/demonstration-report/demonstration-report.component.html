@@ -1,75 +1,224 @@
-<div class="card">
-    <div class="card-header">
-        <h5>Verification Status</h5>
-        <span>Seed distribution Verification Status</span>
-        <div class="card-header-right">
-            <i class="icofont icofont-rounded-down"></i>
-            <i class="icofont icofont-refresh"></i>
-            <i class="icofont icofont-close-circled"></i>
+<mat-tab-group animationDuration="0ms">
+    <mat-tab label="Cluster Demonstration Report">  
+        <app-demonstration-cluster-implementation></app-demonstration-cluster-implementation>
+    </mat-tab> 
+    <mat-tab label="Field Demonstration Phase wise Report (Mobile app)">
+
+    <div class="card">
+        <div class="card-header">
+            <h5>Verification Status</h5>
+            <span>Seed and field Verification Status</span>
+            <div class="card-header-right">
+                <i class="icofont icofont-rounded-down"></i>
+                <i class="icofont icofont-refresh"></i>
+                <i class="icofont icofont-close-circled"></i>
+            </div>
+        </div>
+
+        <div>
+            <div class="card-block" >
+                <div class="row">
+                    <label class="col-sm-2 col-lg-2 col-form-label">Financial Year <label class="asterik">*</label>:</label>
+                    <div class="col-sm-4 col-lg-4">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                            <select [(ngModel)]="FinYear" id="FinYear" class="form-control form-control-default">
+                                <option value="">--Select--</option>
+                                <option [ngValue]="x" *ngFor="let x of FinYears">
+                                {{ x }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-lg-2 col-form-label">Scheme Name <label class="asterik">*</label>:</label>
+                    <div class="col-sm-4 col-lg-4">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                            <select [(ngModel)]="schemeName" id="FinYear" class="form-control form-control-default">
+                                <option value="">--Select--</option>
+                                <option [ngValue]="x" *ngFor="let x of AllSchemeData">
+                                {{ x.schemeName }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 col-lg-2 col-form-label">Season<label class="asterik">*</label>:</label>
+                    <div class="col-sm-4 col-lg-4">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                            <select [(ngModel)]="season" id="FinYear" class="form-control form-control-default">
+                                <option value="">--Select--</option>
+                                <option value="Rabi"> Rabi </option>
+                                <option value="Kharif"> Kharif </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div  style="padding: 20px;">
+                    <button #btn  type="button" class="btn btn-primary
+                    mat-elevation-z8" (click)="getDemonstrationStatusReport()"  style="float: right;" [disabled]="!FinYear || !schemeName || !season ">Get List</button>
+                    <br>
+                    <br>
+                </div>
+            </div>
+            </div>
+    </div>
+    <div class="card" *ngIf="sttuasTable">
+                <div class="card-block" >
+                    <div class="dt-responsive table-responsive" id="print-section" >
+                        <table id="custom-btn" class="table table-striped table-bordered nowrap" id="excel-table" >
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" >#</th>
+                                    <th rowspan="2" style="vertical-align : middle;text-align:center;">Demonstration Id</th>
+                                    <th rowspan="2" style="vertical-align : middle;text-align:center;">Subscheme Name</th>
+                                    <th rowspan="2" style="vertical-align : middle;text-align:center;">Component Name</th>
+                                    <th colspan="4" style="vertical-align : middle;text-align:center;">Seed & Field Photo Verification Status</th>
+                                    <th rowspan="2" style="vertical-align : middle;text-align:center;">View</th>
+                                </tr>
+                                <tr>
+                                    <th> Seed Distributed </th>
+                                    <th> First Phase </th>
+                                    <th> Second Phase </th>
+                                    <th> Third Phase </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor=" let x of demonstrationReport; let i = index ">
+                                    <td> {{ i+1 }} </td>
+                                    <td> {{ x.DemostrationId || 'Pending' }} </td>
+                                    <td> {{ x.SubschemeName }} </td>
+                                    <td> {{ x.CompName }}</td>
+                                    <td> {{ x.SeedDistributionStatus || 'Pending' }} </td>
+                                    <td> {{ x.statusPhase1 || 'Pending' }} </td>
+                                    <td> {{ x.statusPhase2 || 'Pending' }} </td>
+                                    <td> {{ x.statusPhase3 || 'Pending' }} </td>
+                                    <td> <button class="btn btn-success btn-round" (click)="getFieldDemonstrationReport(x)" data-toggle="modal"  data-target="#exampleModal"> View </button> </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div><br>
+                <div *ngIf="message">
+                    <h4 style="text-align: center; color: red;">There is no demonstration patch in this block</h4>
+                </div>
+    
+        <div class="card-block">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <button 
+                    class="btn btn-primary mat-elevation-z8 float-right"  [useExistingCss]="true" 
+                    styleSheetFile="assets/css/custom1.css,assets/css/custom2.css"  printSectionId="print-section"  ngxPrint ><i class="icofont icofont-print"></i>Print</button>
+                    <button 
+                    class="btn btn-primary mat-elevation-z8 float-right" (click)="exportexcel()" style="margin-right:10px;" ><i class="ion-ios-upload"></i> Export to Excel </button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div>
-        <div class="card-block" >
-            <div class="row">
-                <label class="col-sm-2 col-lg-2 col-form-label">Financial Year <label class="asterik">*</label>:</label>
-                <div class="col-sm-4 col-lg-4">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                        <select [(ngModel)]="FinYear" id="FinYear" class="form-control form-control-default" (change)="getDemonstrationStatusReport()" >
-                            <option value="">--Select--</option>
-                            <option [ngValue]="x" *ngFor="let x of FinYears">
-                              {{ x }}
-                            </option>
-                          </select>
+</mat-tab>
+</mat-tab-group>
+
+
+
+<!-- ==================================================== Image View Modal =============================================================== -->
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Field Demonstration</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" >
+            <div class="card">
+                <div class="card-header">
+                    <h4>Phase1 :</h4>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                            transition: 0.3s;">
+                                <img src="{{'data:image/jpg;base64,' + phase1image1}}" onerror="this.src='assets/assets/default/assets/images/photoNotTaken.png'" alt="" data-target="_blank" onclick="window.open(this.src)" id="img1" style="width:100%">
+                              </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                            transition: 0.3s;">
+                                <img src="{{'data:image/jpg;base64,' + phase1image2}}" onerror="this.src='assets/assets/default/assets/images/photoNotTaken.png'" alt="" onclick="window.open(this.src)" style="width:100%">
+                              </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card" style="    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                            transition: 0.3s;">
+                                <img src="{{'data:image/jpg;base64,' + phase1image3}}" onerror="this.src='assets/assets/default/assets/images/photoNotTaken.png'" alt="" style="width:100%">
+                              </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header">
+                    <h4>Phase2 :</h4>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                            transition: 0.3s;">
+                                <img src="{{'data:image/jpg;base64,' + phase2image1}}" onerror="this.src='assets/assets/default/assets/images/photoNotTaken.png'" alt="" style="width:100%">
+                              </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                            transition: 0.3s;">
+                                <img src="{{'data:image/jpg;base64,' + phase2image2}}" onerror="this.src='assets/assets/default/assets/images/photoNotTaken.png'" alt="" style="width:100%">
+                              </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                            transition: 0.3s;">
+                                <img src="{{'data:image/jpg;base64,' + phase2image3}}" onerror="this.src='assets/assets/default/assets/images/photoNotTaken.png'" alt="" style="width:100%">
+                              </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header">
+                    <h4>Phase3 :</h4>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="card" style="    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                            transition: 0.3s;">
+                                <img src="{{'data:image/jpg;base64,' + phase3image1}}" onerror="this.src='assets/assets/default/assets/images/photoNotTaken.png'" alt="" style="width:100%">
+                              </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card" style="    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                            transition: 0.3s;">
+                                <img src="{{'data:image/jpg;base64,' + phase3image2}}" onerror="this.src='assets/assets/default/assets/images/photoNotTaken.png'" alt="" style="width:100%">
+                              </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card" style="    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                            transition: 0.3s;">
+                                <img src="{{'data:image/jpg;base64,' + phase3image3}}" onerror="this.src='assets/assets/default/assets/images/photoNotTaken.png'" alt="" style="width:100%">
+                              </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-            <div class="card-block" >
-                <div class="dt-responsive table-responsive" id="print-section" >
-                    <table id="custom-btn" class="table table-striped table-bordered nowrap">
-                        <thead>
-                            <tr>
-                                <th rowspan="2" >#</th>
-                                <th rowspan="2" style="vertical-align : middle;text-align:center;">Demonstration Id</th>
-                                <th colspan="4" style="vertical-align : middle;text-align:center;">Seed Verification Status</th>
-                                <th rowspan="2" style="vertical-align : middle;text-align:center;">Incentive Paid</th>
-                            </tr>
-                            <tr>
-                                <th> Seed Distributed </th>
-                                <th> First Phase </th>
-                                <th> Second Phase </th>
-                                <th> Third Phase </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor=" let x of demonstrationReport; let i = index ">
-                                <td> {{ i+1 }} </td>
-                                <td> {{ x.DemostrationId || 'Pending' }} </td>
-                                <td> {{ x.SeedDistributionStatus || 'Pending' }} </td>
-                                <td> {{ x.statusPhase1 || 'Pending' }} </td>
-                                <td> {{ x.statusPhase2 || 'Pending' }} </td>
-                                <td> {{ x.statusPhase3 || 'Pending' }} </td>
-                                <td> No </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div><br>
-            <div *ngIf="message">
-                <h4 style="text-align: center; color: red;">There is no demonstration patch in this block</h4>
-            </div>
-    </div>
- 
-    <div class="card-block">
-
-        <div class="row">
-            <div class="col-md-12">
-                <button 
-                class="btn btn-primary mat-elevation-z8 float-right"  [useExistingCss]="true" 
-                styleSheetFile="assets/css/custom1.css,assets/css/custom2.css"  printSectionId="print-section"  ngxPrint ><i class="icofont icofont-print"></i>Print</button>
-            </div>
+        <div class="modal-footer">
         </div>
+      </div>
     </div>
 </div>
+
+
