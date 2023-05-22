@@ -92,8 +92,8 @@
                                 <td> {{ x.eligibleSubsidy }} </td>
                                 <td> {{ x.verifyStatus }} </td>
                                 <td>
-                                  <button mat-icon-button  disabled="x.verifyStatus != 'NotVerified'">
-                                    <mat-icon (click)="openDialog(x);" color="danger" class="icon"  >delete</mat-icon>
+                                  <button mat-icon-button  color="danger" [disabled]="x.verifyStatus != 'NotVerified'" (click)="openDialog(x);">
+                                    <mat-icon class="icon" >delete</mat-icon>
                                   </button>
                                 </td>
                             </tr>

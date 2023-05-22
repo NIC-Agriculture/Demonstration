@@ -15,13 +15,14 @@ export interface Task {
   subtasks?: Task[];
 }
 
+
 @Component({
-  selector: 'app-approved-dealer-sale-lists',
-  templateUrl: './approved-dealer-sale-lists.component.html',
-  styleUrls: ['./approved-dealer-sale-lists.component.css']
+  selector: 'app-returned-dealer-sale',
+  templateUrl: './returned-dealer-sale.component.html',
+  styleUrls: ['./returned-dealer-sale.component.css']
 })
-export class ApprovedDealerSaleListsComponent implements OnInit {
- 
+export class ReturnedDealerSaleComponent implements OnInit {
+
   BlockAndSchemeForm: any;
   scheme = '' ;
   SubschemeData: any;
@@ -30,16 +31,15 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
   schemeIdvar: any;
   BlockData: any;
   dealerlistTable: boolean = false;
-  AllApprovedDealerSale: any;
+  AllReturnedDealerSale: any;
   ApprovedSaleCount: any;
   message: boolean = false;
   showApprove: boolean = false;  
-  fileName= 'ApprovedDealerSaleLists.xlsx'; 
-  FinYears: any;
-  Season: any;
-  
+  fileName= 'ReturnedDealerSaleLists.xlsx'; 
 
   @ViewChild('content') content: any;
+  FinYears: any;
+  Season: any;
 
   constructor(
     private cdaoService: CdaoService,
@@ -47,7 +47,7 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
     private toastr: ToastrService,
     private layoutService: LayoutserviceService,
     public dialog: MatDialog
-  ) { 
+  ) {
     this.BlockAndSchemeForm = this.fb.group({
       block: ["", [Validators.required]],
       scheme: ["", [Validators.required]],
@@ -55,12 +55,13 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
       component: [""],
       FinYear: ["", [Validators.required]],
     })
-  }
+   }
 
   ngOnInit(): void {
     this.getFinYear();
     this.getBlocks();
   }
+
   get BlockSchemeFormValid() {
     return this.BlockAndSchemeForm.controls;
   }
@@ -75,7 +76,8 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
        console.error(e);
     }
   }
-
+  
+  
   getBlocks = async() => {
     try {
           this.BlockData = await this.cdaoService.getBlocks().toPromise()          
@@ -88,6 +90,7 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
   getSubscheme = async() => {
     try {
       this.SubschemeData = []
+      const Fin_Year = this.BlockAndSchemeForm.value.FinYear 
       switch (this.BlockAndSchemeForm.value.scheme) {
         case '2':
            this.schemeIdvar = 'scheme_1'
@@ -125,7 +128,7 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
     }
   }
 
-  getAllApprovedDealerSale = async()=>{
+  getAllReturnedDealerSale = async()=>{
     try {
       this.dealerlistTable = true;
       if(this.BlockAndSchemeForm.value.block  != null && this.BlockAndSchemeForm.value.scheme){
@@ -135,8 +138,8 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
         const compId = this.BlockAndSchemeForm.value.component 
         const Fin_Year = this.BlockAndSchemeForm.value.FinYear 
         
-        this.AllApprovedDealerSale  = await this.cdaoService.getAllApprovedDealerSale(blockcode,schemeId,subSchemeId,compId,Fin_Year).toPromise()
-        this.AllApprovedDealerSale.length > 0 ? (this.message = false,this.showApprove = true) : (this.message = true,this.showApprove = false)        
+        this.AllReturnedDealerSale  = await this.cdaoService.getAllReturnedDealerSale(blockcode,schemeId,subSchemeId,compId,Fin_Year).toPromise()
+        this.AllReturnedDealerSale.length > 0 ? (this.message = false,this.showApprove = true) : (this.message = true,this.showApprove = false)        
       }else{
         this.toastr.warning('Please select scheme')
       }
@@ -170,5 +173,4 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
      XLSX.writeFile(wb, this.fileName);
     
 }
-
 }

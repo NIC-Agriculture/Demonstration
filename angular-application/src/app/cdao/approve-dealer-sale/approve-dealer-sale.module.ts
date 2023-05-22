@@ -12,13 +12,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ApprovedDealerSaleListsComponent } from './approve-dealer-sale/approved-dealer-sale-lists/approved-dealer-sale-lists.component';
+import { ReturnedDealerSaleComponent } from './approve-dealer-sale/returned-dealer-sale/returned-dealer-sale.component';
 
 
 @NgModule({
   declarations: [
     ApproveDealerSaleComponent,
     ViewReceiptComponent,
-    ApprovedDealerSaleListsComponent
+    ApprovedDealerSaleListsComponent,
+    ReturnedDealerSaleComponent
   ],
   imports: [
     CommonModule,

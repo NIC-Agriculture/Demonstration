@@ -50,6 +50,8 @@ export class ApproveDealerSaleComponent implements OnInit {
   schemeIdvar: any;
   rejecteddealerSale: any;
   approvedInvoiceLists: boolean = false
+  FinYears: any;
+  Season: any;
 
 
   constructor(
@@ -67,6 +69,7 @@ export class ApproveDealerSaleComponent implements OnInit {
       scheme: ["", [Validators.required]],
       subScheme: [""],
       component: [""],
+      FinYear: ["", [Validators.required]],
     })
    }
 
@@ -76,6 +79,7 @@ export class ApproveDealerSaleComponent implements OnInit {
       this.layoutService.setPageHeadingDesc(this.pageDesc);
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
+    this.getFinYear();
     this.getBlocks();
   }
   get BlockSchemeFormValid() {
@@ -105,6 +109,17 @@ export class ApproveDealerSaleComponent implements OnInit {
       if (this.allDealerSaleResult == null) return;
       this.allDealerSaleResult.forEach((t: { completed: boolean; }) => (t.completed = completed));
       this.forwardButton = this.allComplete == true ? true : false;
+  }
+
+  getFinYear = async() => {
+    try{
+       const result = await this.layoutService.getFinYear().toPromise()
+       this.FinYears = result.Years;
+       this.Season = result.Season;
+    } catch (e){
+       this.toastr.error('Sorry. Server problem. Please try again.');
+       console.error(e);
+    }
   }
 
   getBlocks = async() => {
@@ -164,8 +179,9 @@ export class ApproveDealerSaleComponent implements OnInit {
         const schemeId = this.BlockAndSchemeForm.value.scheme;
         const subSchemeId = this.BlockAndSchemeForm.value.subScheme;
         const compId = this.BlockAndSchemeForm.value.component 
+        const Fin_Year = this.BlockAndSchemeForm.value.FinYear 
         
-        this.allDealerSaleResult  = await this.cdaoService.getAllDealerSale(blockcode,schemeId,subSchemeId,compId).toPromise()
+        this.allDealerSaleResult  = await this.cdaoService.getAllDealerSale(blockcode,schemeId,subSchemeId,compId,Fin_Year).toPromise()
         this.countPending = this.allDealerSaleResult.length
         this.allDealerSaleResult.forEach(async (e:any)=> {
                 const result1 = await this.cdaoService.getFarmerBankDetails(e.FarmerId).toPromise()
@@ -232,6 +248,7 @@ export class ApproveDealerSaleComponent implements OnInit {
         this.rejecteddealerSale = await this.cdaoService.returnDealerSaleToBAO(selectedDealerSale).toPromise()
         this.toastr.success(this.rejecteddealerSale.message);
         this.allDealerSaleResult= []
+        this.forwardButton = false
         this.getAllDealerSale()
       }
     } catch (e) {

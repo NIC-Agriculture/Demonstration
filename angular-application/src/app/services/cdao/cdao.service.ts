@@ -77,11 +77,14 @@ export class CdaoService {
   UpdateBlockTarget(data:{}): Observable<any> {
     return this.http.post(`${this.serverUrl}/${this.route}/UpdateBlockTarget`, data)
   }
-  getAllDealerSale(Block_Code: any , scheme: any, SubschemeId:any, CompId:any ): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getAllDealerSale?Block_Code=${Block_Code}&schemeId=${scheme}&SubschemeId=${SubschemeId}&CompId=${CompId}`)
+  getAllDealerSale(Block_Code: any , scheme: any, SubschemeId:any, CompId:any, Fin_Year: any ): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllDealerSale?Block_Code=${Block_Code}&schemeId=${scheme}&SubschemeId=${SubschemeId}&CompId=${CompId}&Fin_Year=${Fin_Year}`)
   }
-  getAllApprovedDealerSale(Block_Code: any , scheme: any, SubschemeId:any, CompId:any ): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getAllApprovedDealerSale?Block_Code=${Block_Code}&schemeId=${scheme}&SubschemeId=${SubschemeId}&CompId=${CompId}`)
+  getAllApprovedDealerSale(Block_Code: any , scheme: any, SubschemeId:any, CompId:any , Fin_Year: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllApprovedDealerSale?Block_Code=${Block_Code}&schemeId=${scheme}&SubschemeId=${SubschemeId}&CompId=${CompId}&Fin_Year=${Fin_Year}`)
+  }
+  getAllReturnedDealerSale(Block_Code: any , scheme: any, SubschemeId:any, CompId:any, Fin_Year: any ): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllReturnedDealerSale?Block_Code=${Block_Code}&schemeId=${scheme}&SubschemeId=${SubschemeId}&CompId=${CompId}&Fin_Year=${Fin_Year}`)
   }
   getAllIncentive(Block_Code: any , scheme: any ): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getIncetiveList?Block_Code=${Block_Code}&schemeId=${scheme}`)

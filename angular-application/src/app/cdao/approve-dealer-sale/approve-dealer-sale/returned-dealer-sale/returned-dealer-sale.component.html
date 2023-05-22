@@ -15,7 +15,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="row">
             <label class="col-sm-3 col-lg-3 col-form-label">Financial Year *:</label>
@@ -61,7 +60,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>            
             <div class="row">
                 <label class="col-sm-3 col-lg-3 col-form-label">Select Component *:</label>
                 <div class="col-sm-6 col-lg-5">
@@ -85,8 +84,8 @@
             <div class="col-sm-9 col-lg-9">
                 <button type="button" class="btn btn-primary" id="primary-popover-content" data-container="body"
                 data-toggle="popover" title="Primary color states" data-placement="bottom"
-                (click)="getAllApprovedDealerSale();" [disabled]="!BlockAndSchemeForm.valid">
-                Get Approved Sale Lists
+                 [disabled]="!BlockAndSchemeForm.valid" (click)="getAllReturnedDealerSale();">
+                Get Returned Sale List
                 </button>  
             </div>
 
@@ -105,12 +104,12 @@
                     <thead>
                         <tr>
                             <th>SL</th>
-                            <th>Reference No</th>
+                            <!-- <th>Reference No</th> -->
                             <th>Permit No</th>
                             <th>Invoice No</th>
                             <th>Farmer Id</th>
-                            <th>Account No</th>
-                            <th>IFSC Code</th>
+                            <!-- <th>Account No</th> -->
+                            <!-- <th>IFSC Code</th> -->
                             <th>Total Sale Price</th>
                             <th>Total Eligible Amount</th>
                             <th>Catagory</th>
@@ -119,14 +118,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let x of AllApprovedDealerSale; let i = index;">
+                        <tr *ngFor="let x of AllReturnedDealerSale; let i = index;">
                             <th scope="row"> {{i+1}} </th>
-                            <td > {{ x.ReferenceNo }} </td>
+                            <!-- <td > {{ x.ReferenceNo }} </td> -->
                             <td > {{ x.Permit_NO }} </td>
                             <td > {{ x.InvoiceNo }} </td>
                             <td > {{ x.FarmerId }} </td>
-                            <td > {{ x.AccountNo }} </td>
-                            <td > {{ x.IFSC }} </td>
+                            <!-- <td > {{ x.AccountNo }} </td> -->
+                            <!-- <td > {{ x.IFSC }} </td> -->
                             <td > {{ x.totalsaleprice | number : '1.2-2'}} </td>
                             <td > {{ x.totaleligiblesubsidy | number : '1.2-2' }} </td>
                             <td > {{ x.Farmer_Category }} </td>
@@ -139,7 +138,7 @@
         </div>
         <br>
         <div *ngIf="message">
-          <h4 style="text-align: center; color: red;">There is no approved sale .</h4>
+          <h4 style="text-align: center; color: red;">There is no returned sale .</h4>
         </div><br>
         <div class="card-block">
             <div class="row">
