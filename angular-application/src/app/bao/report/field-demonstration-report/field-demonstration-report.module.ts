@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { FieldDemonstrationReportRoutingModule } from './field-demonstration-report-routing.module';
 import { FieldDemonstrationReportComponent } from './field-demonstration-report.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { FieldDemonstrationReportComponent } from './field-demonstration-report.
   ],
   imports: [
     CommonModule,
-    FieldDemonstrationReportRoutingModule
+    FieldDemonstrationReportRoutingModule,
+    FormsModule
   ]
 })
 export class FieldDemonstrationReportModule { }

@@ -8,7 +8,44 @@
             <i class="icofont icofont-close-circled"></i>
         </div>
     </div>
+    <div class="card-block">
+        <div class="row">
+            <label class="col-sm-2 col-lg-2 col-form-label">Financial Year <label class="asterik">*</label>:</label>
+            <div class="col-sm-4 col-lg-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                    <select [(ngModel)]="FinYear" id="FinYear" class="form-control form-control-default">
+                        <option value="">--Select--</option>
+                        <option [ngValue]="x" *ngFor="let x of FinYears">
+                          {{ x }}
+                        </option>
+                      </select>
+                </div>
+            </div>
+            <label class="col-sm-2 col-lg-2 col-form-label">Scheme Name <label class="asterik">*</label>:</label>
+            <div class="col-sm-4 col-lg-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                    <select [(ngModel)]="schemeName" id="FinYear" class="form-control form-control-default">
+                        <option value="">--Select--</option>
+                        <option [ngValue]="x" *ngFor="let x of AllSchemeData">
+                          {{ x.schemeName }}
+                        </option>
+                      </select>
+                </div>
+            </div>
+        </div>
+        <div  style="padding: 20px;">
+            <button #btn  type="button" class="btn btn-primary
+            mat-elevation-z8" (click)="fieldDemonstrationId()"  style="float: right;" [disabled]="!FinYear || !schemeName ">Get List</button>
+         
+            <br>
+            <br>
+          </div>
 
+    </div>
+    </div>
+<div class="card" *ngIf="reportTable">
     <div class="card-block table-border-style">
          
         <div class="table-responsive">

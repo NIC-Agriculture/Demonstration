@@ -5,17 +5,21 @@ import { DemonstrationReportRoutingModule } from './demonstration-report-routing
 import { DemonstrationReportComponent } from './demonstration-report/demonstration-report.component';
 import {NgxPrintModule} from 'ngx-print';
 import { FormsModule } from '@angular/forms';
+import { MatTabsModule } from '@angular/material/tabs';
+import { DemonstrationClusterImplementationComponent } from '../demonstration-cluster-implementation/demonstration-cluster-implementation/demonstration-cluster-implementation.component';
 
 
 @NgModule({
   declarations: [
-    DemonstrationReportComponent
+    DemonstrationReportComponent,
+    DemonstrationClusterImplementationComponent,
   ],
   imports: [
     CommonModule,
     DemonstrationReportRoutingModule,
     NgxPrintModule,
-    FormsModule
+    FormsModule,
+    MatTabsModule,
   ]
 })
 export class DemonstrationReportModule { }
