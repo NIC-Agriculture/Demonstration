@@ -86,7 +86,8 @@ export class ClusterDetailsComponent implements OnInit {
   }
 
   getAllComponent = async () => {
-    this.allComponent = await this.schemeService.getAllComponent().toPromise();
+    const FinYear = this.clusterForm.value.FinYear
+    this.allComponent = await this.schemeService.getAllComponent(FinYear).toPromise();
   }
 
   getclusterDemonstration = async () => {

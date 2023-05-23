@@ -126,8 +126,9 @@ export class DistrictTargetComponent implements OnInit {
 
   getComponent = async() => {
     try {
+      const FinYear = this.DistrictTargetForm.value.FinYear
       const SubschemeId = this.DistrictTargetForm.value.subscheme.SubschemeId
-      this.ComponentData = await this.schemeService.getComponent(SubschemeId).toPromise()
+      this.ComponentData = await this.schemeService.getComponent(FinYear,SubschemeId).toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);

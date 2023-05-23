@@ -33,6 +33,11 @@ const routes: Routes = [
     loadChildren: () => import('./add-component/add-component.module').then(module => module.AddComponentModule)
   },
   {
+    path: 'component-mapping',
+    data: RoleObject,
+    loadChildren: () => import('./comp-cost-crop-mapping/comp-cost-crop-mapping.module').then(module => module.CompCostCropMappingModule)
+  },
+  {
     path: 'manage-item',
     data: RoleObject,
     loadChildren: () => import('./manage-item/manage-item.module').then(module => module.ManageItemModule)

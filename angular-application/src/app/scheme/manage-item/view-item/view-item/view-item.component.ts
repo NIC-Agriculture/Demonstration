@@ -34,6 +34,7 @@ export class ViewItemComponent implements OnInit {
       scheme: ['',[Validators.required]],
       subscheme: ['',[Validators.required]],
       component: ['', [Validators.required]],
+      FinYear : ['' , [Validators.required]]
     });
   }
 
@@ -82,8 +83,9 @@ export class ViewItemComponent implements OnInit {
 
   getComponent = async() => {
     try {
+      const FinYear = this.ViewItemForm.value.FinYear
       const SubschemeId = this.ViewItemForm.value.subscheme.SubschemeId
-      this.ComponentData = await this.schemeService.getComponent(SubschemeId).toPromise()
+      this.ComponentData = await this.schemeService.getComponent(FinYear,SubschemeId).toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
