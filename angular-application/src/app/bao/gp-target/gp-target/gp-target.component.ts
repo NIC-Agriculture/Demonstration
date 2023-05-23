@@ -103,7 +103,8 @@ export class GpTargetComponent implements OnInit {
   getComponent = async() => {
     try {
       const SubschemeId = this.gpTargetForm.value.subscheme.SubschemeId
-      this.ComponentData = await this.baoService.getComponent(SubschemeId).toPromise()
+      const FinYear = this.gpTargetForm.value.FinYear
+      this.ComponentData = await this.baoService.getComponent(SubschemeId,FinYear).toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);

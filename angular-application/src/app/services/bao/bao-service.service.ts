@@ -41,14 +41,14 @@ export class BaoServiceService {
   getSubscheme(schemeId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getSubscheme?schemeId=${schemeId}`)
   }
-  getComponent(SubschemeId: any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getComponent?SubschemeId=${SubschemeId}`)
+  getComponent(SubschemeId: any,Fin_Year:any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getComponent?SubschemeId=${SubschemeId}&Fin_Year=${Fin_Year}`)
   }
   getDemonstrationData(): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getDemonstrationData`)
   }
-  getVerifiedDemonstrationData(): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getVerifiedDemonstrationData`)
+  getVerifiedDemonstrationData(FinYear: any,schemeId: any,SubschemeId:any,CompId:any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getVerifiedDemonstrationData?Fin_Year=${FinYear}&schemeId=${schemeId}&SubschemeId=${SubschemeId}&CompId=${CompId}`)
   }
   getDemoIDToBeConfirmed(): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getDemoIDToBeConfirmed`)
@@ -89,8 +89,8 @@ export class BaoServiceService {
   getWardData( wardCode: any , DemostrationId: any ): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getWardData?WardCode=${wardCode}&DemostrationId=${DemostrationId}`)
   }
-  getclusterDemonstration( FinYear:any ,schemeId: any ): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getclusterDemonstration?Fin_Year=${FinYear}&schemeId=${schemeId}`)
+  getclusterDemonstration( FinYear:any ,schemeId: any ,SubschemeId:any,compId:any ): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getclusterDemonstration?Fin_Year=${FinYear}&schemeId=${schemeId}&SubschemeId=${SubschemeId}&CompId=${compId}`)
   }
   getDemonstrationIdCount(): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getDemonstrationIdCount`)
@@ -101,11 +101,11 @@ export class BaoServiceService {
   returnBackToVAW(data: any): Observable<any> {
     return this.http.post(`${this.serverUrl}/${this.route}/returnBackToVAW`,data)
   }
-  getDemonstrationStatusReport( FinYear:any ): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getDemonstrationStatusReport?Fin_Year=${FinYear}`)
+  getDemonstrationStatusReport( FinYear:any,schemeId:any,season:any ): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getDemonstrationStatusReport?Fin_Year=${FinYear}&schemeId=${schemeId}&season=${season}`)
   }
-  fieldDemonstrationIdPhaseDetails( ): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/fieldDemonstrationIdPhaseDetails`)
+  fieldDemonstrationIdPhaseDetails( FinYear:any,schemeId:any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/fieldDemonstrationIdPhaseDetails?Fin_Year=${FinYear}&schemeId=${schemeId}`)
   }
   getFieldDemonstrationPhotos( DemostrationId:any ): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getFieldDemonstrationPhotos?DemostrationId=${DemostrationId}`)
@@ -143,5 +143,17 @@ export class BaoServiceService {
   returnBackDealersaleToDealer(selectedDealerSale: any): Observable<any> {
     return this.http.post(`${this.serverUrl}/${this.route}/returnBackDealersaleToDealer`, selectedDealerSale)
   }
+
+  getApprovedDealerSale(demonstrationId: any ): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getApprovedDealerSale?DemonstrationId=${demonstrationId}`)
+  }
+  getReturnedDealerSale(demonstrationId: any ): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getReturnedDealerSale?DemonstrationId=${demonstrationId}`)
+  }
+
+  returnBackToDealer(selectedDealerSale: any): Observable<any> {
+    return this.http.post(`${this.serverUrl}/${this.route}/returnBackToDealerByBAO`, selectedDealerSale)
+  }
+
 
 }
