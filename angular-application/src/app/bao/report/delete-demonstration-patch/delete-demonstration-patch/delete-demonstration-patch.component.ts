@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { BaoServiceService } from 'src/app/services/bao/bao-service.service';
@@ -15,7 +16,7 @@ export class DeleteDemonstrationPatchComponent implements OnInit {
   pageTitle: string;
   pageDesc: string;
   breadcrumbList: Array<string>;
-
+  deletePatchFrom: any;
   FinYears: any;
   FinYear: any;
   clusterDemonstration: any;
@@ -26,16 +27,26 @@ export class DeleteDemonstrationPatchComponent implements OnInit {
   WardData: any;
   wardName: any;
   schemeId: string=''
+  SubschemeData: any;
+  AllSchemeData: any;
+  ComponentData: any;
 
   constructor(
     private baoService:BaoServiceService,
     private toastr: ToastrService,
     private layoutService: LayoutserviceService,
+    private fb : FormBuilder,
     private dialog : MatDialog
   ) {
     this.pageTitle = 'Delete Demonstration Patch';
     this.pageDesc = 'Delete Demonstration Patch';
     this.breadcrumbList = ['Delete Demonstration Patch'];
+    this.deletePatchFrom = this.fb.group({
+      FinYear: ["", [Validators.required]],
+      scheme: ["", [Validators.required]],
+      subScheme: ["",[Validators.required]],
+      component: ["",[Validators.required]],
+    })
    }
 
   ngOnInit(): void {
@@ -46,7 +57,9 @@ export class DeleteDemonstrationPatchComponent implements OnInit {
       });
       this.getFinYear();
   }
-
+  get deletePatchFromValid() {
+    return this.deletePatchFrom.controls;
+  }
   getFinYear = async() => {
     try{
       this.FinYear = ''
@@ -59,11 +72,49 @@ export class DeleteDemonstrationPatchComponent implements OnInit {
       console.error(e);
     }
   }
+
+  getAllScheme = async() => {
+    try {
+      this.AllSchemeData = await this.baoService.getAllScheme().toPromise()
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
+  getSubscheme = async() => {
+    try {
+      this.SubschemeData = []
+      this.ComponentData = []
+      const schemeId =  this.deletePatchFrom.value.scheme
+      this.SubschemeData = await this.baoService.getSubscheme(schemeId).toPromise()
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
+  getComponent = async() => {
+    try {
+      this.ComponentData = []
+      const SubschemeId = this.deletePatchFrom.value.subScheme
+      const FinYear = this.deletePatchFrom.value.FinYear
+      // console.log(SubschemeId);
+      this.ComponentData = await this.baoService.getComponent(SubschemeId,FinYear).toPromise()
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
   
   getclusterDemonstration = async () => {
     try {
       this.demonstrationClusterTable = true;
-      this.clusterDemonstration = await this.baoService.getclusterDemonstration(this.FinYear,this.schemeId).toPromise()
+      const FinYear = this.deletePatchFrom.value.FinYear;
+      const schemeId =  this.deletePatchFrom.value.scheme;
+      const SubschemeId = this.deletePatchFrom.value.subScheme
+      const compId = this.deletePatchFrom.value.component
+      this.clusterDemonstration = await this.baoService.getclusterDemonstration(FinYear,schemeId,SubschemeId,compId).toPromise()
       this.GpData = this.clusterDemonstration.GpData  
       this.clusterDemonstration.result.forEach((e: any) => {
           this.GpData.forEach((f: any) => {

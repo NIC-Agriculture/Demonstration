@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header">
-        <h5>Cluster Demonstration</h5>
-        <span>Cluster Demonstration For Block</span>
+        <h5>Delete Demonstration Patch</h5>
+        <span>Delete Wrong Demonstration Patch</span>
         <div class="card-header-right">
             <i class="icofont icofont-rounded-down"></i>
             <i class="icofont icofont-refresh"></i>
@@ -9,22 +9,82 @@
         </div>
     </div>
     <div class="card-block">
-        <div class="row">
-            <label class="col-sm-2 col-lg-2 col-form-label">Financial Year <label class="asterik">*</label>:</label>
-            <div class="col-sm-4 col-lg-4">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                    <select [(ngModel)]="FinYear" id="FinYear" class="form-control form-control-default" (change)="getclusterDemonstration()" >
-                        <option value="">--Select--</option>
-                        <option [ngValue]="x" *ngFor="let x of FinYears">
-                          {{ x }}
-                        </option>
-                      </select>
+        <form [formGroup]="deletePatchFrom">
+            <div class="row">
+                <label class="col-sm-2 col-lg-2 col-form-label">Financial Year <label class="asterik">*</label>:</label>
+                <div class="col-sm-4 col-lg-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                        <select formControlName="FinYear" id="FinYear" class="form-control form-control-default" (change)="getAllScheme()" >
+                            <option value="">--Select--</option>
+                            <option [ngValue]="x" *ngFor="let x of FinYears">
+                              {{ x }}
+                            </option>
+                          </select>
+                    </div>
+                    <div class="text-danger" *ngIf="deletePatchFromValid.FinYear.touched && !deletePatchFromValid.FinYear.valid">
+                        Financial Year is required.
+                   </div>
+                </div>
+                <label class="col-sm-2 col-lg-2 col-form-label">Scheme  <label class="asterik">*</label>:</label>
+                <div class="col-sm-4 col-lg-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                        <select formControlName="scheme" id="scheme" class="form-control form-control-default" (change)="getSubscheme()" >
+                            <option value="">--Select--</option>
+                            <option [ngValue]="x.schemeId" *ngFor="let x of AllSchemeData">
+                              {{ x.schemeName }}
+                            </option>
+                          </select>
+                    </div>
+                    <div class="text-danger" *ngIf="deletePatchFromValid.scheme.touched && !deletePatchFromValid.scheme.valid">
+                        Scheme is required.
+                   </div>
                 </div>
             </div>
-        </div>
-        <div id="print-section">
-            <div class="card-block" *ngIf="demonstrationClusterTable" >
+            <div class="row">
+                <label class="col-sm-2 col-lg-2 col-form-label">Subscheme <label class="asterik">*</label>:</label>
+                <div class="col-sm-4 col-lg-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                        <select formControlName="subScheme" id="subScheme" class="form-control form-control-default" (change)="getComponent()" >
+                            <option value="">--Select--</option>
+                            <option [ngValue]="x.SubschemeId" *ngFor="let x of SubschemeData"> {{ x.SubschemeName }} </option>
+                          </select>
+                    </div>
+                    <div class="text-danger" *ngIf="deletePatchFromValid.subScheme.touched && !deletePatchFromValid.subScheme.valid">
+                        Subscheme is required.
+                   </div>
+                </div>
+                <label class="col-sm-2 col-lg-2 col-form-label">Component<label class="asterik">*</label>:</label>
+                <div class="col-sm-4 col-lg-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                        <select formControlName="component" id="component" class="form-control form-control-default">
+                            <option value="">--Select--</option>
+                            <option [ngValue]="x.CompId" *ngFor="let x of ComponentData"> {{ x.CompName }}  </option>
+                          </select>
+                    </div>
+                    <div class="text-danger" *ngIf="deletePatchFromValid.component.touched && !deletePatchFromValid.component.valid">
+                        Component is required.
+                   </div>
+                </div>
+            </div>
+
+        </form>
+        <div  style="padding: 20px;">
+            <button #btn  type="button" class="btn btn-primary
+            mat-elevation-z8" (click)="getclusterDemonstration();" style="float: right;" [disabled]="!deletePatchFrom.valid">Get Patch List </button>
+         
+            <br>
+            <br>
+          </div>
+   
+    </div>
+    </div>
+
+    <div class="card" *ngIf="demonstrationClusterTable" >
+            <div class="card-block">
                 <div class="dt-responsive table-responsive">
                     <table id="custom-btn" class="table table-hover">
                         <thead>
@@ -61,7 +121,5 @@
                     </table>
                 </div>
             </div>
-            </div>
-    </div>
     </div>
 

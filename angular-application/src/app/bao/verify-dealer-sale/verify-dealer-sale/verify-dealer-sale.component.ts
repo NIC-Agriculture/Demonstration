@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BaoServiceService } from 'src/app/services/bao/bao-service.service';
 import { LayoutserviceService } from 'src/app/services/layoutservice.service';
 import { ViewReceiptComponent } from './view-receipt/view-receipt.component';
+import { FormBuilder, Validators } from '@angular/forms';
 
 
 @Component({
@@ -31,9 +32,17 @@ export class VerifyDealerSaleComponent implements OnInit {
   breadcrumbList: Array<string>;
   rejectedDealerSale: any;
   DealerSaleListTable: boolean = false;
+  dealerSaleFrom: any;
+  FinYears: any;
+  Season: any;
+  AllSchemeData: any;
+  SubschemeData: any;
+  ComponentData: any;
+  schemeIdvar: any;
   
   constructor(
     private baoService:BaoServiceService,
+    private fb : FormBuilder,
     private toastr: ToastrService,
     private layoutService: LayoutserviceService,
     public dialog: MatDialog
@@ -41,6 +50,13 @@ export class VerifyDealerSaleComponent implements OnInit {
     this.pageTitle = 'Dealer Sale List';
     this.pageDesc = 'dealer sale details';
     this.breadcrumbList = ['Sale Details'];
+    this.dealerSaleFrom = this.fb.group({
+      FinYear: ["", [Validators.required]],
+      scheme: ["", [Validators.required]],
+      subScheme: ["",[Validators.required]],
+      component: ["",[Validators.required]],
+      demonstrationId: ["", [Validators.required]],
+    })
    }
 
   ngOnInit(): void {
@@ -49,7 +65,68 @@ export class VerifyDealerSaleComponent implements OnInit {
       this.layoutService.setPageHeadingDesc(this.pageDesc);
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
-    this.getDemonstrationData()
+    this.getFinYear();
+  }
+  get dealerSaleFromValid() {
+    return this.dealerSaleFrom.controls;
+  }
+
+  getFinYear = async() => {
+    try{
+      const result = await this.layoutService.getFinYear().toPromise()
+      this.FinYears = result.Years;
+      this.Season = result.Season;
+    } catch (e){
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
+  getAllScheme = async() => {
+    try {
+      this.AllSchemeData = await this.baoService.getAllScheme().toPromise()
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
+  getSubscheme = async() => {
+    try {
+      this.SubschemeData = []
+      this.ComponentData = []
+      switch (this.dealerSaleFrom.value.scheme) {
+        case '2':
+           this.schemeIdvar = 'scheme_1'
+          break;
+        case '3':
+          this.schemeIdvar = 'scheme_2'
+          break;
+        case '4':
+          this.schemeIdvar = 'scheme_3'
+          break;  
+        default:
+          this.SubschemeData = []
+          this.ComponentData = []
+          break;
+      } 
+      this.SubschemeData = await this.baoService.getSubscheme(this.schemeIdvar).toPromise()
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
+  getComponent = async() => {
+    try {
+      this.ComponentData = []
+      const SubschemeId = this.dealerSaleFrom.value.subScheme
+      const FinYear = this.dealerSaleFrom.value.FinYear
+      this.ComponentData = await this.baoService.getComponent(SubschemeId,FinYear).toPromise()
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
   }
 
   updateAllComplete() {
@@ -79,7 +156,26 @@ export class VerifyDealerSaleComponent implements OnInit {
 
   getDemonstrationData = async() => {
       try {
-          this.demonstrationData =  await this.baoService.getVerifiedDemonstrationData().toPromise()
+        const FinYear = this.dealerSaleFrom.value.FinYear
+        switch (this.dealerSaleFrom.value.scheme) {
+          case '2':
+             this.schemeIdvar = 'scheme_1'
+            break;
+          case '3':
+            this.schemeIdvar = 'scheme_2'
+            break;
+          case '4':
+            this.schemeIdvar = 'scheme_3'
+            break;  
+          default:
+            this.SubschemeData = []
+            this.ComponentData = []
+            break;
+        }
+        const subschemeId = this.dealerSaleFrom.value.subScheme
+        const compId = this.dealerSaleFrom.value.component 
+
+          this.demonstrationData =  await this.baoService.getVerifiedDemonstrationData(FinYear,this.schemeIdvar,subschemeId,compId).toPromise()
           
       } catch (e) {
           this.toastr.error('Sorry. Server problem. Please try again.')

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { DemonstrationReportRoutingModule } from './demonstration-report-routing.module';
 import { DemonstrationReportComponent } from './demonstration-report/demonstration-report.component';
 import {NgxPrintModule} from 'ngx-print';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DemonstrationClusterImplementationComponent } from '../demonstration-cluster-implementation/demonstration-cluster-implementation/demonstration-cluster-implementation.component';
 
@@ -19,6 +19,7 @@ import { DemonstrationClusterImplementationComponent } from '../demonstration-cl
     DemonstrationReportRoutingModule,
     NgxPrintModule,
     FormsModule,
+    ReactiveFormsModule,
     MatTabsModule,
   ]
 })

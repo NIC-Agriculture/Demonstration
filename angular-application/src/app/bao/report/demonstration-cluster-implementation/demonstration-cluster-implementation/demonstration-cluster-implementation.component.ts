@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BaoServiceService } from 'src/app/services/bao/bao-service.service';
 import { LayoutserviceService } from 'src/app/services/layoutservice.service';
@@ -14,6 +15,7 @@ export class DemonstrationClusterImplementationComponent implements OnInit {
   pageDesc: string;
   breadcrumbList: Array<string>;
 
+  clusterFrom: any;
   FinYears: any;
   FinYear: any;
   clusterDemonstration: any;
@@ -27,15 +29,24 @@ export class DemonstrationClusterImplementationComponent implements OnInit {
   schemeId: any
 
   fileName= 'ClusterDetailsReport.xlsx';
+  SubschemeData: any;
+  ComponentData: any;
 
   constructor(
     private baoService:BaoServiceService,
     private layoutService: LayoutserviceService,
+    private fb : FormBuilder,
     private toastr: ToastrService,
   ) {
     this.pageTitle = 'Cluster Demonstration';
     this.pageDesc = 'Cluster Demonstration';
     this.breadcrumbList = ['Block Wise Cluster Demonstration'];
+    this.clusterFrom = this.fb.group({
+      FinYear: ["", [Validators.required]],
+      scheme: ["", [Validators.required]],
+      subScheme: ["",[Validators.required]],
+      component: ["",[Validators.required]],
+    })
    }
 
   ngOnInit(): void {
@@ -48,8 +59,14 @@ export class DemonstrationClusterImplementationComponent implements OnInit {
       this.getAllScheme()
   }
 
+  get clusterFromValid() {
+    return this.clusterFrom.controls;
+  }
+
   getFinYear = async() => {
     try{
+      this.FinYear = ''
+      this.FinYears = []
       const result = await this.layoutService.getFinYear().toPromise()
       this.FinYears = result.Years;
       this.Season = result.Season;
@@ -68,10 +85,38 @@ export class DemonstrationClusterImplementationComponent implements OnInit {
     }
   }
 
+  getSubscheme = async() => {
+    try {
+      this.SubschemeData = []
+      this.ComponentData = []
+      const schemeId =  this.clusterFrom.value.scheme
+      this.SubschemeData = await this.baoService.getSubscheme(schemeId).toPromise()
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
+  getComponent = async() => {
+    try {
+      this.ComponentData = []
+      const SubschemeId = this.clusterFrom.value.subScheme
+      const FinYear = this.clusterFrom.value.FinYear
+      this.ComponentData = await this.baoService.getComponent(SubschemeId,FinYear).toPromise()
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
   getclusterDemonstration = async () => {
     try {
       this.demonstrationClusterTable = true;
-      this.clusterDemonstration = await this.baoService.getclusterDemonstration(this.FinYear,this.schemeId).toPromise()
+      const FinYear = this.clusterFrom.value.FinYear;
+      const schemeId =  this.clusterFrom.value.scheme;
+      const SubschemeId = this.clusterFrom.value.subScheme
+      const compId = this.clusterFrom.value.component
+      this.clusterDemonstration = await this.baoService.getclusterDemonstration(FinYear,schemeId,SubschemeId,compId).toPromise()
       this.GpData = this.clusterDemonstration.GpData  
       this.clusterDemonstration.result.forEach((e: any) => {
           this.GpData.forEach((f: any) => {
