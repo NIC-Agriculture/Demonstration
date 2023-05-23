@@ -92,8 +92,9 @@ export class AddTechnicalnameComponent implements OnInit {
 
   getComponent = async () => {
     try {
+      const FinYear = this.AddItemTechForm.value.FinYear
       const SubschemeId = this.AddItemTechForm.value.subscheme.SubschemeId
-      const result = await this.schemeService.getComponent(SubschemeId).toPromise()
+      const result = await this.schemeService.getComponent(FinYear,SubschemeId).toPromise()
       this.ComponentData = result;
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');

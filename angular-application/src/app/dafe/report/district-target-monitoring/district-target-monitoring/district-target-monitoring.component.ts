@@ -115,8 +115,9 @@ export class DistrictTargetMonitoringComponent implements OnInit {
   }
   getComponent = () => {
     try {
+      const FinYear = this.ViewTargetForm.value.FinYear
       const SubschemeId = this.ViewTargetForm.value.subscheme.SubschemeId
-      this.schemeService.getComponent(SubschemeId).subscribe(result => {
+      this.schemeService.getComponent(FinYear ,SubschemeId).subscribe(result => {
         this.ComponentData = result;
       })
     } catch (e) {

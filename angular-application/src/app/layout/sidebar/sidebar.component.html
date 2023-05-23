@@ -37,13 +37,32 @@
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
-            <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
-                <a routerLink="/scheme/add-Component">
-                    <span class="pcoded-micon"><i class="ti-home"></i></span>
-                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Add Component</span>
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" data-i18n="nav.bootstrap-table.main">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i></span>
+                    <span class="pcoded-mtext">Manage Component </span>
                     <span class="pcoded-mcaret"></span>
                 </a>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/scheme/add-Component">
+                            <span class="pcoded-micon"><i class="ti-home"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.main">Add Component</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li routerLinkActive="active pcoded-trigger">
+                        <a routerLink="/scheme/component-mapping">
+                            <span class="pcoded-micon"><i class="ti-home"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.main">Add Component Cost and Crop</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
             </li>
+            
             <li class="pcoded-hasmenu">
                 <a href="javascript:void(0)" data-i18n="nav.bootstrap-table.main">
                     <span class="pcoded-micon"><i class="ti-receipt"></i></span>

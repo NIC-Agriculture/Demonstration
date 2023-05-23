@@ -37,8 +37,8 @@ export class SchemeserviceService {
     return this.http.get(`${this.serverUrl}/${this.route}/getAllSubscheme`)
   }
 
-  getAllComponent(): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getAllComponent`)
+  getAllComponent(Fin_Year: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllComponent?Fin_Year=${Fin_Year}`)
   }
 
   getAllComponentType(): Observable<any> {
@@ -49,8 +49,8 @@ export class SchemeserviceService {
     return this.http.get(`${this.serverUrl}/${this.route}/getSubscheme?schemeId=${schemeId}`)
   }
 
-  getComponent(CompId: any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getComponent?SubschemeId=${CompId}`)
+  getComponent(Fin_Year: any , SubschemeId : any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getComponent?SubschemeId=${SubschemeId}&Fin_Year=${Fin_Year}`)
   }
 
   getComponentCost(CompId: any): Observable<any> {
