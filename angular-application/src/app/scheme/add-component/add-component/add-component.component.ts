@@ -125,7 +125,8 @@ export class AddComponentComponent implements OnInit {
 
   getAllComponentType = async() => {
     try{
-      this.ComponentTypeList = await this.schemeService.getAllComponentType().toPromise()
+      const CompTypeId = this.ComponentForm.value.CompName.CompTypeId
+      this.ComponentTypeList = await this.schemeService.getAllComponentType(CompTypeId).toPromise()
     } catch (e){
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
