@@ -118,7 +118,8 @@ export class ViewTargetComponent implements OnInit {
     try {
       this.ViewTargetForm.patchValue({ component : '' })
       const SubschemeId = this.ViewTargetForm.value.subscheme.SubschemeId
-      this.ComponentData = await this.cdaoService.getComponent(SubschemeId).toPromise();
+      const Fin_Year = this.ViewTargetForm.value.FinYear
+      this.ComponentData = await this.cdaoService.getComponent(SubschemeId , Fin_Year).toPromise();
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);

@@ -192,7 +192,8 @@ export class BlockTargetComponent implements OnInit {
     try {
       this.BlockTargetForm.patchValue({ component : '' })
       const SubschemeId = this.BlockTargetForm.value.subscheme.SubschemeId
-      this.ComponentData = await this.cdaoService.getComponent(SubschemeId).toPromise()
+      const Fin_Year = this.BlockTargetForm.value.FinYear
+      this.ComponentData = await this.cdaoService.getComponent(SubschemeId , Fin_Year).toPromise()
       this.getCrops();
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');

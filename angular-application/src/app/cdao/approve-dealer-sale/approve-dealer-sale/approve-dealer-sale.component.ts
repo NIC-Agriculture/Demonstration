@@ -163,8 +163,9 @@ export class ApproveDealerSaleComponent implements OnInit {
   getComponent = async() => {
     try {
       this.ComponentData = []
+      const Fin_Year = this.BlockAndSchemeForm.value.FinYear 
       const SubschemeId = this.BlockAndSchemeForm.value.subScheme
-      this.ComponentData = await this.cdaoService.getComponent(SubschemeId).toPromise();      
+      this.ComponentData = await this.cdaoService.getComponent(SubschemeId,Fin_Year).toPromise();      
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);

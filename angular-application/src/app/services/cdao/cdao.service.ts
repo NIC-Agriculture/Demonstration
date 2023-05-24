@@ -29,8 +29,8 @@ export class CdaoService {
   getSubscheme(schemeId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getSubscheme?schemeId=${schemeId}`)
   }
-  getComponent(SubschemeId: any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getComponent?SubschemeId=${SubschemeId}`)
+  getComponent(SubschemeId: any, Fin_Year: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getComponent?SubschemeId=${SubschemeId}&Fin_Year=${Fin_Year}`)
   }
   getItems(CompId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getItems?CompId=${CompId}`)

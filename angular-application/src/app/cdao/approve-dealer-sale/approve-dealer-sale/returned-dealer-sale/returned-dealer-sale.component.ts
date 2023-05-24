@@ -121,7 +121,8 @@ export class ReturnedDealerSaleComponent implements OnInit {
     try {
       this.ComponentData = []
       const SubschemeId = this.BlockAndSchemeForm.value.subScheme
-      this.ComponentData = await this.cdaoService.getComponent(SubschemeId).toPromise();      
+      const Fin_Year = this.BlockAndSchemeForm.value.FinYear 
+      this.ComponentData = await this.cdaoService.getComponent(SubschemeId,Fin_Year).toPromise();      
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
