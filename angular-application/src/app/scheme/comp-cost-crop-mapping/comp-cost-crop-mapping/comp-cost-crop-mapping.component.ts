@@ -22,7 +22,10 @@ export class CompCostCropMappingComponent implements OnInit {
   loadSubschemeList: any;
   SubschemeData: any;
   AllSchemeData: any;
-  ComponentTypeList: any;
+  ComponentTypeList = {
+    CompTypeName: '',
+    CompTypeId: ''
+  }
   CompTypeId: any;
   cropType: any;
   AllComponentData: any;
@@ -42,6 +45,12 @@ export class CompCostCropMappingComponent implements OnInit {
   dropdownSettings:IDropdownSettings={};
   FinYears: any;
   Season: any;
+  ComponentData: any;
+
+  editFirstCrop:boolean = false;
+  editSecondCrop:boolean = false;
+  editAdditionalCrop: boolean = false;
+  ComponentCostData: any;
 
   constructor(
     private schemeService: SchemeserviceService,
@@ -54,31 +63,36 @@ export class CompCostCropMappingComponent implements OnInit {
     this.breadcrumbList = ['Component Input'];
     this.ComponentList = []
     this.ComponentForm = this.fb.group({
+      Fin_Year : ['' , [Validators.required]],
       schemeName: ['', [Validators.required]],
       SubschemeName: ['', [Validators.required]],
       CompName:['', [Validators.required]],
-      componentType: ['', [Validators.required]],
-      // AdditionalCrop: [''],
-      // FixedCrop: [''],
+      Total_Cost: ['', [Validators.required]],
+      componentType: [''],
       cropCategory: [''],
       subCrop: [''],
+      Seed_Per_ha:[''],
+      Unit: [''],
+      Cost_of_Seed: [''],
+      fixedCropCategory: [''],
       fixedSubCrop: [''],
-      additionalSubCrop: [''],
-      Fixed_SubCrop: [[]],
-      Total_Cost: ['', [Validators.required]],
-      Seed_Per_ha:['', [Validators.required]],
-      Unit: ['', [Validators.required]],
-      Cost_of_Seed: ['' , [Validators.required]],
-      Fin_Year : ['' , [Validators.required]]
+      fixedSeed_Per_ha:[''],
+      fixedUnit: [''],
+      fixedCost_of_Seed: [''],
+      additionalCropCategory: [''],
+      additionalSubCrop: ['' ],
+      additionalSeed_Per_ha: [''],
+      additionalUnit: [''],
+      additionalCost_of_Seed: [''],   
     });
    }
 
    ngOnInit(): void {
-    this.getAllScheme();
+    // this.getAllScheme();
     this.getAllComponent();
-    this.getAllComponentType();
     this.getAllSubCrops();
     this.getFinYear();
+    // this.getAllCrops();
     setTimeout(() => { 
       this.layoutService.setTitle(this.pageTitle);
       this.layoutService.setPageHeadingDesc(this.pageDesc);
@@ -88,9 +102,12 @@ export class CompCostCropMappingComponent implements OnInit {
       idField: 'SubCropId',
       textField: 'SubCropName',
     };
-  
+    this.ComponentForm.controls['Total_Cost'].disable();
   }
 
+  get ComponentFormValid() {
+    return this.ComponentForm.controls;
+  }
   
   getFinYear = async() => {
     try {
@@ -105,6 +122,14 @@ export class CompCostCropMappingComponent implements OnInit {
 
   getAllScheme = async() => {
     try{
+      this.editFirstCrop = false;
+      this.editSecondCrop = false;
+      this.editAdditionalCrop = false;
+      this.AllSchemeData = []
+      this.SubschemeData = []
+      this.ComponentData = []
+      this.ComponentCostData = []
+      this.ComponentForm.patchValue({ Total_Cost: '' })
       this.AllSchemeData = await this.schemeService.getAllScheme().toPromise()
     } catch (e){
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -114,6 +139,13 @@ export class CompCostCropMappingComponent implements OnInit {
 
   getSubscheme = async() => {
     try{
+      this.editFirstCrop = false;
+      this.editSecondCrop = false;
+      this.editAdditionalCrop = false;
+      this.SubschemeData = []
+      this.ComponentData = []
+      this.ComponentCostData = []
+      this.ComponentForm.patchValue({ Total_Cost: '' })
       const schemeId = this.ComponentForm.value.schemeName.schemeId
       this.SubschemeData = await this.schemeService.getSubscheme(schemeId).toPromise()
     } catch (e){
@@ -122,8 +154,27 @@ export class CompCostCropMappingComponent implements OnInit {
     }
   }
 
+  getComponent = async() => {
+    try {
+      this.editFirstCrop = false;
+      this.editSecondCrop = false;
+      this.editAdditionalCrop = false;
+      this.ComponentData = []
+      this.ComponentCostData = []
+      this.ComponentForm.patchValue({ Total_Cost: '' })
+      const FinYear = this.ComponentForm.value.Fin_Year
+      const SubschemeId = this.ComponentForm.value.SubschemeName.SubschemeId
+      this.ComponentData = await this.schemeService.getComponent(FinYear,SubschemeId).toPromise()
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
   getAllCrops = async() => {
     try{
+      this.AllCropData = []
+      this.SubCropData = []
       this.AllCropData = await this.schemeService.getAllCrops().toPromise()
     } catch (e){
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -131,9 +182,12 @@ export class CompCostCropMappingComponent implements OnInit {
     }
   }
 
-  getSubCrops = async(CropId: any) => {
+  getSubCrops = async() => {
       try{
+        this.SubCropData = []
+        const CropId = this.ComponentForm.value.cropCategory.CropId
         this.SubCropData = await this.schemeService.getSubCrops(CropId).toPromise()
+        
       } catch (e){
         this.toastr.error('Sorry. Server problem. Please try again.');
         console.error(e);
@@ -159,13 +213,104 @@ export class CompCostCropMappingComponent implements OnInit {
     }
   }
 
+  getComponentCost = async() => {
+    try {
+      this.ComponentCostData = []
+      this.ComponentForm.patchValue({ Total_Cost: '' })
+      const CompId = this.ComponentForm.value.CompName.CompId;
+      this.ComponentCostData = await this.schemeService.getComponentCost(CompId).toPromise()
+      this.ComponentForm.patchValue({ Total_Cost: this.ComponentCostData.Total_Cost })
+      this.ComponentForm.patchValue({ Seed_Per_ha: this.ComponentCostData.Seed_Per_ha })
+      this.ComponentForm.patchValue({ Unit: this.ComponentCostData.Unit })
+      this.ComponentForm.patchValue({ Cost_of_Seed: this.ComponentCostData.Cost_of_Seed })
+
+      this.ComponentForm.patchValue({ fixedSeed_Per_ha: this.ComponentCostData.Seed_Per_ha })
+      this.ComponentForm.patchValue({ fixedUnit: this.ComponentCostData.Unit })
+      this.ComponentForm.patchValue({ fixedCost_of_Seed: this.ComponentCostData.Cost_of_Seed })
+
+      this.ComponentForm.patchValue({ additionalSeed_Per_ha: this.ComponentCostData.Seed_Per_ha })
+      this.ComponentForm.patchValue({ additionalUnit: this.ComponentCostData.Unit })
+      this.ComponentForm.patchValue({ additionalCost_of_Seed: this.ComponentCostData.Cost_of_Seed })
+
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
   getAllComponentType = async() => {
     try{
-      this.ComponentTypeList = await this.schemeService.getAllComponentType().toPromise()
+      const CompTypeId = this.ComponentForm.value.CompName.CompTypeId
+      const result = await this.schemeService.getAllComponentType(CompTypeId).toPromise()
+      this.ComponentTypeList = result[0]
+      if (this.ComponentTypeList.CompTypeId == 'compType_1') {
+        this.editFirstCrop = true
+        this.editSecondCrop = false
+        this.editAdditionalCrop = false
+        this.ComponentForm.controls['Total_Cost'].disable();
+        this.ComponentForm.controls['cropCategory'].disable();
+        this.ComponentForm.controls['subCrop'].disable();
+        this.ComponentForm.controls['Seed_Per_ha'].disable();
+        this.ComponentForm.controls['Unit'].disable();
+        this.ComponentForm.controls['Cost_of_Seed'].disable();
+      }else if(this.ComponentTypeList.CompTypeId == 'compType_2'){
+        this.editFirstCrop = true
+        this.editSecondCrop = true
+        this.editAdditionalCrop = false
+        this.ComponentForm.controls['Total_Cost'].disable();
+        this.ComponentForm.controls['cropCategory'].disable();
+        this.ComponentForm.controls['subCrop'].disable();
+        this.ComponentForm.controls['Seed_Per_ha'].disable();
+        this.ComponentForm.controls['Unit'].disable();
+        this.ComponentForm.controls['Cost_of_Seed'].disable();
+    
+        this.ComponentForm.controls['fixedCropCategory'].disable();
+        this.ComponentForm.controls['fixedSubCrop'].disable();
+        this.ComponentForm.controls['fixedSeed_Per_ha'].disable();
+        this.ComponentForm.controls['fixedUnit'].disable();
+        this.ComponentForm.controls['fixedCost_of_Seed'].disable();
+      }else if (this.ComponentTypeList.CompTypeId == 'compType_3') {
+        this.editFirstCrop = true
+        this.editSecondCrop = false
+        this.editAdditionalCrop = true
+        this.ComponentForm.controls['Total_Cost'].disable();
+        this.ComponentForm.controls['cropCategory'].disable();
+        this.ComponentForm.controls['subCrop'].disable();
+        this.ComponentForm.controls['Seed_Per_ha'].disable();
+        this.ComponentForm.controls['Unit'].disable();
+        this.ComponentForm.controls['Cost_of_Seed'].disable();
+        this.ComponentForm.controls['additionalCropCategory'].disable();
+        this.ComponentForm.controls['additionalSubCrop'].disable();
+        this.ComponentForm.controls['additionalSeed_Per_ha'].disable();
+        this.ComponentForm.controls['additionalUnit'].disable();
+        this.ComponentForm.controls['additionalCost_of_Seed'].disable();
+      }
     } catch (e){
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
     }
+  }
+
+  edit = () => {
+    this.ComponentForm.controls['Total_Cost'].enable();
+    this.ComponentForm.controls['cropCategory'].enable();
+    this.ComponentForm.controls['subCrop'].enable();
+    this.ComponentForm.controls['Seed_Per_ha'].enable();
+    this.ComponentForm.controls['Unit'].enable();
+    this.ComponentForm.controls['Cost_of_Seed'].enable();
+
+    this.ComponentForm.controls['fixedCropCategory'].enable();
+    this.ComponentForm.controls['fixedSubCrop'].enable();
+    this.ComponentForm.controls['fixedSeed_Per_ha'].enable();
+    this.ComponentForm.controls['fixedUnit'].enable();
+    this.ComponentForm.controls['fixedCost_of_Seed'].enable();
+
+    this.ComponentForm.controls['additionalCropCategory'].enable();
+    this.ComponentForm.controls['additionalSubCrop'].enable();
+    this.ComponentForm.controls['additionalSeed_Per_ha'].enable();
+    this.ComponentForm.controls['additionalUnit'].enable();
+    this.ComponentForm.controls['additionalCost_of_Seed'].enable();
+
   }
 
   chooseCrop = () => {
@@ -245,6 +390,41 @@ export class CompCostCropMappingComponent implements OnInit {
     //   this.clicked= false;
     // }
     
+  }
+
+  UpdateComponentCost = async() => {
+    try {
+      const UpdatedData = {
+        Total_Cost: this.ComponentForm.value.Total_Cost,
+        CropId: this.ComponentForm.value.cropCategory.CropId,
+        SubCropId: this.ComponentForm.value.subCrop.SubCropId,
+        Seed_Per_ha: this.ComponentForm.value.Seed_Per_ha,
+        Unit: this.ComponentForm.value.Unit,
+        Cost_of_Seed: this.ComponentForm.value.Cost_of_Seed,
+
+       fixedCropId: this.ComponentForm.value.fixedCropCategory.CropId,
+       fixedSubCropId:  this.ComponentForm.value.fixedSubCrop.SubCropId,
+       fixedSeed_Per_ha: this.ComponentForm.value.fixedSeed_Per_ha,
+       fixedUnit: this.ComponentForm.value.fixedUnit, 
+       fixedCost_of_Seed: this.ComponentForm.value.fixedCost_of_Seed,
+       
+       additionalCropId: this.ComponentForm.value.additionalCropCategory.CropId,
+       additionalSubCropId: this.ComponentForm.value.additionalSubCrop.SubCropId,
+       additionalSeed_Per_ha: this.ComponentForm.value.additionalSeed_Per_ha,
+       additionalUnit: this.ComponentForm.value.additionalUnit,
+       additionalCost_of_Seed: this.ComponentForm.value.additionalCost_of_Seed
+
+      }
+      console.log(UpdatedData);
+      
+      // const result = await this.schemeService.UpdateComponentCost(UpdatedData).toPromise()
+      // this.toastr.success(result.message);
+      
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+      
+    }
   }
 
 }

@@ -1,0 +1,15 @@
+.mat-success {
+    background-color: #fff;
+    color: green;
+  }
+
+  .asterik{
+    content:"*" ;
+    color:red   
+    }
+
+    
+    td {
+        white-space: pre-wrap;
+    }
+  
