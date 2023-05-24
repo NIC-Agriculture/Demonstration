@@ -24,11 +24,11 @@ export class BaoServiceService {
   getGPs(): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getGPs`)
   }
-  assignVAW(Gp_Code: any ): Observable<any> {
+  assignVAW(Gp_Code: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/assignVAW?Gp_Code=${Gp_Code}`)
   }
 
-  getBlockTarget(schemeId : string,SubschemeId : string,CompId : string,Fin_Year : string): Observable<any> {
+  getBlockTarget(schemeId: string, SubschemeId: string, CompId: string, Fin_Year: string): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getBlockTarget?schemeId=${schemeId}&SubschemeId=${SubschemeId}&CompId=${CompId}&Fin_Year=${Fin_Year}`)
   }
 
@@ -41,13 +41,13 @@ export class BaoServiceService {
   getSubscheme(schemeId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getSubscheme?schemeId=${schemeId}`)
   }
-  getComponent(SubschemeId: any,Fin_Year:any): Observable<any> {
+  getComponent(SubschemeId: any, Fin_Year: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getComponent?SubschemeId=${SubschemeId}&Fin_Year=${Fin_Year}`)
   }
   getDemonstrationData(): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getDemonstrationData`)
   }
-  getVerifiedDemonstrationData(FinYear: any,schemeId: any,SubschemeId:any,CompId:any): Observable<any> {
+  getVerifiedDemonstrationData(FinYear: any, schemeId: any, SubschemeId: any, CompId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getVerifiedDemonstrationData?Fin_Year=${FinYear}&schemeId=${schemeId}&SubschemeId=${SubschemeId}&CompId=${CompId}`)
   }
   getDemoIDToBeConfirmed(): Observable<any> {
@@ -68,28 +68,31 @@ export class BaoServiceService {
   getTotalSeedCount(CompId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/vaw/getTotalSeedCount?CompId=${CompId}`)
   }
-  confirmDemonstrationPatch(DemonstrationId: any): Observable<any>{
+  confirmDemonstrationPatch(DemonstrationId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/confirmDemonstrationPatch?DemonstrationId=${DemonstrationId}`)
   }
-  getAllDealerSale(demonstrationId: any ): Observable<any> {
+  getAllDealerSale(demonstrationId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getAllDealerSale?DemonstrationId=${demonstrationId}`)
   }
-  getDealerSaleReciept(InvoiceNo: any ): Observable<any> {
+  getDealerSaleReciept(InvoiceNo: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getDealerSaleReciept?InvoiceNo=${InvoiceNo}`)
   }
-  getVAWSaleReciept(Permit_NO: any ): Observable<any> {
+  getVAWSaleReciept(Permit_NO: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getVAWSaleReciept?Permit_NO=${Permit_NO}`)
   }
   confirmDealerSale(selectedDealerSale: any): Observable<any> {
     return this.http.post(`${this.serverUrl}/${this.route}/confirmDealerSale`, selectedDealerSale)
   }
-  getAvailableTarget(FinYear: any,schemeId: any): Observable<any> {
+  ReconfirmDealerSale(selectedDealerSale: any): Observable<any> {
+    return this.http.post(`${this.serverUrl}/${this.route}/ReconfirmDealerSale`, selectedDealerSale)
+  }
+  getAvailableTarget(FinYear: any, schemeId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getAvailableTarget?Fin_Year=${FinYear}&schemeId=${schemeId}`)
   }
-  getWardData( wardCode: any , DemostrationId: any ): Observable<any> {
+  getWardData(wardCode: any, DemostrationId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getWardData?WardCode=${wardCode}&DemostrationId=${DemostrationId}`)
   }
-  getclusterDemonstration( FinYear:any ,schemeId: any ,SubschemeId:any,compId:any ): Observable<any> {
+  getclusterDemonstration(FinYear: any, schemeId: any, SubschemeId: any, compId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getclusterDemonstration?Fin_Year=${FinYear}&schemeId=${schemeId}&SubschemeId=${SubschemeId}&CompId=${compId}`)
   }
   getDemonstrationIdCount(): Observable<any> {
@@ -99,18 +102,18 @@ export class BaoServiceService {
     return this.http.get(`${this.serverUrl}/${this.route}/getSeedDistributionStatus`)
   }
   returnBackToVAW(data: any): Observable<any> {
-    return this.http.post(`${this.serverUrl}/${this.route}/returnBackToVAW`,data)
+    return this.http.post(`${this.serverUrl}/${this.route}/returnBackToVAW`, data)
   }
-  getDemonstrationStatusReport( FinYear:any,schemeId:any,season:any ): Observable<any> {
+  getDemonstrationStatusReport(FinYear: any, schemeId: any, season: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getDemonstrationStatusReport?Fin_Year=${FinYear}&schemeId=${schemeId}&season=${season}`)
   }
-  fieldDemonstrationIdPhaseDetails( FinYear:any,schemeId:any): Observable<any> {
+  fieldDemonstrationIdPhaseDetails(FinYear: any, schemeId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/fieldDemonstrationIdPhaseDetails?Fin_Year=${FinYear}&schemeId=${schemeId}`)
   }
-  getFieldDemonstrationPhotos( DemostrationId:any ): Observable<any> {
+  getFieldDemonstrationPhotos(DemostrationId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getFieldDemonstrationPhotos?DemostrationId=${DemostrationId}`)
   }
-  deleteDemoID(demoID : any): Observable<any> {
+  deleteDemoID(demoID: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/deleteDemoID?DemostrationId=${demoID}`)
   }
   getCalculatedInputCost(): Observable<any> {
@@ -120,7 +123,7 @@ export class BaoServiceService {
     return this.http.get(`${this.serverUrl}/${this.route}/getCalculatedIncentiveCost`)
   }
 
-  
+
   getEligibleDemonstrationData(): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getEligibleDemonstrationData`)
   }
@@ -133,27 +136,30 @@ export class BaoServiceService {
   updateTrapsData(data: any): Observable<any> {
     return this.http.post(`${this.serverUrl}/${this.route}/updateTrapsData`, data)
   }
-  getFarmerGp(farmerId:string ): Observable<any> {
+  getFarmerGp(farmerId: string): Observable<any> {
     return this.http.get(`https://mkuy.apicol.nic.in/api/FarmerData/Fdetails?fid=${farmerId}`, { headers: { skip: 'true' } })
   }
-  confirmTrapsData(DemonstrationId:string ): Observable<any> {
+  confirmTrapsData(DemonstrationId: string): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/confirmTrapsData?DemonstrationId=${DemonstrationId}`)
   }
 
-  returnBackDealersaleToDealer(selectedDealerSale: any): Observable<any> {
-    return this.http.post(`${this.serverUrl}/${this.route}/returnBackDealersaleToDealer`, selectedDealerSale)
+  returnToDealer(selectedDealerSale: any): Observable<any> {
+    return this.http.post(`${this.serverUrl}/${this.route}/returnToDealer`, selectedDealerSale)
+  }
+  returnedSaleCDAOToDealer(selectedDealerSale: any): Observable<any> {
+    return this.http.post(`${this.serverUrl}/${this.route}/returnedSaleCDAOToDealer`, selectedDealerSale)
   }
 
-  getApprovedDealerSale(demonstrationId: any ): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getApprovedDealerSale?DemonstrationId=${demonstrationId}`)
-  }
-  getReturnedDealerSale(demonstrationId: any ): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getReturnedDealerSale?DemonstrationId=${demonstrationId}`)
+  getAllApprovedDealerSale(demonstrationId: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllApprovedDealerSale?DemonstrationId=${demonstrationId}`)
   }
 
-  returnBackToDealer(selectedDealerSale: any): Observable<any> {
-    return this.http.post(`${this.serverUrl}/${this.route}/returnBackToDealerByBAO`, selectedDealerSale)
+  getReturnedByCDAODealerSale(subschemeId: any, compId: any, FinYear: any, demonstrationId: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getReturnedByCDAODealerSale?DemonstrationId=${demonstrationId}&Fin_Year=${FinYear}&SubschemeId=${subschemeId}&CompId=${compId}`)
   }
 
+  getReturnedToDealerSale(subschemeId: any, compId: any, FinYear: any, demonstrationId: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getReturnedToDealerSale?DemonstrationId=${demonstrationId}&Fin_Year=${FinYear}&SubschemeId=${subschemeId}&CompId=${compId}`)
+  }
 
 }

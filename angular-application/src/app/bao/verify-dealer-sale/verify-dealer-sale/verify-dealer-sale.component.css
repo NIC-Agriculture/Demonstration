@@ -1,8 +1,12 @@
-.asterik{
-    content:"*" ;
-    color:red   
-    }
+td {
+  white-space: pre-wrap;
+}
 
-    .mat-radio-button ~ .mat-radio-button {
-        margin-left: 16px;
-      }
+.asterik {
+  content: "*";
+  color: red
+}
+
+.mat-radio-button~.mat-radio-button {
+  margin-left: 16px;
+}
