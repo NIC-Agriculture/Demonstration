@@ -24,6 +24,7 @@ export class RegeneratePaymentFileComponent implements OnInit {
   regenerateTable: boolean = false
   stateplan: boolean = false;
   pfsm: boolean = false;
+  message:boolean = false;
   constructor(
     private cdaoService: CdaoService,
     private toastr: ToastrService,
@@ -44,6 +45,8 @@ export class RegeneratePaymentFileComponent implements OnInit {
 
   getAllScheme = async () => {
     try {
+      this.pfsm = false
+      this.stateplan = false;
       this.refNos=[];
       this.AllSchemeData=[];
       this.SchemeId={};
@@ -57,6 +60,8 @@ export class RegeneratePaymentFileComponent implements OnInit {
 
   getReferenceIDs = async () => {
     try {
+      this.pfsm = false
+      this.stateplan = false;
       this.referenceId={};
       const schemeId = this.SchemeId.schemeId
       this.refNos = await this.cdaoService.getReferenceIDs(schemeId,this.paymentType).toPromise();
@@ -68,10 +73,12 @@ export class RegeneratePaymentFileComponent implements OnInit {
 
   RegeneratePaymntFile = async () => {
     try {
-      this.regenerateTable = true
       const schemeId = this.SchemeId.schemeId
       const refId = this.referenceId.referenceno
       this.regeneratepaymentFile = await this.cdaoService.RegeneratePaymntFile(refId,schemeId,this.paymentType).toPromise();
+      if (this.regeneratepaymentFile.length == 0) {
+        this.message = true
+      }
       this.calculateShare();
       this.regeneratepaymentFile.forEach(async (e:any)=> {
         const result1 = await this.cdaoService.getFarmerBankDetails(e.FarmerId).toPromise()

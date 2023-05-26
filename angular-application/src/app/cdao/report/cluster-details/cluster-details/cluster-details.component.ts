@@ -24,6 +24,8 @@ export class ClusterDetailsComponent implements OnInit {
   clusterReport: any;
   GpData: any;
   demonstrationClusterTable:boolean = false;
+  message: boolean = false
+  filterTerm !: string
 
   fileName= 'ClusterDetailsReport.xlsx'; 
 
@@ -38,8 +40,8 @@ export class ClusterDetailsComponent implements OnInit {
     this.breadcrumbList = ['Block wise Cluster Details'];
     this.clusterForm = this.fb.group({
       // block: [""],
-      blockCode: ["", [Validators.required]],
       FinYear: ["", [Validators.required]],
+      blockCode: ["", [Validators.required]],
      })
   }
 
@@ -50,12 +52,9 @@ export class ClusterDetailsComponent implements OnInit {
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
     this.getFinYear();
-    this.loadBlocks();
   }
 
-  loadBlocks = async () => {
-    this.allBlocks = await this.cdaoService.getBlocks().toPromise();
-  }
+
 
   getFinYear = async() => {
     try{
@@ -68,10 +67,20 @@ export class ClusterDetailsComponent implements OnInit {
     }
   }
 
+  loadBlocks = async () => {
+    this.clusterForm.patchValue({blockCode: ''})
+    this.allBlocks = []
+    this.demonstrationClusterTable = false;
+    this.allBlocks = await this.cdaoService.getBlocks().toPromise();
+  }
+
   getclusterDemonstration = async () => {
     try {
       this.demonstrationClusterTable = true
       this.clusterDemonstration = await this.cdaoService.getclusterDemonstration(this.clusterForm.value.blockCode , this.clusterForm.value.FinYear).toPromise()
+      if (this.clusterDemonstration.length == 0) {
+        this.message = true
+      }
       this.clusterReport = this.clusterDemonstration.result;
       this.GpData = this.clusterDemonstration.GpData
       this.clusterDemonstration.result.forEach((e: any) => {

@@ -17,6 +17,50 @@
                     <form [formGroup]="ViewTargetForm">
                         <div class="row">
                             <div class="col-lg-6 col md-6">
+                              <div class="form-group row">
+                                <div class="col-sm-4 col-lg-3">
+                                  <label class="block" for="FinYear">Financial Year <label class="asterik">*</label>:</label>
+                                </div>
+                                <div class="col-sm-4 col-lg-9">
+                                  <select  formControlName="FinYear" id="FinYear"
+                                    class="form-control form-control-default" (change)="getAllScheme();" required>
+                                    <option value="">--Select--</option>
+                                    <option [ngValue]="x" *ngFor="let x of FinYears"> {{ x }} </option>
+                                  </select>
+                                  <div class="text-danger" *ngIf="viewFormValid.FinYear.touched && !viewFormValid.FinYear.valid">
+                                  Financial Year is required.
+                                </div>
+                                  
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <div class="col-sm-4 col-lg-3">
+                                  <label class="block" for="subscheme">Subscheme <label class="asterik">*</label>:</label>
+                                </div>
+                                <div class="col-sm-4 col-lg-9">
+                                  <select required formControlName="subscheme" id="subscheme"
+                                    class="form-control form-control-default" (change)="getComponent();">
+                                    <option value="">--Select--</option>
+                                    <option [ngValue]="x" *ngFor="let x of SubschemeData">
+                                      {{ x.SubschemeName }}
+                                    </option>
+                                  </select>
+                                  <div class="text-danger" *ngIf="viewFormValid.subscheme.touched && !viewFormValid.subscheme.valid">
+                                  Subscheme is required.
+                                </div>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <div class="col-sm-4 col-lg-3">
+                                  <label class="block" for="subsidy">Total Cost <label class="asterik">*</label>:</label>
+                                </div>
+                                <div class="col-sm-4 col-lg-9">
+                                  <input type="text" required class="form-control form-control-default"
+                                    formControlName="subsidy" />
+                                </div>
+                              </div>
+                              </div>
+                              <div class="col-lg-6 col md-6">
                                 <div class="form-group row">
                                   <div class="col-sm-4 col-lg-3">
                                     <label class="block" for="fuel">Scheme <label class="asterik">*</label>:</label>
@@ -34,7 +78,6 @@
                                     </div>
                                   </div>
                                 </div>
-            
                                 <div class="form-group row">
                                   <div class="col-sm-4 col-lg-3">
                                     <label class="block" for="component">Component <label class="asterik">*</label>:</label>
@@ -52,52 +95,7 @@
                                   </div>
                                   </div>
                                 </div>
-            
-                                <div class="form-group row">
-                                  <div class="col-sm-4 col-lg-3">
-                                    <label class="block" for="FinYear">Financial Year <label class="asterik">*</label>:</label>
-                                  </div>
-                                  <div class="col-sm-4 col-lg-9">
-                                    <select  formControlName="FinYear" id="FinYear"
-                                      class="form-control form-control-default" required>
-                                      <option value="">--Select--</option>
-                                      <option [ngValue]="x" *ngFor="let x of FinYears"> {{ x }} </option>
-                                    </select>
-                                    <div class="text-danger" *ngIf="viewFormValid.FinYear.touched && !viewFormValid.FinYear.valid">
-                                    Financial Year is required.
-                                  </div>
-                                    
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-lg-6 col md-6">
-                                <div class="form-group row">
-                                  <div class="col-sm-4 col-lg-3">
-                                    <label class="block" for="subscheme">Subscheme <label class="asterik">*</label>:</label>
-                                  </div>
-                                  <div class="col-sm-4 col-lg-9">
-                                    <select required formControlName="subscheme" id="subscheme"
-                                      class="form-control form-control-default" (change)="getComponent();">
-                                      <option value="">--Select--</option>
-                                      <option [ngValue]="x" *ngFor="let x of SubschemeData">
-                                        {{ x.SubschemeName }}
-                                      </option>
-                                    </select>
-                                    <div class="text-danger" *ngIf="viewFormValid.subscheme.touched && !viewFormValid.subscheme.valid">
-                                    Subscheme is required.
-                                  </div>
-                                  </div>
-                                </div>
-                                <div class="form-group row">
-                                  <div class="col-sm-4 col-lg-3">
-                                    <label class="block" for="subsidy">Total Cost <label class="asterik">*</label>:</label>
-                                  </div>
-                                  <div class="col-sm-4 col-lg-9">
-                                    <input type="text" required class="form-control form-control-default"
-                                      formControlName="subsidy" />
-                                  </div>
-                                </div>
-                                <div class="form-group row">
+                                <!-- <div class="form-group row">
                                   <div class="col-sm-3 col-lg-3">
                                   </div>
                                   <div class="col-sm-3 col-lg-3">
@@ -107,7 +105,7 @@
                                   </div>
                                   <div class="col-sm-3 col-lg-3">
                                   </div>
-                                </div>
+                                </div> -->
 
                                 <!-- <div>
                                   <button (click)="loadAllDistrictTarget();" class="btn btn-primary mat-elevation-z8 float-right">Set Target</button>
@@ -232,6 +230,12 @@
     class="btn btn-primary mat-elevation-z8 float-right" printSectionId="print-section" ngxPrint ><i class="icofont icofont-print"></i>Print</button>
     <button 
     class="btn btn-primary mat-elevation-z8 float-right" (click)="exportexcel()" style="margin-right:10px;" ><i class="ion-ios-upload"></i> Export to Excel </button>
+  </div>
+</div>
+
+<div class= "card" *ngIf="message">
+  <div>
+      <h4 style="text-align: center; color: red;">There is no Target given to this component.</h4>
   </div>
 </div>
 

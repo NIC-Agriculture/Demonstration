@@ -73,12 +73,6 @@
             </div>
         </div>
     </div>
-        <div class="card-block" *ngIf="stateplan" >
-            <app-stateplan-payment-file [pymntDetails]="pymntFile" ></app-stateplan-payment-file>
-        </div>
-        <div class="card-block" *ngIf="pfsm">
-            <app-pfms-payment-file [typeOfPayment]="paymentType" [pymntDetails]="pymntFile"></app-pfms-payment-file>
-        </div>
         <!-- <div class="card-block">
 
             <div class="row">
@@ -89,4 +83,16 @@
             </div>
         </div> -->
    
+</div>
+
+<div class="card" *ngIf="stateplan">
+    <div class="card-block"  >
+        <app-stateplan-payment-file [pymntDetails]="pymntFile" ></app-stateplan-payment-file>
+    </div>
+</div>
+
+<div class="card" *ngIf="stateplan">
+    <div class="card-block" *ngIf="pfsm">
+        <app-pfms-payment-file [typeOfPayment]="paymentType" [pymntDetails]="pymntFile"></app-pfms-payment-file>
+    </div>
 </div>

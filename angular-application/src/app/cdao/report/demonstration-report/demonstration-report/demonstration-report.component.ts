@@ -22,7 +22,9 @@ export class DemonstrationReportComponent implements OnInit {
 
   demonstrationReport:any;
   demonstrationReportForm:any
+  reportTable: boolean = false
   message: boolean = false;
+  filterTerm !: string
 
   fileName= 'demonstrationReport.xlsx';
 
@@ -49,17 +51,13 @@ export class DemonstrationReportComponent implements OnInit {
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
     this.getFinYear();
-    this.loadBlocks();
   }
 
   printThisPage() {
     window.print();
   }
 
-  loadBlocks = async () => {
-    this.allBlocks = await this.cdaoService.getBlocks().toPromise();
-  }
-
+  
   getFinYear = async() => {
     try{
       const result = await this.layoutService.getFinYear().toPromise()
@@ -71,9 +69,15 @@ export class DemonstrationReportComponent implements OnInit {
     }
   }
 
-  
+  loadBlocks = async () => {
+    this.demonstrationReportForm.patchValue({blockCode: ''})
+    this.allBlocks = []
+    this.reportTable = false;
+    this.allBlocks = await this.cdaoService.getBlocks().toPromise();
+  }
   getDemonstrationStatusReport = async () => {
     try {
+      this.reportTable = true
       this.demonstrationReport = await this.cdaoService.getDemonstrationStatusReport(this.demonstrationReportForm.value.blockCode,this.demonstrationReportForm.value.FinYear).toPromise();
       this.message = this.demonstrationReport.length == 0 ? true : false
     } catch (e) {
