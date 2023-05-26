@@ -142,7 +142,7 @@
   </div>
   <div class="card-block table-card" id="print-section">
     <div class="table-responsive">
-      <table class="table table-striped table-bordered">
+      <table class="table table-striped table-bordered" id="excel-table">
         <thead>
           <tr>
             <th rowspan="2" style="vertical-align : middle;text-align:center;">District</th>
@@ -230,6 +230,8 @@
     <button  [useExistingCss]="true"
     styleSheetFile="node_modules/bootstrap/dist/css/bootstrap.min.css"
     class="btn btn-primary mat-elevation-z8 float-right" printSectionId="print-section" ngxPrint ><i class="icofont icofont-print"></i>Print</button>
+    <button 
+    class="btn btn-primary mat-elevation-z8 float-right" (click)="exportexcel()" style="margin-right:10px;" ><i class="ion-ios-upload"></i> Export to Excel </button>
   </div>
 </div>
 
