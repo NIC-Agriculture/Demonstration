@@ -52,6 +52,8 @@ export class ApproveDealerSaleComponent implements OnInit {
   approvedInvoiceLists: boolean = false
   FinYears: any;
   Season: any;
+  filterTerm !: string
+
 
 
   constructor(
@@ -80,7 +82,7 @@ export class ApproveDealerSaleComponent implements OnInit {
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
     this.getFinYear();
-    this.getBlocks();
+    // this.getBlocks();
   }
   get BlockSchemeFormValid() {
     return this.BlockAndSchemeForm.controls;
@@ -113,6 +115,7 @@ export class ApproveDealerSaleComponent implements OnInit {
 
   getFinYear = async() => {
     try{
+      
        const result = await this.layoutService.getFinYear().toPromise()
        this.FinYears = result.Years;
        this.Season = result.Season;
@@ -124,6 +127,9 @@ export class ApproveDealerSaleComponent implements OnInit {
 
   getBlocks = async() => {
     try {
+          this.dealerlistTable = false
+          this.BlockAndSchemeForm.patchValue({subScheme : '',component : '', block:''})
+          this.BlockData = []
           this.BlockData = await this.cdaoService.getBlocks().toPromise()          
       } catch (e) {
           this.toastr.error('Sorry. Server problem. Please try again.')
@@ -133,6 +139,8 @@ export class ApproveDealerSaleComponent implements OnInit {
 
   getSubscheme = async() => {
     try {
+      this.dealerlistTable = false
+      this.BlockAndSchemeForm.patchValue({subScheme : '',component : ''})
       this.SubschemeData = []
       switch (this.BlockAndSchemeForm.value.scheme) {
         case '2':
@@ -163,6 +171,8 @@ export class ApproveDealerSaleComponent implements OnInit {
   getComponent = async() => {
     try {
       this.ComponentData = []
+      this.dealerlistTable = false
+      this.BlockAndSchemeForm.patchValue({component : ''})
       const Fin_Year = this.BlockAndSchemeForm.value.FinYear 
       const SubschemeId = this.BlockAndSchemeForm.value.subScheme
       this.ComponentData = await this.cdaoService.getComponent(SubschemeId,Fin_Year).toPromise();      

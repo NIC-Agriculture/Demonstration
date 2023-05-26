@@ -39,7 +39,7 @@ app.use(device.capture())
 
 app.use('/auth', require('./routes/auth.route'));
 app.use('/dealer',verifyAccessToken , permission('DEALER'), require('./routes/dealer.route'));
-app.use("/scheme",verifyAccessToken, multipleRolePermission(['SCHEME','OSSC','CDAO','DAFE']), require('./routes/scheme.route'));
+app.use('/scheme',verifyAccessToken, multipleRolePermission(['SCHEME','OSSC','CDAO','DAFE']), require('./routes/scheme.route'));
 app.use('/cdao' ,verifyAccessToken, multipleRolePermission(['CDAO','SCHEME']), require('./routes/cdao.route'));
 app.use('/bao', verifyAccessToken, multipleRolePermission(['BAO','DEALER']) , require('./routes/bao.route'));
 app.use('/ado', verifyAccessToken, permission('ADO') , require('./routes/ado.route'));

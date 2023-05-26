@@ -4,12 +4,12 @@ const ComponentTypeModel = require('./ComponentType.model');
 const SchemeMasterModel = require('./SchemeMaster.model');
 const SubSchemeMasterModel = require('./SubschemeMaster.model');
 
-class ComponentMasterModel extends Model {}
+class ComponentMasterModel extends Model { }
 
 ComponentMasterModel.init({
     schemeId: {
         type: DataTypes.STRING,
-        primaryKey: true,
+        // primaryKey: true,
         allowNull: false,
         references: {
             model: SchemeMasterModel,
@@ -18,7 +18,7 @@ ComponentMasterModel.init({
     },
     SubschemeId: {
         type: DataTypes.STRING,
-        primaryKey: true,
+        // primaryKey: true,
         allowNull: false,
         references: {
             model: SubSchemeMasterModel,
@@ -37,7 +37,8 @@ ComponentMasterModel.init({
     },
     Fin_Year: {
         type: DataTypes.STRING,
-        allowNull: true
+        primaryKey: true,
+        allowNull: false
     },
     Season: {
         type: DataTypes.STRING,

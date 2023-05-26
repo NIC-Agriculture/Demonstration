@@ -16,23 +16,31 @@ ComponentCostMappingModel.init({
     },
     Total_Cost: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     Seed_Per_ha: {
         type: DataTypes.NUMBER,
-        allowNull: false
+        allowNull: true
     },
     Unit: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     Cost_of_Seed: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     Fin_Year: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    Cost_Kharif: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    Cost_Rabi: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
     sequelize,

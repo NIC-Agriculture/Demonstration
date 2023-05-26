@@ -22,6 +22,9 @@ router.get('/getAllComponentType',schemeBal.getAllComponentType);
 router.get('/getAllDistrictTarget',schemeBal.getAllDistrictTarget);
 router.post('/SubmitDistrictTarget', schemeBal.SubmitDistrictTarget);
 router.post('/UpdateDistrictTarget', schemeBal.UpdateDistrictTarget);
+router.get('/getComponentTypeDetails',schemeBal.getComponentTypeDetails);
+router.post('/UpdateComponentCostCropMapping', schemeBal.UpdateComponentCostCropMapping);
+router.get('/getComponentCropDetails',schemeBal.getComponentCropDetails);
 
 router.get('/getDemonstrationIdCount',schemeBal.getDemonstrationIdCount);
 router.get('/getBlockTarget',schemeBal.getBlockTarget);

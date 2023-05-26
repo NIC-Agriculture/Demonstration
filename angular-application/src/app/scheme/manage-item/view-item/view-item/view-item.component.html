@@ -16,6 +16,41 @@
                         <div class="col-lg-6 col md-6">
                             <div class="form-group row">
                               <div class="col-sm-4 col-lg-3">
+                                <label class="block" for="FinYear">Financial Year <label class="asterik">*</label>:</label>
+                              </div>
+                              <div class="col-sm-4 col-lg-9">
+                                <select  formControlName="FinYear" id="FinYear"
+                                  class="form-control form-control-default" required>
+                                  <option value="">--Select--</option>
+                                  <option [ngValue]="x" *ngFor="let x of FinYears"> {{ x }} </option>
+                                </select>
+                                <div class="text-danger" *ngIf="ViewItemFormValid.FinYear.touched && !ViewItemFormValid.FinYear.valid">
+                                Financial Year is required.
+                              </div>                                      
+                              </div>
+                            </div>
+
+                            <div class="form-group row">
+                              <div class="col-sm-4 col-lg-3">
+                                <label class="block" for="subscheme">Subscheme <label class="asterik">*</label>:</label>
+                              </div>
+                              <div class="col-sm-4 col-lg-9">
+                                <select id="subscheme" class="form-control form-control-default" (change)="getComponent();"
+                                  formControlName="subscheme" >
+                                  <option value="" disabled>--Select--</option>
+                                  <option [ngValue]="x" *ngFor="let x of SubschemeData">{{ x.SubschemeName }}</option>
+                                </select>
+                                <div class="text-danger" *ngIf="ViewItemFormValid.subscheme.touched && !ViewItemFormValid.subscheme.valid">
+                                  Subscheme is required.
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+                          <div class="col-lg-6 col md-6">
+                            
+                            <div class="form-group row">
+                              <div class="col-sm-4 col-lg-3">
                                 <label class="block" for="fuel">Scheme <label class="asterik">*</label>:</label>
                               </div>
                               <div class="col-sm-4 col-lg-9">
@@ -29,41 +64,26 @@
                                   </div>
                               </div>
                             </div>
-                          </div>
-                          <div class="col-lg-6 col md-6">
+
                             <div class="form-group row">
-                                <div class="col-sm-4 col-lg-3">
-                                  <label class="block" for="subscheme">Subscheme <label class="asterik">*</label>:</label>
-                                </div>
-                                <div class="col-sm-4 col-lg-9">
-                                  <select id="subscheme" class="form-control form-control-default" (change)="getComponent();"
-                                    formControlName="subscheme" >
-                                    <option value="" disabled>--Select--</option>
-                                    <option [ngValue]="x" *ngFor="let x of SubschemeData">{{ x.SubschemeName }}</option>
-                                  </select>
-                                  <div class="text-danger" *ngIf="ViewItemFormValid.subscheme.touched && !ViewItemFormValid.subscheme.valid">
-                                    Subscheme is required.
-                                  </div>
+                              <div class="col-sm-4 col-lg-3">
+                                <label class="block" for="component">Component <label class="asterik">*</label>:</label>
+                              </div>
+                              <div class="col-sm-4 col-lg-9">
+                                <select id="component" class="form-control form-control-default" formControlName="component" >
+                                  <option value="" disabled>--Select--</option>
+                                  <option [ngValue]="x" *ngFor="let x of ComponentData">{{ x.CompName }}</option>
+                                </select>
+                                <div class="text-danger" *ngIf="ViewItemFormValid.component.touched && !ViewItemFormValid.component.valid">
+                                  Component is required.
                                 </div>
                               </div>
+                            </div>
                           </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-6 col md-6">
-                            <div class="form-group row">
-                                <div class="col-sm-4 col-lg-3">
-                                  <label class="block" for="component">Component <label class="asterik">*</label>:</label>
-                                </div>
-                                <div class="col-sm-4 col-lg-9">
-                                  <select id="component" class="form-control form-control-default" formControlName="component" >
-                                    <option value="" disabled>--Select--</option>
-                                    <option [ngValue]="x" *ngFor="let x of ComponentData">{{ x.CompName }}</option>
-                                  </select>
-                                  <div class="text-danger" *ngIf="ViewItemFormValid.component.touched && !ViewItemFormValid.component.valid">
-                                    Component is required.
-                                  </div>
-                                </div>
-                              </div>
+                           
                           </div>
                           <!-- <div class="col-lg-6 col md-6">
                             <div class="form-group row">

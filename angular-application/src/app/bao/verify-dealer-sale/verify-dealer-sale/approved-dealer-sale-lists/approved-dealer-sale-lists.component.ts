@@ -59,6 +59,8 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
 
   getAllScheme = async () => {
     try {
+      this.ApproveddealerSaleFrom.patchValue({subScheme : '',component : '',demonstrationId : ''})
+      this.ApprovedDealerSaleListTable = false
       this.AllSchemeData = await this.baoService.getAllScheme().toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -68,8 +70,9 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
 
   getSubscheme = async () => {
     try {
-      this.SubschemeData = []
-      this.ComponentData = []
+      this.ApproveddealerSaleFrom.patchValue({subScheme : '',component : '',demonstrationId : ''})
+      this.ApprovedDealerSaleListTable = false
+      this.SubschemeData = []; this.ComponentData = []
       switch (this.ApproveddealerSaleFrom.value.scheme) {
         case '2':
           this.schemeIdvar = 'scheme_1'
@@ -94,6 +97,8 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
 
   getComponent = async () => {
     try {
+      this.ApprovedDealerSaleListTable = false
+      this.ApproveddealerSaleFrom.patchValue({demonstrationId : ''})
       this.ComponentData = []
       const SubschemeId = this.ApproveddealerSaleFrom.value.subScheme
       const FinYear = this.ApproveddealerSaleFrom.value.FinYear
@@ -106,7 +111,9 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
 
   getDemonstrationData = async () => {
     try {
+      this.ApprovedDealerSaleListTable = false
       const FinYear = this.ApproveddealerSaleFrom.value.FinYear
+      
       switch (this.ApproveddealerSaleFrom.value.scheme) {
         case '2':
           this.schemeIdvar = 'scheme_1'

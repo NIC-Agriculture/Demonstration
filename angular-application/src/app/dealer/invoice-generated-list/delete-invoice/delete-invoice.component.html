@@ -75,8 +75,8 @@
                                 <th> Technical Name </th>
                                 <th> Total Price </th>
                                 <th> Eligible Subsidy </th>
-                                <th> Status </th>
-                                <th> Delete </th>
+                                <!-- <th> Status </th>
+                                <th> Delete </th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -90,12 +90,12 @@
                                 <td> {{ x.Technical_Name }} </td>
                                 <td> {{ x.totalPrice }} </td>
                                 <td> {{ x.eligibleSubsidy }} </td>
-                                <td> {{ x.verifyStatus }} </td>
+                                <!-- <td> {{ x.verifyStatus }} </td>
                                 <td>
                                   <button mat-icon-button  color="danger" [disabled]="x.verifyStatus != 'NotVerified'" (click)="openDialog(x);">
                                     <mat-icon class="icon" >delete</mat-icon>
                                   </button>
-                                </td>
+                                </td> -->
                             </tr>
                         </tbody>
                     </table>

@@ -104,8 +104,9 @@ export class BlockTargetMonitoringComponent implements OnInit {
 
   getComponentCost = async() => {
     try {
+      const FinYear = this.TargetMonitoringForm.value.FinYear
       const CompId = this.TargetMonitoringForm.value.component.CompId;
-      this.ComponentCostData = await this.schemeService.getComponentCost(CompId).toPromise()
+      this.ComponentCostData = await this.schemeService.getComponentCost(CompId,FinYear).toPromise()
       this.TargetMonitoringForm.patchValue({ subsidy: this.ComponentCostData.Total_Cost })
 
     } catch (e) {

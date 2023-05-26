@@ -26,6 +26,57 @@
                   <div class="col-lg-6 col md-6">
                     <div class="form-group row">
                       <div class="col-sm-4 col-lg-3">
+                        <label class="block" for="FinYear">Financial Year <label class="asterik">*</label>:</label>
+                      </div>
+                      <div class="col-sm-4 col-lg-9">
+                        <select  formControlName="FinYear" id="FinYear"
+                          class="form-control form-control-default" required>
+                          <option value="">--Select--</option>
+                          <option [ngValue]="x" *ngFor="let x of FinYears"> {{ x }} </option>
+                        </select>
+                        <div class="text-danger" *ngIf="DistFormValid.FinYear.touched && !DistFormValid.FinYear.valid">
+                        Financial Year is required.
+                      </div>                        
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-sm-4 col-lg-3">
+                        <label class="block" for="subscheme">Subscheme <label class="asterik">*</label>:</label>
+                      </div>
+                      <div class="col-sm-4 col-lg-9">
+                        <select required formControlName="subscheme" id="subscheme"
+                          class="form-control form-control-default" (change)="getComponent();">
+                          <option value="">--Select--</option>
+                          <option [ngValue]="x" *ngFor="let x of SubschemeData">
+                            {{ x.SubschemeName }}
+                          </option>
+                        </select>
+                        <div class="text-danger" *ngIf="DistFormValid.subscheme.touched && !DistFormValid.subscheme.valid">
+                        Subscheme is required.
+                      </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-sm-4 col-lg-3">
+                        <label class="block" for="subsidy">Total Cost <label class="asterik">*</label>:</label>
+                      </div>
+                      <div class="col-sm-4 col-lg-9">
+                        <input type="text" required class="form-control form-control-default"
+                          formControlName="subsidy" />
+                          <div class="text-danger" *ngIf="DistFormValid.subsidy.touched && !DistFormValid.subsidy.valid">
+                          Total Cost is required.
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="col-lg-6 col md-6">
+                    
+                    <div class="form-group row">
+                      <div class="col-sm-4 col-lg-3">
                         <label class="block" for="fuel">Scheme <label class="asterik">*</label>:</label>
                       </div>
                       <div class="col-sm-4 col-lg-9">
@@ -60,54 +111,7 @@
                       </div>
                     </div>
 
-                    <div class="form-group row">
-                      <div class="col-sm-4 col-lg-3">
-                        <label class="block" for="FinYear">Financial Year <label class="asterik">*</label>:</label>
-                      </div>
-                      <div class="col-sm-4 col-lg-9">
-                        <select  formControlName="FinYear" id="FinYear"
-                          class="form-control form-control-default" required>
-                          <option value="">--Select--</option>
-                          <option [ngValue]="x" *ngFor="let x of FinYears"> {{ x }} </option>
-                        </select>
-                        <div class="text-danger" *ngIf="DistFormValid.FinYear.touched && !DistFormValid.FinYear.valid">
-                        Financial Year is required.
-                      </div>
-                        
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-lg-6 col md-6">
-                    <div class="form-group row">
-                      <div class="col-sm-4 col-lg-3">
-                        <label class="block" for="subscheme">Subscheme <label class="asterik">*</label>:</label>
-                      </div>
-                      <div class="col-sm-4 col-lg-9">
-                        <select required formControlName="subscheme" id="subscheme"
-                          class="form-control form-control-default" (change)="getComponent();">
-                          <option value="">--Select--</option>
-                          <option [ngValue]="x" *ngFor="let x of SubschemeData">
-                            {{ x.SubschemeName }}
-                          </option>
-                        </select>
-                        <div class="text-danger" *ngIf="DistFormValid.subscheme.touched && !DistFormValid.subscheme.valid">
-                        Subscheme is required.
-                      </div>
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <div class="col-sm-4 col-lg-3">
-                        <label class="block" for="subsidy">Total Cost <label class="asterik">*</label>:</label>
-                      </div>
-                      <div class="col-sm-4 col-lg-9">
-                        <input type="text" required class="form-control form-control-default"
-                          formControlName="subsidy" />
-                          <div class="text-danger" *ngIf="DistFormValid.subsidy.touched && !DistFormValid.subsidy.valid">
-                          Total Cost is required.
-                        </div>
-                      </div>
-                    </div>
+                   
                     <!-- <div>
                       <button (click)="loadAllDistrictTarget();" class="btn btn-primary mat-elevation-z8 float-right">Set Target</button>
                     </div> -->

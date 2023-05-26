@@ -32,7 +32,20 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row">                
+                <label class="col-sm-2 col-lg-2 col-form-label">Financial Year *:</label>
+                <div class="col-sm-4 col-lg-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                        <select formControlName="FinYear" id="FinYear" class="form-control form-control-default" (change)="getAllComponent()">
+                            <option value="">--Select--</option>
+                            <option [ngValue]="x" *ngFor="let x of FinYears">
+                                {{ x }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
                 <label class="col-sm-2 col-lg-2 col-form-label">Select Component *:</label>
                 <div class="col-sm-4 col-lg-4">
                     <div class="input-group">
@@ -40,18 +53,6 @@
                         <select id="District" class="form-control" formControlName="CompId"  >
                             <option value="" >--All Select--</option>
                             <option [ngValue]="x.CompId" *ngFor="let x of allComponent"> {{ x.CompName }} </option>
-                        </select>
-                    </div>
-                </div>
-                <label class="col-sm-2 col-lg-2 col-form-label">Financial Year *:</label>
-                <div class="col-sm-4 col-lg-4">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                        <select formControlName="FinYear" id="FinYear" class="form-control form-control-default">
-                            <option value="">--Select--</option>
-                            <option [ngValue]="x" *ngFor="let x of FinYears">
-                                {{ x }}
-                            </option>
                         </select>
                     </div>
                 </div>

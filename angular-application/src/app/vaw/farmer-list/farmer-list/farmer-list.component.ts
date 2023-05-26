@@ -94,6 +94,7 @@ export class FarmerListComponent implements OnInit {
           this.SubmitButton = false;
       } else {
           this.farmer_list.forEach((e : any) => {
+            this.message1 = false;
             this.totalArea1 += +e.LandArea
             this.totalArea = JSON.parse(this.totalArea1.toFixed(1))
       })

@@ -52,7 +52,6 @@ export class ClusterDetailsComponent implements OnInit {
       });
     this.loadAllDistrict();
     this.getFinYear();
-    this.getAllComponent();
   }
   
   getFinYear = async() => {
@@ -125,21 +124,23 @@ export class ClusterDetailsComponent implements OnInit {
 
   getWardData = async (wardCode : any , DemostrationId : any) => {
     try {
-        const result = await this.schemeService.getWardData(wardCode,DemostrationId ).toPromise()
-        this.WardData = result
-        this.clusterReport.forEach((e:any) => {
-          this.WardData.forEach((y:any) => {
-            if (e.DemostrationId == y.DemostrationId ) {
-              if (e.WardName == undefined) {
-                e.WardName = y.WardName
-            }
-            else{
-              e.WardName = `${e.WardName} ,\n ${y.WardName}`
-            }
-            return e
-            }
-          });
-        });
+        this.WardData = await this.schemeService.getWardData(wardCode,DemostrationId ).toPromise()
+        if (this.WardData.length !== 0){
+            this.clusterReport.forEach((e:any) => {
+              this.WardData.forEach((y:any) => {
+                if (e.DemostrationId == y.DemostrationId ) {
+                  if (e.WardName == undefined) {
+                    e.WardName = y.WardName
+                }
+                else{
+                  e.WardName = `${e.WardName} ,\n ${y.WardName}`
+                }
+                return e
+                }
+              });
+            });
+        }
+       
     } catch (e) {
         this.toastr.error('Sorry. Server problem. Please try again.');
         console.error(e);

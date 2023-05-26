@@ -28,6 +28,16 @@ ComponentCropMappingModel.init({
         // primaryKey: true,
         allowNull: true,
     },
+    FixedCropId: {
+        type: DataTypes.STRING,
+        // primaryKey: true,
+        allowNull: true,
+    },
+    AdditionalCropId: {
+        type: DataTypes.STRING,
+        // primaryKey: true,
+        allowNull: true,
+    },
     SubCropId: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -53,7 +63,7 @@ ComponentCropMappingModel.init({
     },
     Fin_Year: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     Added_By: {
         type: DataTypes.STRING,
@@ -61,7 +71,7 @@ ComponentCropMappingModel.init({
     },
     AddedOn: {
         type: DataTypes.DATE,
-        allowNull: true
+        allowNull: false
     },
     IPAddress: {
         type: DataTypes.STRING,
@@ -76,6 +86,30 @@ ComponentCropMappingModel.init({
         allowNull: true
     },
     Cost_of_Seed: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    FixedCropSeedPerha: {
+        type: DataTypes.NUMBER,
+        allowNull: true
+    },
+    FixedCropUnit: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    FixedCrop_CostofSeed: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    AdditionalCropSeedPerha: {
+        type: DataTypes.NUMBER,
+        allowNull: true
+    },
+    AdditionalCropUnit: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    AdditionalCrop_CostofSeed: {
         type: DataTypes.INTEGER,
         allowNull: true
     }

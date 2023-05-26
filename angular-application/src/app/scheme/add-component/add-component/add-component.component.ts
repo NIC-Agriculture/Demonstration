@@ -85,7 +85,6 @@ export class AddComponentComponent implements OnInit {
       const result = await this.layoutService.getFinYear().toPromise()
       this.FinYears = result.Years;
       this.Season = result.Season;
-      console.log(this.Season);
       
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -125,14 +124,12 @@ export class AddComponentComponent implements OnInit {
 
   getAllComponentType = async() => {
     try{
-      const CompTypeId = this.ComponentForm.value.CompName.CompTypeId
-      this.ComponentTypeList = await this.schemeService.getAllComponentType(CompTypeId).toPromise()
+      this.ComponentTypeList = await this.schemeService.getAllComponentType().toPromise()
     } catch (e){
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
     }
   }
-
  
   AddComponent = () => {
     this.showtable = true;

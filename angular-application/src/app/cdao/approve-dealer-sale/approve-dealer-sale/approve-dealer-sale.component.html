@@ -6,6 +6,23 @@
             <div class="card-block">
             <form [formGroup]="BlockAndSchemeForm">
                 <div class="row">
+                    <label class="col-sm-3 col-lg-3 col-form-label">Financial Year *:</label>
+                    <div class="col-sm-6 col-lg-5">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                            <select class="form-control" formControlName="FinYear" (change)="getBlocks()">
+                                <option value="">--Select--</option>
+                                <option [ngValue]="x" *ngFor="let x of FinYears">
+                                    {{ x }}
+                                </option>
+                            </select>
+                            <div class="text-danger" *ngIf="BlockSchemeFormValid.FinYear.touched && !BlockSchemeFormValid.FinYear.valid">
+                                Financial Year is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <label class="col-sm-3 col-lg-3 col-form-label">Select Block *:</label>
                     <div class="col-sm-6 col-lg-5">
                         <div class="input-group">
@@ -26,24 +43,7 @@
                             <label>Pending For Approval : {{ countPending }}</label>
                     </div>
 
-                </div>
-                <div class="row">
-                    <label class="col-sm-3 col-lg-3 col-form-label">Financial Year *:</label>
-                    <div class="col-sm-6 col-lg-5">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                            <select class="form-control" formControlName="FinYear">
-                                <option value="">--Select--</option>
-                                <option [ngValue]="x" *ngFor="let x of FinYears">
-                                    {{ x }}
-                                </option>
-                            </select>
-                            <div class="text-danger" *ngIf="BlockSchemeFormValid.FinYear.touched && !BlockSchemeFormValid.FinYear.valid">
-                                Financial Year is required.
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </div>                
                 <div class="row">
                     <label class="col-sm-3 col-lg-3 col-form-label">Select Scheme *:</label>
                     <div class="col-sm-9 col-lg-9">
@@ -65,10 +65,7 @@
                                 <select class="form-control" formControlName="subScheme" (change)="getComponent();" >
                                     <option value="" >--Select--</option>
                                     <option [ngValue]="x.SubschemeId" *ngFor="let x of SubschemeData"> {{ x.SubschemeName }} </option>
-                                </select>
-                                <div class="text-danger" *ngIf="BlockSchemeFormValid.block.touched && !BlockSchemeFormValid.block.valid">
-                                    Block is required.
-                                </div>
+                                </select>                                
                             </div>
                         </div>
                     </div>
@@ -81,9 +78,6 @@
                                     <option value="" >--Select--</option>
                                     <option [ngValue]="x.CompId" *ngFor="let x of ComponentData"> {{ x.CompName }}  </option>
                                 </select>
-                                <div class="text-danger" *ngIf="BlockSchemeFormValid.block.touched && !BlockSchemeFormValid.block.valid">
-                                    Block is required.
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -110,6 +104,7 @@
             </div>
             <div class="card-block">
                 <div class="card-block table-border-style">
+                    <input type="text" class="form-control" placeholder="Search" [(ngModel)]="filterTerm">
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
@@ -133,7 +128,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let x of allDealerSaleResult; let i = index;">
+                                <tr *ngFor="let x of allDealerSaleResult | filter: filterTerm ; let i = index;">
                                     <th scope="row"> {{i+1}} </th>
                                     <th>
                                         <mat-checkbox [(ngModel)]="x.completed" (ngModelChange)="updateAllComplete()">
@@ -161,9 +156,9 @@
                 <div class="card-block" *ngIf="showApprove">
                     <div class="row">
                         <div class="col-sm-12">
-                            <button type="button" class="btn btn-primary mat-elevation-z8" style="float: right;" [disabled]="!forwardButton" (click)="returnbackDealerSaleToBAO()">
+                            <!-- <button type="button" class="btn btn-primary mat-elevation-z8" style="float: right;" [disabled]="!forwardButton" (click)="returnbackDealerSaleToBAO()">
                                 Return To BAO
-                             </button>
+                             </button> -->
                             <button class="btn btn-success mat-elevation-z8" [disabled]="!forwardButton" (click)="approveDealerSale();" style="float: right; margin-inline-end: 15px;" >Approve</button>&nbsp; &nbsp;
                           
                         </div>
@@ -176,7 +171,7 @@
 
        <mat-tab label="Approved Invoice Lists"><app-approved-dealer-sale-lists></app-approved-dealer-sale-lists></mat-tab>
 
-       <mat-tab label="Returned Invoice Lists"><app-returned-dealer-sale></app-returned-dealer-sale></mat-tab>
+       <!-- <mat-tab label="Returned Invoice Lists"><app-returned-dealer-sale></app-returned-dealer-sale></mat-tab> -->
 
     </mat-tab-group>
 

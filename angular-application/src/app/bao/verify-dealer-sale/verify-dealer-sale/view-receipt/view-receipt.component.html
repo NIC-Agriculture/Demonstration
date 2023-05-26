@@ -5,10 +5,10 @@
 
 <h2 mat-dialog-title>Print Of Sale Receipt 
   <mat-icon mat-dialog-close style="float: right;">close</mat-icon></h2>
-<mat-dialog-content class="mat-typography" id="print-section" style="width: 1000px;"  >
+<mat-dialog-content class="mat-typography"  style="width: 1000px;"  >
 
-
-    <div class="row">
+<div id="print-section">
+      <div class="row">
         <div class="col-md-12">
           <h4 style="text-align: center">
             କୃଷି ଓ କୃଷକ ସଶକ୍ତିକରଣ ବିଭାଗ <br />DEPARTMENT OF AGRICULTURE AND FARMER'S
@@ -86,13 +86,15 @@
         <div class="col-sm-6 col-lg-6">
           <h4><u>Signature of Registered Dealer</u><br />Name: {{ data.SoldBy }} <br /></h4>
         </div>
-        <div class="col-sm-3 col-lg-3"></div>
-        <div class="col-sm-3 col-lg-3">
+        <div class="col-sm-2 col-lg-2"></div>
+        <div class="col-sm-4 col-lg-4">
           <h4><u>Details of Benificiary(Farmer)</u><br />
             Name: {{data.FarmerName}} <br />
-            FarmerId: {{ data.FarmerId }} </h4>
+            FarmerId: {{ data.FarmerId }} <br>
+            Permit No: {{ data.Permit_NO }}</h4>
         </div>
       </div>
+</div>
       <br />
       <!-- <div class="row">
         <div class="col-md-7">
@@ -179,7 +181,7 @@
         </div>
       </div> -->
  
-          <br />
+      <br />
 
           <div class="row">
             <div class="col-md-7">

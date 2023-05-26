@@ -2,6 +2,24 @@
     <div class="card-block">
     <form [formGroup]="BlockAndSchemeForm">
         <div class="row">
+            <label class="col-sm-3 col-lg-3 col-form-label">Financial Year *:</label>
+            <div class="col-sm-6 col-lg-5">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                    <select class="form-control" formControlName="FinYear" (change)="getBlocks()">
+                        <option value="">--Select--</option>
+                        <option [ngValue]="x" *ngFor="let x of FinYears">
+                            {{ x }}
+                        </option>
+                    </select>
+                    <div class="text-danger" *ngIf="BlockSchemeFormValid.FinYear.touched && !BlockSchemeFormValid.FinYear.valid">
+                        Financial Year is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
             <label class="col-sm-3 col-lg-3 col-form-label">Select Block *:</label>
             <div class="col-sm-6 col-lg-5">
                 <div class="input-group">
@@ -17,23 +35,7 @@
             </div>
 
         </div>
-        <div class="row">
-            <label class="col-sm-3 col-lg-3 col-form-label">Financial Year *:</label>
-            <div class="col-sm-6 col-lg-5">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                    <select class="form-control" formControlName="FinYear">
-                        <option value="">--Select--</option>
-                        <option [ngValue]="x" *ngFor="let x of FinYears">
-                            {{ x }}
-                        </option>
-                    </select>
-                    <div class="text-danger" *ngIf="BlockSchemeFormValid.FinYear.touched && !BlockSchemeFormValid.FinYear.valid">
-                        Financial Year is required.
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <div class="row">
             <label class="col-sm-3 col-lg-3 col-form-label">Select Scheme *:</label>
             <div class="col-sm-9 col-lg-9">
@@ -56,9 +58,6 @@
                             <option value="" >--Select--</option>
                             <option [ngValue]="x.SubschemeId" *ngFor="let x of SubschemeData"> {{ x.SubschemeName }} </option>
                         </select>
-                        <div class="text-danger" *ngIf="BlockSchemeFormValid.block.touched && !BlockSchemeFormValid.block.valid">
-                            Block is required.
-                        </div>
                     </div>
                 </div>
             </div>
@@ -71,9 +70,6 @@
                             <option value="" >--Select--</option>
                             <option [ngValue]="x.CompId" *ngFor="let x of ComponentData"> {{ x.CompName }}  </option>
                         </select>
-                        <div class="text-danger" *ngIf="BlockSchemeFormValid.block.touched && !BlockSchemeFormValid.block.valid">
-                            Block is required.
-                        </div>
                     </div>
                 </div>
             </div>

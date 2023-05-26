@@ -39,6 +39,7 @@ export class VerifyDealerSaleComponent implements OnInit {
   SubschemeData: any;
   ComponentData: any;
   schemeIdvar: any;
+  filterTerm !: string
 
   constructor(
     private baoService: BaoServiceService,
@@ -84,6 +85,8 @@ export class VerifyDealerSaleComponent implements OnInit {
 
   getAllScheme = async () => {
     try {
+      this.DealerSaleListTable = false
+      this.dealerSaleFrom.patchValue({subScheme : '',component : '',demonstrationId : ''})
       this.AllSchemeData = await this.baoService.getAllScheme().toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -95,6 +98,8 @@ export class VerifyDealerSaleComponent implements OnInit {
     try {
       this.SubschemeData = []
       this.ComponentData = []
+      this.DealerSaleListTable = false
+      this.dealerSaleFrom.patchValue({subScheme : '',component : '',demonstrationId : ''})     
       switch (this.dealerSaleFrom.value.scheme) {
         case '2':
           this.schemeIdvar = 'scheme_1'
@@ -119,7 +124,9 @@ export class VerifyDealerSaleComponent implements OnInit {
 
   getComponent = async () => {
     try {
+      this.DealerSaleListTable = false
       this.ComponentData = []
+      this.dealerSaleFrom.patchValue({demonstrationId : ''})
       const SubschemeId = this.dealerSaleFrom.value.subScheme
       const FinYear = this.dealerSaleFrom.value.FinYear
       this.ComponentData = await this.baoService.getComponent(SubschemeId, FinYear).toPromise()

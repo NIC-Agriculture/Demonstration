@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ApprovedDealerSaleListsComponent } from './approve-dealer-sale/approved-dealer-sale-lists/approved-dealer-sale-lists.component';
 import { ReturnedDealerSaleComponent } from './approve-dealer-sale/returned-dealer-sale/returned-dealer-sale.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 
 @NgModule({
@@ -32,7 +33,9 @@ import { ReturnedDealerSaleComponent } from './approve-dealer-sale/returned-deal
     MatDialogModule,
     MatIconModule,
     NgxPrintModule,
-    MatTabsModule
+    MatTabsModule,
+    Ng2SearchPipeModule
+
   ]
 })
 export class ApproveDealerSaleModule { }

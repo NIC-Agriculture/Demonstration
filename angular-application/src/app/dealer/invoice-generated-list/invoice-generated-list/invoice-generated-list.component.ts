@@ -32,7 +32,7 @@ export class InvoiceGeneratedListComponent implements OnInit {
   dataSource : any;
   InvoiceListTable: boolean = false;
 
-  displayedColumns: string[] = ['position','DemonstrationId','Permit_NO','InvoiceNo','FarmerId', 'FarmerName','Farmer_Category','LandArea', 'TotalPrice' ,'EligibleSubsidy', 'Status','View'];
+  displayedColumns: string[] = ['position','DemonstrationId','Permit_NO','InvoiceNo','FarmerId', 'FarmerName','Farmer_Category','LandArea', 'TotalPrice' ,'EligibleSubsidy','View'];
 
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;

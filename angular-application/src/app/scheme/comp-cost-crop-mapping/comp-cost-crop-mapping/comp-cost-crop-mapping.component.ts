@@ -51,6 +51,9 @@ export class CompCostCropMappingComponent implements OnInit {
   editSecondCrop:boolean = false;
   editAdditionalCrop: boolean = false;
   ComponentCostData: any;
+  ComponentCropDetails: any;
+  SecondSubCropData: any;
+  additionalSubCropData: any;
 
   constructor(
     private schemeService: SchemeserviceService,
@@ -58,9 +61,9 @@ export class CompCostCropMappingComponent implements OnInit {
     private fb: FormBuilder,
     private toastr: ToastrService
   ) {
-    this.pageTitle = 'Component Input';
-    this.pageDesc = 'Add Component Input';
-    this.breadcrumbList = ['Component Input'];
+    this.pageTitle = 'Update Component details';
+    this.pageDesc = 'Update Component cost and crop details';
+    this.breadcrumbList = ['Update Component details'];
     this.ComponentList = []
     this.ComponentForm = this.fb.group({
       Fin_Year : ['' , [Validators.required]],
@@ -89,8 +92,6 @@ export class CompCostCropMappingComponent implements OnInit {
 
    ngOnInit(): void {
     // this.getAllScheme();
-    this.getAllComponent();
-    this.getAllSubCrops();
     this.getFinYear();
     // this.getAllCrops();
     setTimeout(() => { 
@@ -173,8 +174,6 @@ export class CompCostCropMappingComponent implements OnInit {
 
   getAllCrops = async() => {
     try{
-      this.AllCropData = []
-      this.SubCropData = []
       this.AllCropData = await this.schemeService.getAllCrops().toPromise()
     } catch (e){
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -182,11 +181,24 @@ export class CompCostCropMappingComponent implements OnInit {
     }
   }
 
-  getSubCrops = async() => {
+  getSubCrops = async(cropCategory:any,cropPhase:any) => {
       try{
-        this.SubCropData = []
-        const CropId = this.ComponentForm.value.cropCategory.CropId
-        this.SubCropData = await this.schemeService.getSubCrops(CropId).toPromise()
+        const result = await this.schemeService.getSubCrops(cropCategory.CropId).toPromise()
+        if (cropPhase == 'FirstCrop') {
+          this.SubCropData=[]
+          this.ComponentForm.patchValue({subCrop: ''})
+          this.SubCropData = result
+          
+        } else if (cropPhase == 'SecondCrop') {
+          this.SecondSubCropData =[]
+          this.ComponentForm.patchValue({subCrop: ''})
+          this.SecondSubCropData = result
+        } else {
+          this.additionalSubCropData=[]
+          this.ComponentForm.patchValue({subCrop: ''})
+          this.additionalSubCropData = result
+        }
+        
         
       } catch (e){
         this.toastr.error('Sorry. Server problem. Please try again.');
@@ -194,43 +206,27 @@ export class CompCostCropMappingComponent implements OnInit {
       }
   }
 
-  getAllSubCrops = async() => {
-    try{
-        this.AllSubCropData = await this.schemeService.getAllSubCrops().toPromise()
-    } catch (e){
-        this.toastr.error('Sorry. Server problem. Please try again.');
-        console.error(e);
-    }
-  }
-
-  getAllComponent = async() => {
-    try{      
-      const Fin_Year = this.ComponentForm.value.Fin_Year
-      this.AllComponentData = await this.schemeService.getAllComponent(Fin_Year).toPromise()
-    } catch (e){
-       this.toastr.error('Sorry. Server problem. Please try again.');
-       console.error(e);
-    }
-  }
-
   getComponentCost = async() => {
     try {
       this.ComponentCostData = []
       this.ComponentForm.patchValue({ Total_Cost: '' })
+      const Fin_Year = this.ComponentForm.value.Fin_Year
       const CompId = this.ComponentForm.value.CompName.CompId;
-      this.ComponentCostData = await this.schemeService.getComponentCost(CompId).toPromise()
+      this.ComponentCostData = await this.schemeService.getComponentCost(CompId,Fin_Year).toPromise()
+      this.ComponentCropDetails = await this.schemeService.getComponentCropDetails(CompId,Fin_Year).toPromise()
+      
       this.ComponentForm.patchValue({ Total_Cost: this.ComponentCostData.Total_Cost })
-      this.ComponentForm.patchValue({ Seed_Per_ha: this.ComponentCostData.Seed_Per_ha })
-      this.ComponentForm.patchValue({ Unit: this.ComponentCostData.Unit })
-      this.ComponentForm.patchValue({ Cost_of_Seed: this.ComponentCostData.Cost_of_Seed })
+      this.ComponentForm.patchValue({ Seed_Per_ha: this.ComponentCropDetails.Seed_Per_ha })
+      this.ComponentForm.patchValue({ Unit: this.ComponentCropDetails.Unit })
+      this.ComponentForm.patchValue({ Cost_of_Seed: this.ComponentCropDetails.Cost_of_Seed })
 
-      this.ComponentForm.patchValue({ fixedSeed_Per_ha: this.ComponentCostData.Seed_Per_ha })
-      this.ComponentForm.patchValue({ fixedUnit: this.ComponentCostData.Unit })
-      this.ComponentForm.patchValue({ fixedCost_of_Seed: this.ComponentCostData.Cost_of_Seed })
+      this.ComponentForm.patchValue({ fixedSeed_Per_ha: this.ComponentCropDetails.FixedCropSeedPerha })
+      this.ComponentForm.patchValue({ fixedUnit: this.ComponentCropDetails.FixedCropUnit })
+      this.ComponentForm.patchValue({ fixedCost_of_Seed: this.ComponentCropDetails.FixedCrop_CostofSeed })
 
-      this.ComponentForm.patchValue({ additionalSeed_Per_ha: this.ComponentCostData.Seed_Per_ha })
-      this.ComponentForm.patchValue({ additionalUnit: this.ComponentCostData.Unit })
-      this.ComponentForm.patchValue({ additionalCost_of_Seed: this.ComponentCostData.Cost_of_Seed })
+      this.ComponentForm.patchValue({ additionalSeed_Per_ha: this.ComponentCropDetails.AdditionalCropSeedPerha })
+      this.ComponentForm.patchValue({ additionalUnit: this.ComponentCropDetails.AdditionalCropUnit })
+      this.ComponentForm.patchValue({ additionalCost_of_Seed: this.ComponentCropDetails.AdditionalCrop_CostofSeed })
 
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -238,11 +234,11 @@ export class CompCostCropMappingComponent implements OnInit {
     }
   }
 
-  getAllComponentType = async() => {
+  getComponentTypeDetails = async() => {
     try{
       const CompTypeId = this.ComponentForm.value.CompName.CompTypeId
-      const result = await this.schemeService.getAllComponentType(CompTypeId).toPromise()
-      this.ComponentTypeList = result[0]
+      const result = await this.schemeService.getComponentTypeDetails(CompTypeId).toPromise()
+      this.ComponentTypeList = result
       if (this.ComponentTypeList.CompTypeId == 'compType_1') {
         this.editFirstCrop = true
         this.editSecondCrop = false
@@ -317,13 +313,13 @@ export class CompCostCropMappingComponent implements OnInit {
     this.CompTypeId = this.ComponentForm.value.componentType.CompTypeId;
     switch (this.CompTypeId) {
         case 'compType_1':
-          this.getAllCrops();
+          // this.getAllCrops();
           this.subCropBox = true;
           this.fixedSubCropBox = false;
           this.additionalSubCropBox = false;
           break;
         case 'compType_2':
-          this.getAllCrops();
+          // this.getAllCrops();
           this.subCropBox = false;
           this.fixedSubCropBox = true;
           this.multiselect = true
@@ -331,7 +327,7 @@ export class CompCostCropMappingComponent implements OnInit {
           break;
       
         default:
-          this.getAllCrops();
+          // this.getAllCrops();
           this.subCropBox = false;
           this.multiselect = false;
           this.fixedSubCropBox = true;
@@ -341,60 +337,11 @@ export class CompCostCropMappingComponent implements OnInit {
     
   }
 
-  AddComponent = () => {
-    this.showtable = true;
-    if(typeof(this.ComponentForm.value.fixedSubCrop) === 'object'){
-      if(this.ComponentForm.value.fixedSubCrop.length != undefined){
-        this.ComponentForm.value.fixedSubCrop.forEach((e: any) => {
-          this.ComponentForm.value.Fixed_SubCrop.push(e)
-        });
-      }else{
-        this.ComponentForm.value.Fixed_SubCrop.push(this.ComponentForm.value.fixedSubCrop)
-      }      
-    }
-
-    this.ComponentList.push(this.ComponentForm.value);
-    this.subCropBox = false;
-    this.fixedSubCropBox = false;
-    this.additionalSubCropBox = false;
-    this.cropbox = false;
-    this.fixedCropBox = false;
-    this.additionalCropBox = false;
-    // this.ComponentForm.reset(); 
-    this.ComponentForm.patchValue({schemeName: '', SubschemeName: '', CompName: '',Total_Cost: '',Seed_Per_ha: '', Unit: '' , Cost_of_Seed:'',Fin_Year:'', Fixed_SubCrop: [],componentType: '', cropType: '', crop: '' , FixedCrop: '' , AdditionalCrop: '' , subCrop: '' , fixedSubCrop: '', additionalSubCrop: '' , cropCategory: ''});
-   
-  }
-
-  removeComponent = (index: number) => {
-    this.ComponentList.splice(index, 1);
-  }
-
-  SubmitComponent = async() => {
-      try{
-         const result = await this.schemeService.SubmitComponent(this.ComponentList).toPromise()
-         if(result){
-          this.toastr.success(result.message);
-          this.getAllComponent();
-          this.ComponentForm.reset();
-          this.ComponentList = [];
-          this.showtable = false;
-         } else {
-          this.toastr.error("Something Went Wrong.Try again.");
-         } 
-                  
-      } catch (e) {
-        this.toastr.error('Sorry. Server problem. Please try again.');
-        console.error(e);
-        }
-    // finally{
-    //   this.clicked= false;
-    // }
-    
-  }
-
   UpdateComponentCost = async() => {
     try {
       const UpdatedData = {
+        Fin_Year : this.ComponentForm.value.Fin_Year,
+        CompId : this.ComponentForm.value.CompName.CompId,
         Total_Cost: this.ComponentForm.value.Total_Cost,
         CropId: this.ComponentForm.value.cropCategory.CropId,
         SubCropId: this.ComponentForm.value.subCrop.SubCropId,
@@ -402,23 +349,25 @@ export class CompCostCropMappingComponent implements OnInit {
         Unit: this.ComponentForm.value.Unit,
         Cost_of_Seed: this.ComponentForm.value.Cost_of_Seed,
 
-       fixedCropId: this.ComponentForm.value.fixedCropCategory.CropId,
-       fixedSubCropId:  this.ComponentForm.value.fixedSubCrop.SubCropId,
-       fixedSeed_Per_ha: this.ComponentForm.value.fixedSeed_Per_ha,
-       fixedUnit: this.ComponentForm.value.fixedUnit, 
-       fixedCost_of_Seed: this.ComponentForm.value.fixedCost_of_Seed,
+        FixedCropId: this.ComponentForm.value.fixedCropCategory.CropId,
+        FixedSubCropId:  this.ComponentForm.value.fixedSubCrop.SubCropId,
+        FixedCropSeedPerha: this.ComponentForm.value.fixedSeed_Per_ha,
+        FixedCropUnit: this.ComponentForm.value.fixedUnit, 
+        FixedCrop_CostofSeed: this.ComponentForm.value.fixedCost_of_Seed,
        
-       additionalCropId: this.ComponentForm.value.additionalCropCategory.CropId,
-       additionalSubCropId: this.ComponentForm.value.additionalSubCrop.SubCropId,
-       additionalSeed_Per_ha: this.ComponentForm.value.additionalSeed_Per_ha,
-       additionalUnit: this.ComponentForm.value.additionalUnit,
-       additionalCost_of_Seed: this.ComponentForm.value.additionalCost_of_Seed
+        AdditionalCropId: this.ComponentForm.value.additionalCropCategory.CropId,
+        AdditionalSubCropId: this.ComponentForm.value.additionalSubCrop.SubCropId,
+        AdditionalCropSeedPerha: this.ComponentForm.value.additionalSeed_Per_ha,
+        AdditionalCropUnit: this.ComponentForm.value.additionalUnit,
+        AdditionalCrop_CostofSeed: this.ComponentForm.value.additionalCost_of_Seed
 
       }
-      console.log(UpdatedData);
-      
-      // const result = await this.schemeService.UpdateComponentCost(UpdatedData).toPromise()
-      // this.toastr.success(result.message);
+      const result = await this.schemeService.UpdateComponentCostCropMapping(UpdatedData).toPromise()
+      this.toastr.success(result.message);
+      this.ComponentForm.reset()
+      this.editFirstCrop = false
+      this.editSecondCrop = false
+      this.editAdditionalCrop = false
       
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');

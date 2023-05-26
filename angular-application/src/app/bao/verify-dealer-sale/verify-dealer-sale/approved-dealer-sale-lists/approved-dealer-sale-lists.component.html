@@ -14,7 +14,7 @@
                 <div class="col-sm-6 col-lg-5">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                        <select class="form-control" formControlName="FinYear">
+                        <select class="form-control" formControlName="FinYear" (change)="getAllScheme()">
                             <option value="">--Select--</option>
                             <option [ngValue]="x" *ngFor="let x of FinYears">
                                 {{ x }}

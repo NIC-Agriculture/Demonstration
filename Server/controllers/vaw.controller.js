@@ -34,7 +34,7 @@ exports.getDemonstrationData = async (req, res) => {
         FROM "DemonstrationPatchMaster" a
         INNER JOIN "SchemeMaster" aa ON a."schemeId" = aa."schemeId"
         INNER JOIN "SubSchemeMaster" bb ON a."SubschemeId" = bb."SubschemeId"
-        INNER JOIN "ComponentMaster" b ON a."CompId" = b."CompId" 
+        INNER JOIN "ComponentMaster" b ON a."CompId" = b."CompId" AND b."Fin_Year" = a."Fin_Year"
         LEFT JOIN "CropMaster" c ON a."CropId" = c."CropId"
         LEFT JOIN "SubCropMaster" d ON a."SubCropId" = d."SubCropId"
         LEFT JOIN "CropVarietyMaster" e ON a."Variety_Code" = e."Variety_Code"

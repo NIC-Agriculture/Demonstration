@@ -78,7 +78,7 @@
                         </a>
                     </li>
                 </ul>
-                <ul class="pcoded-submenu">
+                <!-- <ul class="pcoded-submenu">
                     <li routerLinkActive="active pcoded-trigger">
                         <a routerLink="/scheme/manage-item/add-item">
                             <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
@@ -86,7 +86,7 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
-                </ul>
+                </ul> -->
             </li>
         </ul>
         <div class="pcoded-navigatio-lavel" data-i18n="nav.category.ui-element" menu-title-theme="theme5" >Target</div>
@@ -392,21 +392,12 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
-                </ul>
-                <ul class="pcoded-submenu">
-                    <li class=" ">
-                        <a routerLink="/bao/report/demonstration-cluster-implementation">
-                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                            <span class="pcoded-mtext">Demonstration/Cluster Details</span>
-                            <span class="pcoded-mcaret"></span>
-                        </a>
-                    </li>
-                </ul>
+                </ul>                
                 <ul class="pcoded-submenu">
                     <li class=" ">
                         <a routerLink="/bao/report/demonstration-report">
                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                            <span class="pcoded-mtext">Demonstration Report</span>
+                            <span class="pcoded-mtext">Demonstration/Cluster Details</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
@@ -420,15 +411,7 @@
                         </a>
                     </li>
                 </ul>
-                <ul class="pcoded-submenu">
-                    <li class=" ">
-                        <a routerLink="/bao/report/field-demonstration-report">
-                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                            <span class="pcoded-mtext">Field Demonstration Phase Details (Mobile App) </span>
-                            <span class="pcoded-mcaret"></span>
-                        </a>
-                    </li>
-                </ul>
+               
                 <!-- <ul class="pcoded-submenu">
                     <li class=" ">                        
                         <a routerLink="/bao/report/delete-demonstration-patch">
@@ -592,19 +575,20 @@
         </div>
         <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5" >Home</div>
         <ul class="pcoded-item pcoded-left-item">
-            <!-- <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
-                <a >
-                    <span class="pcoded-micon"><i class="ti-home"></i></span>
-                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
-                    <span class="pcoded-mcaret"></span>
-                </a>
-            </li> -->
-            <!-- <ul class="pcoded-item pcoded-left-item"> -->
+            
                 <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
                     <!-- <a> -->
                     <a routerLink="/dealer/permit-verification">
                         <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
                         <span class="pcoded-mtext">Permit Verification</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                </li>
+                <li routerLinkActive="active pcoded-hasmenu pcoded-trigger">
+                    <!-- <a> -->
+                    <a routerLink="/dealer/invoice-list">
+                        <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                        <span class="pcoded-mtext">Generated Invoice Details</span>
                         <span class="pcoded-mcaret"></span>
                     </a>
                 </li>

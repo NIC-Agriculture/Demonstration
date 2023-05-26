@@ -59,7 +59,7 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getFinYear();
-    this.getBlocks();
+    // this.getBlocks();
   }
   get BlockSchemeFormValid() {
     return this.BlockAndSchemeForm.controls;
@@ -78,7 +78,9 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
 
   getBlocks = async() => {
     try {
-          this.BlockData = await this.cdaoService.getBlocks().toPromise()          
+         this.dealerlistTable = false
+         this.BlockAndSchemeForm.patchValue({subScheme : '',component : '', block:''})
+         this.BlockData = await this.cdaoService.getBlocks().toPromise()          
       } catch (e) {
           this.toastr.error('Sorry. Server problem. Please try again.')
           console.error(e);
@@ -88,6 +90,8 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
   getSubscheme = async() => {
     try {
       this.SubschemeData = []
+      this.dealerlistTable = false
+      this.BlockAndSchemeForm.patchValue({subScheme : '',component : ''})
       switch (this.BlockAndSchemeForm.value.scheme) {
         case '2':
            this.schemeIdvar = 'scheme_1'
@@ -117,6 +121,8 @@ export class ApprovedDealerSaleListsComponent implements OnInit {
   getComponent = async() => {
     try {
       this.ComponentData = []
+      this.dealerlistTable = false
+      this.BlockAndSchemeForm.patchValue({component : ''})
       const SubschemeId = this.BlockAndSchemeForm.value.subScheme
       const Fin_Year = this.BlockAndSchemeForm.value.FinYear 
       this.ComponentData = await this.cdaoService.getComponent(SubschemeId, Fin_Year).toPromise();      

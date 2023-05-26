@@ -17,7 +17,7 @@
             <div class="col-sm-6 col-lg-5">
               <div class="input-group">
                 <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                <select class="form-control" formControlName="FinYear">
+                <select class="form-control" formControlName="FinYear" (change)="getAllScheme()">
                   <option value="">--Select--</option>
                   <option [ngValue]="x" *ngFor="let x of FinYears">
                     {{ x }}
@@ -99,6 +99,7 @@
     <div class="card" *ngIf="DealerSaleListTable">
       <div class="card-block">
         <div class="card-block table-border-style">
+          <input type="text" class="form-control" placeholder="Search" [(ngModel)]="filterTerm">
           <div class="table-responsive">
             <table class="table table-hover">
               <thead>
@@ -124,7 +125,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let x of allDealerResult; let i = index;">
+                <tr *ngFor="let x of allDealerResult | filter: filterTerm ; let i = index;">
                   <th scope="row"> {{i+1}} </th>
                   <td>
                     <mat-checkbox [(ngModel)]="x.completed" (ngModelChange)="updateAllComplete()">
@@ -155,10 +156,10 @@
         <div class="card-block" *ngIf="showConfirm">
           <div class="row">
             <div class="col-sm-12">
-              <button type="button" class="btn btn-primary mat-elevation-z8" style="float: right;"
+              <!-- <button type="button" class="btn btn-primary mat-elevation-z8" style="float: right;"
                 [disabled]="!forwardButton" (click)="returnToDealer()">
                 Return To Dealer
-              </button>
+              </button> -->
               <button class="btn btn-success mat-elevation-z8" [disabled]="!forwardButton" style="margin-left: 5px;"
                 (click)="confirmDealerSale()" style="float: right; margin-inline-end: 15px;">Forward to CDAO</button>
             </div>
@@ -170,7 +171,7 @@
   </mat-tab>
   <mat-tab label="Forwarded Invoice Lists"><app-approved-dealer-sale-lists></app-approved-dealer-sale-lists></mat-tab>
 
-  <mat-tab label="Returned Invoice Lists"><app-returned-dealer-sale></app-returned-dealer-sale></mat-tab>
+  <!-- <mat-tab label="Returned Invoice Lists"><app-returned-dealer-sale></app-returned-dealer-sale></mat-tab> -->
 </mat-tab-group>
 
 

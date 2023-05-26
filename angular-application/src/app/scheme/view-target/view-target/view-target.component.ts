@@ -121,8 +121,9 @@ export class ViewTargetComponent implements OnInit {
 
   getComponentCost = async() => {
     try {
+      const FinYear = this.ViewTargetForm.value.FinYear
       const CompId = this.ViewTargetForm.value.component.CompId;
-      this.ComponentCostData = await this.schemeService.getComponentCost(CompId).toPromise()
+      this.ComponentCostData = await this.schemeService.getComponentCost(CompId,FinYear).toPromise()
       this.ViewTargetForm.patchValue({ subsidy: this.ComponentCostData.Total_Cost })
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');

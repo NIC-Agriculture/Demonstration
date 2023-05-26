@@ -128,8 +128,9 @@ export class DistrictTargetMonitoringComponent implements OnInit {
 
   getComponentCost = () => {
     try {
+      const FinYear = this.ViewTargetForm.value.FinYear
       const CompId = this.ViewTargetForm.value.component.CompId;
-      this.schemeService.getComponentCost(CompId).subscribe(result => {
+      this.schemeService.getComponentCost(CompId,FinYear).subscribe(result => {
         this.ComponentCostData = result;
         this.ViewTargetForm.patchValue({
           subsidy: this.ComponentCostData.Total_Cost

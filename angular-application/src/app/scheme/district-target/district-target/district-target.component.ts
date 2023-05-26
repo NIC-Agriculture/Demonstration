@@ -137,9 +137,11 @@ export class DistrictTargetComponent implements OnInit {
 
   getComponentCost = async() => {
     try {
+      const FinYear = this.DistrictTargetForm.value.FinYear
       const CompId = this.DistrictTargetForm.value.component.CompId;
-      this.ComponentCostData = await this.schemeService.getComponentCost(CompId).toPromise()
+      this.ComponentCostData = await this.schemeService.getComponentCost(CompId,FinYear).toPromise()
       this.DistrictTargetForm.patchValue({subsidy: this.ComponentCostData.Total_Cost})
+      this.DistrictTargetForm.controls['subsidy'].disable();
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
@@ -147,6 +149,7 @@ export class DistrictTargetComponent implements OnInit {
   }
 
   multiFinGen = (i: any) => {
+    this.DistrictTargetForm.controls['subsidy'].enable();
     this.subsidy = this.DistrictTargetForm.value.subsidy;
     if (this.subsidy) {
       if(+this.AllDistrictData[i].PhyGen >= 0 ){
@@ -177,6 +180,7 @@ export class DistrictTargetComponent implements OnInit {
   }
 
   multiFinSCP = (i: any) => {
+    this.DistrictTargetForm.controls['subsidy'].enable();
     this.subsidy = this.DistrictTargetForm.value.subsidy;
     if (this.subsidy) {
       if(+this.AllDistrictData[i].PhySCP >= 0){
@@ -196,6 +200,7 @@ export class DistrictTargetComponent implements OnInit {
   }
 
   multiFinTASP = (i: any) => {
+    this.DistrictTargetForm.controls['subsidy'].enable();
     this.subsidy = this.DistrictTargetForm.value.subsidy;
     if (this.subsidy) {
       if(+this.AllDistrictData[i].PhyTASP >= 0){
@@ -268,6 +273,7 @@ export class DistrictTargetComponent implements OnInit {
       const CompId = this.DistrictTargetForm.value.component.CompId
       const SubschemeId = this.DistrictTargetForm.value.subscheme.SubschemeId
       const Fin_Year = this.DistrictTargetForm.value.FinYear
+      this.DistrictTargetForm.controls['subsidy'].enable();
 
       this.AllDistrictTargetData = await this.schemeService.getAllDistrictTarget(SubschemeId, CompId , Fin_Year).toPromise()
       if (this.AllDistrictTargetData.length > 0) {
@@ -296,6 +302,7 @@ export class DistrictTargetComponent implements OnInit {
 
   SubmitDistrictTarget = async() => {
     try {
+      this.DistrictTargetForm.controls['subsidy'].enable();
       const DistrictTargetDetails = {
         "schemeId": this.DistrictTargetForm.value.scheme.schemeId,
         "SubschemeId": this.DistrictTargetForm.value.subscheme.SubschemeId,

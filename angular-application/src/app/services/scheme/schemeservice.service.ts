@@ -41,8 +41,12 @@ export class SchemeserviceService {
     return this.http.get(`${this.serverUrl}/${this.route}/getAllComponent?Fin_Year=${Fin_Year}`)
   }
 
-  getAllComponentType(CompTypeId:any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getAllComponentType?CompTypeId=${CompTypeId}`)
+  getAllComponentType(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllComponentType`)
+  }
+
+  getComponentTypeDetails(CompTypeId:any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getComponentTypeDetails?CompTypeId=${CompTypeId}`)
   }
 
   getSubscheme(schemeId: any): Observable<any> {
@@ -53,8 +57,12 @@ export class SchemeserviceService {
     return this.http.get(`${this.serverUrl}/${this.route}/getComponent?SubschemeId=${SubschemeId}&Fin_Year=${Fin_Year}`)
   }
 
-  getComponentCost(CompId: any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getComponentCost?CompId=${CompId}`)
+  getComponentCost(CompId: any , Fin_Year: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getComponentCost?CompId=${CompId}&Fin_Year=${Fin_Year}`)
+  }
+
+  getComponentCropDetails(CompId: any , Fin_Year: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getComponentCropDetails?CompId=${CompId}&Fin_Year=${Fin_Year}`)
   }
 
   getAllCrops(): Observable<any> {
@@ -121,8 +129,8 @@ export class SchemeserviceService {
     return this.http.get(`${this.serverUrl}/${this.route}/getItemDetails?CompId=${CompId}`)
   }
 
-  UpdateComponentCost(data: {}): Observable<any> {
-    return this.http.post(`${this.serverUrl}/${this.route}/UpdateComponentCost`, data);
+  UpdateComponentCostCropMapping(data: {}): Observable<any> {
+    return this.http.post(`${this.serverUrl}/${this.route}/UpdateComponentCostCropMapping`, data);
   }
 
 }

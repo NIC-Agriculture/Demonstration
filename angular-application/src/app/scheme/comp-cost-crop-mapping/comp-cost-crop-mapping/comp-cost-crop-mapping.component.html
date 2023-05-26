@@ -10,9 +10,9 @@
                         <i class="icofont icofont-refresh"></i>
                         <i class="icofont icofont-close-circled"></i>
                     </div>
-            </div>
-            <div class="card-block table-bordered">
-                <!-- <div class="row">
+                </div>
+                <div class="card-block table-bordered">
+                    <!-- <div class="row">
                     <div class="col-sm-12">
                         <div class="row">
                             <div class="col-md-12">
@@ -62,7 +62,7 @@
                                                         <option [ngValue]="x" *ngFor="let x of ComponentTypeList">{{
                                                             x.CompTypeName }}</option>
                                                         <!-- <option [ngValue]="x" *ngFor="let x of AllSchemeData">{{ x.schemeName }}</option> -->
-                                                    <!-- </select>
+                    <!-- </select>
                                                 </div>
                                             </div>
 
@@ -221,311 +221,300 @@
                         </div>
                     </div>
                 </div> -->
-                <form [formGroup]="ComponentForm">
-                    <div class="row">
-                        <label class="col-sm-2 col-lg-2 col-form-label">Financial Year <label class="asterik">*</label>:</label>
-                        <div class="col-sm-4 col-lg-4">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                                <select formControlName="Fin_Year" id="Fin_Year"
-                                class="form-control form-control-default" (change)="getAllScheme()" required>
-                                <option value="">--Select--</option>
-                                <option [ngValue]="x" *ngFor="let x of FinYears"> {{ x }}
-                                </option>
-                            </select>
-                            </div>
-                            <div class="text-danger" *ngIf="ComponentFormValid.Fin_Year.touched && !ComponentFormValid.Fin_Year.valid">
-                                Financial Year is required.
-                              </div>
-                        </div>
-                        <label class="col-sm-2 col-lg-2 col-form-label">Scheme<label class="asterik">*</label>:</label>
-                        <div class="col-sm-4 col-lg-4">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                                <select formControlName="schemeName" id="scheme"
-                                class="form-control form-control-default"
-                                (change)="getSubscheme();">
-                                <option value="" disabled>--Select--</option>
-                                <option [ngValue]="x" *ngFor="let x of AllSchemeData"> {{x.schemeName }}</option>
-                            </select>
-                            </div>
-                            <div class="text-danger" *ngIf="ComponentFormValid.schemeName.touched && !ComponentFormValid.schemeName.valid">
-                                Scheme is required.
-                              </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label class="col-sm-2 col-lg-2 col-form-label">Subscheme <label class="asterik">*</label>:</label>
-                        <div class="col-sm-4 col-lg-4">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                                <select formControlName="SubschemeName" id="SubschemeName" (change)="getComponent()"
-                                class="form-control form-control-default">
-                                <option value="" disabled>--Select--</option>
-                                <option [ngValue]="x" *ngFor="let x of SubschemeData">{{
-                                    x.SubschemeName }}</option>
-                            </select>
-                            </div>
-                            <div class="text-danger" *ngIf="ComponentFormValid.SubschemeName.touched && !ComponentFormValid.SubschemeName.valid">
-                                Subscheme is required.
-                              </div>
-                        </div>
-                        <label class="col-sm-2 col-lg-2 col-form-label">Component<label class="asterik">*</label>:</label>
-                        <div class="col-sm-4 col-lg-4">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                                <select formControlName="CompName" id="CompName"
-                                class="form-control form-control-default" (change)="getAllComponentType();getComponentCost();getAllCrops();" >
-                                <option value="" disabled>--Select--</option>
-                                <option [ngValue]="x" *ngFor="let x of ComponentData"> {{x.CompName }}</option>
-                            </select>
-                            </div>
-                            <div class="text-danger" *ngIf="ComponentFormValid.CompName.touched && !ComponentFormValid.CompName.valid">
-                                Component is required.
-                              </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label class="col-sm-2 col-lg-2 col-form-label">Component Type :</label>
-                        <div class="col-sm-4 col-lg-4">
-                            {{ ComponentTypeList.CompTypeName }}
-                        </div>
-                        <label class="col-sm-2 col-lg-2 col-form-label">Total Cost :</label>
-                        <div class="col-sm-4 col-lg-4">
-                            <input type="number" min="0" formControlName="Total_Cost"
-                            class="form-control form-control-default">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label class="col-sm-2 col-lg-2 col-form-label">Edit :</label>
-                        <div class="col-sm-4 col-lg-4">
-                            <mat-icon color="success" (click)="edit()" >create</mat-icon>
-                        </div>
-                    </div>
-                    <br>
-                    <div *ngIf="editFirstCrop">
-                        <h2 style="background-color: rgba(0, 128, 0, 0.58);color: white;">Edit First Crop Details : </h2>
+                    <form [formGroup]="ComponentForm">
                         <div class="row">
-                            <label class="col-sm-1 col-lg-1 col-form-label"> Crop Category <label class="asterik">*</label>:</label>
-                            <div class="col-sm-3 col-lg-3">
-                                <select formControlName="cropCategory" id="cropCategory"
-                                class="form-control form-control-default" (change)="getSubCrops()" >
-                                <option value="" disabled>--Select--</option>
-                                <option [ngValue]="x" *ngFor="let x of AllCropData">{{
-                                    x.CropName }}</option>
-                            </select>
+                            <label class="col-sm-2 col-lg-2 col-form-label">Financial Year <label
+                                    class="asterik">*</label>:</label>
+                            <div class="col-sm-4 col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                                    <select formControlName="Fin_Year" id="Fin_Year"
+                                        class="form-control form-control-default" (change)="getAllScheme()" required>
+                                        <option value="">--Select--</option>
+                                        <option [ngValue]="x" *ngFor="let x of FinYears">
+                                            {{ x }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="text-danger" *ngIf="ComponentFormValid.Fin_Year.touched && !ComponentFormValid.Fin_Year.valid">
+                                    Financial Year is required.
+                                </div>
                             </div>
-                            <label class="col-sm-1 col-lg-1 col-form-label"> Crop <label class="asterik">*</label>:</label>
-                            <div class="col-sm-3 col-lg-3">
-                                <select formControlName="subCrop" id="subCrop"
-                                class="form-control form-control-default">
-                                <option value="" disabled>--Select--</option>
-                                <option [ngValue]="x" *ngFor="let x of SubCropData">{{
-                                    x.SubCropName }}</option>
-                            </select>
-                            </div>
-                            <label class="col-sm-1 col-lg-1 col-form-label"> Seed (Per ha) <label class="asterik">*</label>:</label>
-                            <div class="col-sm-3 col-lg-3">
-                                <input type="number" min="0" formControlName="Seed_Per_ha" id="Seed_Per_ha" class="form-control form-control-default">
+                            <label class="col-sm-2 col-lg-2 col-form-label">Scheme<label
+                                    class="asterik">*</label>:</label>
+                            <div class="col-sm-4 col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                                    <select formControlName="schemeName" id="scheme"
+                                        class="form-control form-control-default" (change)="getSubscheme()">
+                                        <option value="" disabled>--Select--</option>
+                                        <option [ngValue]="x" *ngFor="let x of AllSchemeData">
+                                            {{ x.schemeName }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="text-danger" *ngIf="ComponentFormValid.schemeName.touched && !ComponentFormValid.schemeName.valid">
+                                    Scheme is required.
+                                </div>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-sm-1 col-lg-1 col-form-label"> Unit <label class="asterik">*</label>:</label>
-                            <div class="col-sm-3 col-lg-3">
-                                <input type="text" formControlName="Unit" id="Unit" class="form-control form-control-default">
+                            <label class="col-sm-2 col-lg-2 col-form-label">Subscheme <label
+                                    class="asterik">*</label>:</label>
+                            <div class="col-sm-4 col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                                    <select formControlName="SubschemeName" id="SubschemeName" (change)="getComponent()"
+                                        class="form-control form-control-default">
+                                        <option value="" disabled>--Select--</option>
+                                        <option [ngValue]="x" *ngFor="let x of SubschemeData">
+                                            {{ x.SubschemeName }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="text-danger" *ngIf="ComponentFormValid.SubschemeName.touched && !ComponentFormValid.SubschemeName.valid">
+                                    Subscheme is required.
+                                </div>
                             </div>
-                            <label class="col-sm-1 col-lg-1 col-form-label"> Cost Of Seed <label class="asterik">*</label>:</label>
-                            <div class="col-sm-3 col-lg-3">
-                                <input type="number" min="0" formControlName="Cost_of_Seed" id="Cost_of_Seed" class="form-control form-control-default">
+                            <label class="col-sm-2 col-lg-2 col-form-label">Component<label
+                                    class="asterik">*</label>:</label>
+                            <div class="col-sm-4 col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                                    <select formControlName="CompName" id="CompName"class="form-control form-control-default" (change)="getComponentTypeDetails(); getComponentCost(); getAllCrops()">
+                                        <option value="" disabled>--Select--</option>
+                                        <option [ngValue]="x" *ngFor="let x of ComponentData">
+                                            {{ x.CompName }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="text-danger" *ngIf="ComponentFormValid.CompName.touched && !ComponentFormValid.CompName.valid">
+                                    Component is required.
+                                </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <label class="col-sm-2 col-lg-2 col-form-label">Component Type :</label>
+                            <div class="col-sm-4 col-lg-4">
+                                {{ ComponentTypeList.CompTypeName }}
+                            </div>
+                            <label class="col-sm-2 col-lg-2 col-form-label">Total Cost :</label>
+                            <div class="col-sm-4 col-lg-4">
+                                <input type="number" min="0" formControlName="Total_Cost"
+                                    class="form-control form-control-default" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2 col-lg-2 col-form-label">Edit :</label>
+                            <div class="col-sm-4 col-lg-4">
+                                <mat-icon color="success" (click)="edit()">create</mat-icon>
+                            </div>
+                        </div>
+                        <br />
+                        <div *ngIf="editFirstCrop">
+                            <h2 style="background-color: rgba(0, 128, 0, 0.58); color: white">
+                                Edit First Crop Details :
+                            </h2>
+                            <div class="row">
+                                <label class="col-sm-1 col-lg-1 col-form-label">
+                                    Crop Category <label class="asterik">*</label>:</label>
+                                <div class="col-sm-3 col-lg-3">
+                                    <select formControlName="cropCategory" id="cropCategory"
+                                        class="form-control form-control-default" (change)="getSubCrops(this.ComponentForm.value.cropCategory,'FirstCrop')">
+                                        <option value="" disabled>--Select--</option>
+                                        <option [ngValue]="x" *ngFor="let x of AllCropData">
+                                            {{ x.CropName }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-1 col-lg-1 col-form-label">
+                                    Crop <label class="asterik">*</label>:</label>
+                                <div class="col-sm-3 col-lg-3">
+                                    <select formControlName="subCrop" id="subCrop"
+                                        class="form-control form-control-default">
+                                        <option value="" disabled>--Select--</option>
+                                        <option [ngValue]="x" *ngFor="let x of SubCropData">
+                                            {{ x.SubCropName }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-1 col-lg-1 col-form-label">
+                                    Seed (Per ha) <label class="asterik">*</label>:</label>
+                                <div class="col-sm-3 col-lg-3">
+                                    <input type="number" min="0" formControlName="Seed_Per_ha" id="Seed_Per_ha"
+                                        class="form-control form-control-default" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-1 col-lg-1 col-form-label">
+                                    Unit <label class="asterik">*</label>:</label>
+                                <div class="col-sm-3 col-lg-3">
+                                    <input type="text" formControlName="Unit" id="Unit"
+                                        class="form-control form-control-default" />
+                                </div>
+                                <label class="col-sm-1 col-lg-1 col-form-label">
+                                    Cost Of Seed <label class="asterik">*</label>:</label>
+                                <div class="col-sm-3 col-lg-3">
+                                    <input type="number" min="0" formControlName="Cost_of_Seed" id="Cost_of_Seed"
+                                        class="form-control form-control-default" />
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="editSecondCrop">
+                            <h2 style="background-color: rgba(0, 128, 0, 0.58); color: white">
+                                Edit Second Crop Details :
+                            </h2>
+                            <div class="row">
+                                <label class="col-sm-1 col-lg-1 col-form-label">
+                                    Crop Category <label class="asterik">*</label>:</label>
+                                <div class="col-sm-3 col-lg-3">
+                                    <select formControlName="fixedCropCategory" id="cropCategory"
+                                        (change)="getSubCrops(this.ComponentForm.value.fixedCropCategory,'SecondCrop')" class="form-control form-control-default">
+                                        <option value="" disabled>--Select--</option>
+                                        <option [ngValue]="x" *ngFor="let x of AllCropData">
+                                            {{ x.CropName }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-1 col-lg-1 col-form-label">
+                                    Crop <label class="asterik">*</label>:</label>
+                                <div class="col-sm-3 col-lg-3">
+                                    <select formControlName="fixedSubCrop" id="subCrop2"
+                                        class="form-control form-control-default">
+                                        <option value="" disabled>--Select--</option>
+                                        <option [ngValue]="x" *ngFor="let x of SecondSubCropData">
+                                            {{ x.SubCropName }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-1 col-lg-1 col-form-label">
+                                    Seed (Per ha) <label class="asterik">*</label>:</label>
+                                <div class="col-sm-3 col-lg-3">
+                                    <input type="number" min="0" formControlName="fixedSeed_Per_ha" id="Seed_Per_ha2"
+                                        class="form-control form-control-default" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-1 col-lg-1 col-form-label">
+                                    Unit <label class="asterik">*</label>:</label>
+                                <div class="col-sm-3 col-lg-3">
+                                    <input type="text" formControlName="fixedUnit" id="Unit2"
+                                        class="form-control form-control-default" />
+                                </div>
+                                <label class="col-sm-1 col-lg-1 col-form-label">
+                                    Cost Of Seed <label class="asterik">*</label>:</label>
+                                <div class="col-sm-3 col-lg-3">
+                                    <input type="number" min="0" formControlName="fixedCost_of_Seed"
+                                        id="fixedCost_of_Seed" class="form-control form-control-default" />
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="editAdditionalCrop">
+                            <h2 style="background-color: rgba(0, 128, 0, 0.58); color: white">
+                                Edit Additional Crop Details :
+                            </h2>
+                            <div class="row">
+                                <label class="col-sm-1 col-lg-1 col-form-label">
+                                    Crop Category <label class="asterik">*</label>:</label>
+                                <div class="col-sm-3 col-lg-3">
+                                    <select formControlName="additionalCropCategory" id="cropCategory3"
+                                        (change)="getSubCrops(this.ComponentForm.value.additionalCropCategory,'AdditionalCrop')" class="form-control form-control-default">
+                                        <option value="" disabled>--Select--</option>
+                                        <option [ngValue]="x" *ngFor="let x of AllCropData">
+                                            {{ x.CropName }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-1 col-lg-1 col-form-label">
+                                    Crop <label class="asterik">*</label>:</label>
+                                <div class="col-sm-3 col-lg-3">
+                                    <select formControlName="additionalSubCrop" id="additionalsubCrop"
+                                        class="form-control form-control-default">
+                                        <option value="" disabled>--Select--</option>
+                                        <option [ngValue]="x" *ngFor="let x of additionalSubCropData">
+                                            {{ x.SubCropName }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-1 col-lg-1 col-form-label">
+                                    Seed (Per ha) <label class="asterik">*</label>:</label>
+                                <div class="col-sm-3 col-lg-3">
+                                    <input type="number" min="0" formControlName="additionalSeed_Per_ha"
+                                        id="additionalSeed_Per_ha" class="form-control form-control-default" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-1 col-lg-1 col-form-label">
+                                    Unit <label class="asterik">*</label>:</label>
+                                <div class="col-sm-3 col-lg-3">
+                                    <input type="text" formControlName="additionalUnit" id="additionalUnit"
+                                        class="form-control form-control-default" />
+                                </div>
+                                <label class="col-sm-1 col-lg-1 col-form-label">
+                                    Cost Of Seed <label class="asterik">*</label>:</label>
+                                <div class="col-sm-3 col-lg-3">
+                                    <input type="number" min="0" formControlName="additionalCost_of_Seed"
+                                        id="additionalCost_of_Seed" class="form-control form-control-default" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <br />
+                    <br />
+                    <button type="button" class="btn btn-primary mat-elevation-z8" style="float: right"
+                        (click)="UpdateComponentCost()" [disabled]="!ComponentForm.valid">
+                        Update</button><br /><br />
+                </div>
+            </div>
 
+            <div class="card">
+                <div class="card-header">
+                    <h5>Component list</h5>
+                    <div class="card-header-right">
+                        <i class="icofont icofont-rounded-down"></i>
+                        <i class="icofont icofont-refresh"></i>
                     </div>
-                    <div *ngIf="editSecondCrop">
-                        <h2 style="background-color: rgba(0, 128, 0, 0.58);color: white;">Edit Second Crop Details :</h2>
-                        <div class="row">
-                            <label class="col-sm-1 col-lg-1 col-form-label"> Crop Category <label class="asterik">*</label>:</label>
-                            <div class="col-sm-3 col-lg-3">
-                                <select formControlName="fixedCropCategory" id="cropCategory" (change)="getSubCrops()"
-                                class="form-control form-control-default">
-                                <option value="" disabled>--Select--</option>
-                                <option [ngValue]="x" *ngFor="let x of AllCropData">{{
-                                    x.CropName }}</option>
-                            </select>
-                            </div>
-                            <label class="col-sm-1 col-lg-1 col-form-label"> Crop <label class="asterik">*</label>:</label>
-                            <div class="col-sm-3 col-lg-3">
-                                <select formControlName="fixedSubCrop" id="subCrop2"
-                                class="form-control form-control-default">
-                                <option value="" disabled>--Select--</option>
-                                <option [ngValue]="x" *ngFor="let x of SubCropData">{{
-                                    x.SubCropName }}</option>
-                            </select>
-                            </div>
-                            <label class="col-sm-1 col-lg-1 col-form-label"> Seed (Per ha) <label class="asterik">*</label>:</label>
-                            <div class="col-sm-3 col-lg-3">
-                                <input type="number" min="0" formControlName="fixedSeed_Per_ha" id="Seed_Per_ha2" class="form-control form-control-default">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-sm-1 col-lg-1 col-form-label"> Unit <label class="asterik">*</label>:</label>
-                            <div class="col-sm-3 col-lg-3">
-                                <input type="text" formControlName="fixedUnit" id="Unit2" class="form-control form-control-default">
-                            </div>
-                            <label class="col-sm-1 col-lg-1 col-form-label"> Cost Of Seed <label class="asterik">*</label>:</label>
-                            <div class="col-sm-3 col-lg-3">
-                                <input type="number" min="0" formControlName="fixedCost_of_Seed" id="fixedCost_of_Seed" class="form-control form-control-default">
-                            </div>
-                        </div>
-
-                    </div>
-                    <div *ngIf="editAdditionalCrop">
-                        <h2 style="background-color: rgba(0, 128, 0, 0.58);color: white;">Edit Additional Crop Details :</h2>
-                        <div class="row">
-                            <label class="col-sm-1 col-lg-1 col-form-label"> Crop Category <label class="asterik">*</label>:</label>
-                            <div class="col-sm-3 col-lg-3">
-                                <select formControlName="additionalCropCategory" id="cropCategory3" (change)="getSubCrops()"
-                                class="form-control form-control-default">
-                                <option value="" disabled>--Select--</option>
-                                <option [ngValue]="x" *ngFor="let x of AllCropData">{{
-                                    x.CropName }}</option>
-                            </select>
-                            </div>
-                            <label class="col-sm-1 col-lg-1 col-form-label"> Crop <label class="asterik">*</label>:</label>
-                            <div class="col-sm-3 col-lg-3">
-                                <select formControlName="additionalSubCrop" id="additionalsubCrop"
-                                class="form-control form-control-default">
-                                <option value="" disabled>--Select--</option>
-                                <option [ngValue]="x" *ngFor="let x of SubCropData">{{
-                                    x.SubCropName }}</option>
-                            </select>
-                            </div>
-                            <label class="col-sm-1 col-lg-1 col-form-label"> Seed (Per ha) <label class="asterik">*</label>:</label>
-                            <div class="col-sm-3 col-lg-3">
-                                <input type="number" min="0" formControlName="additionalSeed_Per_ha" id="additionalSeed_Per_ha" class="form-control form-control-default">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-sm-1 col-lg-1 col-form-label"> Unit <label class="asterik">*</label>:</label>
-                            <div class="col-sm-3 col-lg-3">
-                                <input type="text" formControlName="additionalUnit" id="additionalUnit" class="form-control form-control-default">
-                            </div>
-                            <label class="col-sm-1 col-lg-1 col-form-label"> Cost Of Seed <label class="asterik">*</label>:</label>
-                            <div class="col-sm-3 col-lg-3">
-                                <input type="number" min="0" formControlName="additionalCost_of_Seed" id="additionalCost_of_Seed" class="form-control form-control-default">
-                            </div>
-                        </div>
-
-                    </div>
-                </form>
-                <br>
-                <br>
-                <button type="button" class="btn btn-primary mat-elevation-z8" style="float: right;" (click)="UpdateComponentCost()" [disabled]="!ComponentForm.valid">Update 
-                </button><br><br>
-            </div></div>
-<div class="card" *ngIf="showtable">
-    <div class="card-block">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <table class="table table-dark">
-                            <thead style="background-color: cadetblue;">
+                </div>
+                <div class="card-block table-card">
+                    <div class="table-responsive" id="Permit-List">
+                        <table class="table table-striped table-bordered">
+                            <thead>
                                 <tr>
-                                    <th scope="col">SL.</th>
-                                    <th scope="col">Scheme</th>
-                                    <th scope="col">Sub Scheme</th>
-                                    <th scope="col">Component</th>
-                                    <th scope="col">Total Cost(comp)</th>
-                                    <th scope="col">Seed/ha(ha)</th>
-                                    <th scope="col">Cost of Seed/ha</th>
-                                    <!-- <th scope="col">Component type</th> -->
-                                    <!-- <th scope="col">Crop Category</th> -->
-                                    <th scope="col">SubCrop</th>
-                                    <th scope="col">Fixed SubCrop</th>
-                                    <th scope="col">Additional SubCrop</th>
-                                    <!-- <th scope="col">Financial Year</th> -->
-                                    <th scope="col">Remove</th>
+                                    <th>#</th>
+                                    <th>Scheme</th>
+                                    <th>Subscheme</th>
+                                    <th>Component</th>
+                                    <th>Financial Year</th>
                                 </tr>
                             </thead>
-                            <tr *ngFor="let x of ComponentList; let i=index;">
-                                <td> {{i+1}} </td>
-                                <td> {{x.schemeName.schemeName}} </td>
-                                <td> {{x.SubschemeName.SubschemeName}} </td>
-                                <td> {{x.CompName}} </td>
-                                <td> {{ x.Total_Cost }} </td>
-                                <td> {{ x.Seed_Per_ha }}<br>{{ x.Unit }} </td>
-                                <td> {{ x.Cost_of_Seed }} </td>
-                                <!-- <td> {{x.componentType.CompTypeName}} </td> -->
-                                <!-- <td> {{x.cropCategory.CropName || '---'}} </td> -->
-                                <td> {{x.subCrop.SubCropName || '---'}} </td>
-                                <td>
-                                    <li *ngFor="let y of x.Fixed_SubCrop;"> {{y.SubCropName || '---'}} </li>
-                                </td>
-
-                                <td> {{ x.additionalSubCrop.SubCropName || '---'}} </td>
-                                <!-- <td> {{x.FinYear}} </td> -->
-                                <td>
-                                    <button type="button" style="margin-top: -5px; color: red"
-                                        (click)="removeComponent(i);"><i class=" fa fa-trash"></i></button>
-                                </td>
-                            </tr>
+                            <tbody>
+                                <h5 class="text-danger text-cnter"></h5>
+                                <tr *ngFor="let x of AllComponentData; let i = index">
+                                    <th scope="row">{{ i + 1 }}</th>
+                                    <td class="tabledit-view-mode">
+                                        <span class="tabledit-span"> {{ x.schemeName }} </span>
+                                    </td>
+                                    <td class="tabledit-view-mode">
+                                        <span class="tabledit-span"> {{ x.SubschemeName }} </span>
+                                    </td>
+                                    <td class="tabledit-view-mode">
+                                        <span class="tabledit-span"> {{ x.CompName }} </span>
+                                    </td>
+                                    <td class="tabledit-view-mode">
+                                        <span class="tabledit-span"> {{ x.Fin_Year }} </span>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
-                </div>
-
-
-                <div style="padding: 20px;" *ngIf="showtable">
-                    <button type="button" class="btn btn-primary mat-elevation-z8" style="float: right;"
-                        (click)="SubmitComponent();">
-                        Submit Component
-                    </button>
-                    <br>
-                    <br>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <h5>Component list</h5>
-                <div class="card-header-right">
-                    <i class="icofont icofont-rounded-down"></i>
-                    <i class="icofont icofont-refresh"></i>
-                </div>
-            </div>
-            <div class="card-block table-card">
-                <div class="table-responsive" id="Permit-List">
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th> Scheme</th>
-                                <th> Subscheme </th>
-                                <th> Component </th>
-                                <th> Financial Year</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <h5 class="text-danger text-cnter"></h5>
-                            <tr *ngFor="let x of AllComponentData; let i = index">
-                                <th scope="row"> {{i+1}} </th>
-                                <td class="tabledit-view-mode"><span class="tabledit-span"> {{x.schemeName}} </span>
-                                </td>
-                                <td class="tabledit-view-mode"><span class="tabledit-span"> {{x.SubschemeName}} </span>
-                                </td>
-                                <td class="tabledit-view-mode"> <span class="tabledit-span"> {{x.CompName}} </span>
-                                </td>
-                                <td class="tabledit-view-mode"><span class="tabledit-span"> {{ x.Fin_Year }} </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div style="padding: 20px;">
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button class="btn btn-primary mat-elevation-z8" style="float: right;" ><i
-                                    class="icofont icofont-print"></i>Print</button>
+                    <div style="padding: 20px">
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-primary mat-elevation-z8" style="float: right">
+                                    <i class="icofont icofont-print"></i>Print
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -533,4 +522,3 @@
         </div>
     </div>
 </div>
-</div>   

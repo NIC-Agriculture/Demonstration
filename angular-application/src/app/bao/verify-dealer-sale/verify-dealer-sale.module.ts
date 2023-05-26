@@ -13,6 +13,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ApprovedDealerSaleListsComponent } from './verify-dealer-sale/approved-dealer-sale-lists/approved-dealer-sale-lists.component';
 import { ReturnedDealerSaleComponent } from './verify-dealer-sale/returned-dealer-sale/returned-dealer-sale.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { ReturnedDealerSaleComponent } from './verify-dealer-sale/returned-deale
     MatDialogModule,
     MatIconModule,
     NgxPrintModule,
-    MatTabsModule
+    MatTabsModule,
+    Ng2SearchPipeModule
 
   ]
 })
