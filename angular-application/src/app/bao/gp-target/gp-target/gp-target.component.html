@@ -29,7 +29,7 @@
                   <label class="block" for="Financialyear"> Financial Year <label class="asterik">*</label>:</label>
                 </div>
                 <div class="col-sm-4 col-lg-9">
-                    <select formControlName="FinYear" id="FinYear" class="form-control form-control-default">
+                    <select formControlName="FinYear" id="FinYear" class="form-control form-control-default" (change)="getAllScheme()">
                       <option value="" >--Select--</option>
                       <option [ngValue]="x" *ngFor="let x of FinYears">
                         {{ x }}

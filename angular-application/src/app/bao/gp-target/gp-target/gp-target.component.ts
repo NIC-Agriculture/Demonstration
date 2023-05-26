@@ -83,6 +83,7 @@ export class GpTargetComponent implements OnInit {
 
   getAllScheme = async() => {
     try {
+      this.gpTargetForm.patchValue({scheme:'',subscheme: '',component: ''})
       this.AllSchemeData = await this.baoService.getAllScheme().toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -92,6 +93,7 @@ export class GpTargetComponent implements OnInit {
 
   getSubscheme = async() => {
     try {
+      this.gpTargetForm.patchValue({subscheme: '',component: ''})
       const schemeId = this.gpTargetForm.value.scheme.schemeId
       this.SubschemeData = await this.baoService.getSubscheme(schemeId).toPromise()
     } catch (e) {
@@ -102,6 +104,7 @@ export class GpTargetComponent implements OnInit {
 
   getComponent = async() => {
     try {
+      this.gpTargetForm.patchValue({component: ''})
       const SubschemeId = this.gpTargetForm.value.subscheme.SubschemeId
       const FinYear = this.gpTargetForm.value.FinYear
       this.ComponentData = await this.baoService.getComponent(SubschemeId,FinYear).toPromise()

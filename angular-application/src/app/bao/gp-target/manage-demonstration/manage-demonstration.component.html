@@ -1,31 +1,98 @@
-<div class="card">
+<div class="card" [formGroup]="verifyDemonstrationForm">
     <div class="card-block">
       <div class="row">
         <div class="col-sm-12">
             <div class="row">
-              <div class="col-md-12">
-                <div class="form-group row">
-                  <div class="col-sm-4 col-lg-2">
-                    <label class="block" for="farmerId">Demonstration ID <label class="asterik">*</label>:</label>
+                <div class="col-lg-6 col md-6">
+
+                  <div class="form-group row">
+                    <div class="col-sm-4 col-lg-3">
+                      <label class="block" for="Financialyear"> Financial Year <label class="asterik">*</label>:</label>
+                    </div>
+                    <div class="col-sm-4 col-lg-9">
+                        <select formControlName="FinYear" id="FinYear" class="form-control form-control-default" (change)="getAllScheme()">
+                          <option value="" >--Select--</option>
+                          <option [ngValue]="x" *ngFor="let x of FinYears">
+                            {{ x }}
+                          </option>
+                        </select>
+                        <div class="text-danger" *ngIf="verifyDemonstrationFormValid.FinYear.touched && !verifyDemonstrationFormValid.FinYear.valid">
+                          Financial Year is required.
+                        </div>
+                    </div>
                   </div>
-                  <div class="col-sm-4 col-lg-6">
-                    <select id="demonstrationId"  [(ngModel)]="demonstrationId"  class="required form-control" (change)="getDemonstrationStatus()">
-                      <option value="">--Select--</option>
-                      <option [ngValue]="x" *ngFor="let x of demonstrationData">{{x.DemostrationId}}</option>
-                    </select>
+    
+                  <div class="form-group row">
+                    <div class="col-sm-4 col-lg-3">
+                      <label class="block" for="subscheme">Subscheme <label class="asterik">*</label>:</label>
+                    </div>
+                    <div class="col-sm-4 col-lg-9">
+                      <select id="subscheme" class="form-control form-control-default" (change)="getComponent();"
+                        formControlName="subscheme">
+                        <option value="" disabled>--Select--</option>
+                        <option [ngValue]="x" *ngFor="let x of SubschemeData">{{ x.SubschemeName }}</option>
+                      </select>
+                      <div class="text-danger" *ngIf="verifyDemonstrationFormValid.subscheme.touched && !verifyDemonstrationFormValid.subscheme.valid">
+                        Subscheme is required.
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-sm-2 col-lg-2">
-                      
-                          <label>Seed Distribution : {{ status }}</label>
-                  
-                    <!-- <section class="example-section">
-                      <mat-checkbox class="example-margin" [(ngModel)] = "status"> {{status}}  </mat-checkbox>
-                    </section> -->
+
+                  <div class="form-group row">
+                      <div class="col-sm-4 col-lg-3">
+                        <label class="block" for="farmerId">Demonstration ID <label class="asterik">*</label>:</label>
+                      </div>
+                      <div class="col-sm-4 col-lg-9">
+                        <select id="demonstrationId"  formControlName="demonstrationId"  class="form-control form-control-default" (change)="getDemonstrationStatus()">
+                          <option value="">--Select--</option>
+                          <option [ngValue]="x" *ngFor="let x of demonstrationData">{{x.DemostrationId}}</option>
+                        </select>
+                      </div>                   
                   </div>
-                <div class="col-sm-2 col-lg-2">
+    
                 </div>
+
+                <div class="col-lg-6 col md-6">
+                  <div class="form-group row">
+                    <div class="col-sm-4 col-lg-3">
+                      <label class="block" for="fuel">Scheme <label class="asterik">*</label>:</label>
+                    </div>
+                    <div class="col-sm-4 col-lg-9">
+                      <select id="scheme" class="form-control form-control-default" (change)="getSubscheme();"
+                        formControlName="scheme">
+                        <option value="" disabled>--Select--</option>
+                        <option [ngValue]="x" *ngFor="let x of AllSchemeData">{{ x.schemeName }}</option>
+                      </select>
+                      <div class="text-danger" *ngIf="verifyDemonstrationFormValid.scheme.touched && !verifyDemonstrationFormValid.scheme.valid">
+                        Scheme  is required.
+                      </div>
+                    </div>
+                  </div>
+    
+                  <div class="form-group row">
+                    <div class="col-sm-4 col-lg-3">
+                      <label class="block" for="component">Component <label class="asterik">*</label>:</label>
+                    </div>
+                    <div class="col-sm-4 col-lg-9">
+                      <select id="component" class="form-control form-control-default" formControlName="component" (change)="getDemonstrationData()">
+                        <option value="" disabled>--Select--</option>
+                        <option [ngValue]="x" *ngFor="let x of ComponentData">{{ x.CompName }}</option>
+                      </select>
+                      <div class="text-danger" *ngIf="verifyDemonstrationFormValid.component.touched && !verifyDemonstrationFormValid.component.valid">
+                        Component is required.
+                      </div>
+                    </div>
+                  </div>
+      
+                  <div class="form-group row">
+                    <div class="col-sm-4 col-lg-3">
+                      <label class="block" for="component">Seed Distribution <label class="asterik">*</label>: {{ status }} </label>
+                    </div>
+                    <div class="col-sm-4 col-lg-9">
+                    </div>
+                  </div>   
+      
                 </div>
-              </div>
             </div>
         </div>
       </div>

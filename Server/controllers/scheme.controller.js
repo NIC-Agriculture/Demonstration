@@ -79,6 +79,7 @@ exports.getAllComponent = async (req,res) => {
             [db.sequelize.literal('"SchemeMasterModel"."schemeName"'), "schemeName"],
             [db.sequelize.literal('"SubSchemeMasterModel"."SubschemeName"'), "SubschemeName"]
             ],
+            where: { Fin_Year: req.query.Fin_Year },
             raw : true,
             include: [
                 {
@@ -117,9 +118,24 @@ exports.getSubscheme = async (req,res) => {
 exports.getComponent = async (req,res) => {
     try{
         const ComponentData = await db.ComponentMaster.findAll({
-            attributes : ["CompId" , "CompName"],
-            where: { SubschemeId: req.query.SubschemeId , Active : 1},
-            raw: true
+            attributes : ["schemeId" , "SubschemeId" , "CompId" , "CompName" , "Fin_Year","CompTypeId","Season",
+            [db.sequelize.literal('"SchemeMasterModel"."schemeName"'), "schemeName"],
+            [db.sequelize.literal('"SubSchemeMasterModel"."SubschemeName"'), "SubschemeName"]
+            ],
+            where: {Fin_Year: req.query.Fin_Year, SubschemeId: req.query.SubschemeId , Active : 1},
+            raw: true,
+            include: [
+                {
+                    model: db.SchemeMaster,
+                    required: true
+                    // attributes: []
+                },
+                {
+                    model : db.SubSchemeMaster ,
+                    required: true
+                    // attributes: [],
+                }
+            ]
         });
         res.send(ComponentData);
     } catch (e) {
@@ -132,7 +148,7 @@ exports.getComponentCost = async (req,res) => {
     try{
         const CompCostData = await db.ComponentCostMap.findOne({
             attributes : ["CompId", "Total_Cost"],
-            where: { CompId: req.query.CompId },
+            where: { CompId: req.query.CompId ,Fin_Year: req.query.Fin_Year},
             raw: true
         });
         res.send(CompCostData);
@@ -228,6 +244,19 @@ exports.getAllComponentType = async (req, res , next) => {
     }
 }
 
+exports.getComponentTypeDetails = async (req, res , next) => {
+    try{
+        const ComponentTypeData = await db.ComponentTypeMaster.findOne({
+            where: { CompTypeId : req.query.CompTypeId },
+            raw: true
+        });
+        res.send(ComponentTypeData);
+    } catch (e) {
+        res.status(500).send('Unexpected error');
+        console.error(e);
+    }
+}
+
 exports.addComponent = async (req, res , next) => {
     const t = await db.sequelize.transaction();
     try{
@@ -239,52 +268,23 @@ exports.addComponent = async (req, res , next) => {
             ComponentData.SubschemeId = e.SubschemeName.SubschemeId;
             ComponentData.CompName = e.CompName;
             ComponentData.CompTypeId = e.componentType.CompTypeId;
+            ComponentData.Season = e.Season;
             ComponentData.IPAddress = requestIP.getClientIp(req);
             ComponentData.Fin_Year = e.Fin_Year;
             ComponentData.Active = 1;
             
             let SavedComponentDetails = await db.ComponentMaster.create(ComponentData, { transaction: t });
-            let CompId = SavedComponentDetails.CompId;
-            let SubschemeId = SavedComponentDetails.SubschemeId
-            let CompTypeId = SavedComponentDetails.CompTypeId
+
+            e.SubschemeId =SavedComponentDetails.SubschemeId;
             e.CompId = SavedComponentDetails.CompId;
+            e.Fin_Year = SavedComponentDetails.Fin_Year
+            e.CompTypeId = e.componentType.CompTypeId
+            e.Added_By = req.payload.user_id;
+            e.AddedOn = Date();            
 
             const SavedComponentCostDetails = await db.ComponentCostMap.create(e, { transaction: t });
-           
-            if(e.Fixed_SubCrop.length != 0){
-                    const cropData = []                
-                    for (let i = 0; i < e.Fixed_SubCrop.length; i++) {
-                        const element = e.Fixed_SubCrop[i];
-                        const SubCropdata = {};
-                    
-                        SubCropdata.CompId = CompId;
-                        SubCropdata.SubschemeId = SubschemeId;
-                        SubCropdata.CompTypeId = CompTypeId;
-                        SubCropdata.CropId = e.cropCategory.CropId;
-                        SubCropdata.SubCropId = e.subCrop.SubCropId;
-                        SubCropdata.AdditionalSubCropId = e.additionalSubCrop.SubCropId;
-                        SubCropdata.FixedSubCropId = element.SubCropId;
-                        SubCropdata.Added_By = req.payload.user_id;
-                        SubCropdata.AddedOn = Date();
-                        SubCropdata.IPAddress = requestIP.getClientIp(req)
-                        cropData.push(SubCropdata)
-                    }
-                    const SavedCropList = await db.ComponentCropMapping.bulkCreate(cropData, { transaction: t });
-                
-            }else {
-                        const SubCropdata = {};
-                        SubCropdata.CompId = CompId;
-                        SubCropdata.SubschemeId = SubschemeId;
-                        SubCropdata.CompTypeId = CompTypeId;
-                        SubCropdata.CropId = e.cropCategory.CropId;
-                        SubCropdata.SubCropId = e.subCrop.SubCropId;
-                        SubCropdata.AdditionalSubCropId = '';
-                        SubCropdata.FixedSubCropId = '';
-                        SubCropdata.Added_By = req.payload.user_id;
-                        SubCropdata.AddedOn = Date();
-                        SubCropdata.IPAddress = requestIP.getClientIp(req);
-                        const SavedCropList = await db.ComponentCropMapping.create(SubCropdata, { transaction: t });
-             }
+            const SavedCropList = await db.ComponentCropMapping.create(e, { transaction: t });
+            
         }
          
         res.send({message : `Component Details added successfully.`});
@@ -300,6 +300,79 @@ exports.addComponent = async (req, res , next) => {
     }
     
 }
+
+// exports.addComponent = async (req, res , next) => {
+//     const t = await db.sequelize.transaction();
+//     try{
+//         const data = req.body; 
+//         if(data.length == 0) return res.send({message : `Please enter valid data.`})
+//         for(let e of data) {
+//             const ComponentData = {};
+//             ComponentData.schemeId = e.schemeName.schemeId;
+//             ComponentData.SubschemeId = e.SubschemeName.SubschemeId;
+//             ComponentData.CompName = e.CompName;
+//             ComponentData.CompTypeId = e.componentType.CompTypeId;
+//             ComponentData.IPAddress = requestIP.getClientIp(req);
+//             ComponentData.Fin_Year = e.Fin_Year;
+//             ComponentData.Active = 1;
+            
+//             let SavedComponentDetails = await db.ComponentMaster.create(ComponentData, { transaction: t });
+//             let CompId = SavedComponentDetails.CompId;
+//             let SubschemeId = SavedComponentDetails.SubschemeId
+//             let CompTypeId = SavedComponentDetails.CompTypeId
+//             e.CompId = SavedComponentDetails.CompId;
+
+//             const SavedComponentCostDetails = await db.ComponentCostMap.create(e, { transaction: t });
+           
+//             if(e.Fixed_SubCrop.length != 0){
+//                     const cropData = []                
+//                     for (let i = 0; i < e.Fixed_SubCrop.length; i++) {
+//                         const element = e.Fixed_SubCrop[i];
+//                         const SubCropdata = {};
+                    
+//                         SubCropdata.CompId = CompId;
+//                         SubCropdata.SubschemeId = SubschemeId;
+//                         SubCropdata.CompTypeId = CompTypeId;
+//                         SubCropdata.CropId = e.cropCategory.CropId;
+//                         SubCropdata.SubCropId = e.subCrop.SubCropId;
+//                         SubCropdata.AdditionalSubCropId = e.additionalSubCrop.SubCropId;
+//                         SubCropdata.FixedSubCropId = element.SubCropId;
+//                         SubCropdata.Added_By = req.payload.user_id;
+//                         SubCropdata.AddedOn = Date();
+//                         SubCropdata.IPAddress = requestIP.getClientIp(req)
+//                         cropData.push(SubCropdata)
+//                     }
+//                     const SavedCropList = await db.ComponentCropMapping.bulkCreate(cropData, { transaction: t });
+                
+//             }else {
+//                         const SubCropdata = {};
+//                         SubCropdata.CompId = CompId;
+//                         SubCropdata.SubschemeId = SubschemeId;
+//                         SubCropdata.CompTypeId = CompTypeId;
+//                         SubCropdata.CropId = e.cropCategory.CropId;
+//                         SubCropdata.SubCropId = e.subCrop.SubCropId;
+//                         SubCropdata.AdditionalSubCropId = '';
+//                         SubCropdata.FixedSubCropId = '';
+//                         SubCropdata.Added_By = req.payload.user_id;
+//                         SubCropdata.AddedOn = Date();
+//                         SubCropdata.IPAddress = requestIP.getClientIp(req);
+//                         const SavedCropList = await db.ComponentCropMapping.create(SubCropdata, { transaction: t });
+//              }
+//         }
+         
+//         res.send({message : `Component Details added successfully.`});
+//         logController.addAuditLog( req.payload.user_id, req.protocol + '://' + req.get('host') + req.originalUrl , "Success", req.originalUrl.split("?").shift(),'Submit', req.method , requestIP.getClientIp(req) , parser.setUA(req.headers['user-agent']).getOS().name , parser.setUA(req.headers['user-agent']).getOS().version , parser.setUA(req.headers['user-agent']).getBrowser().name, parser.setUA(req.headers['user-agent']).getBrowser().version , req.device.type.toUpperCase())
+
+//         await t.commit();
+//     } catch (e) {
+//         await t.rollback();
+//         console.error(e);
+//         next(createError.InternalServerError());
+//         logController.addAuditLog( req.payload.user_id, req.protocol + '://' + req.get('host') + req.originalUrl , "Failure", req.originalUrl.split("?").shift(),'Submit', req.method , requestIP.getClientIp(req) , parser.setUA(req.headers['user-agent']).getOS().name , parser.setUA(req.headers['user-agent']).getOS().version , parser.setUA(req.headers['user-agent']).getBrowser().name, parser.setUA(req.headers['user-agent']).getBrowser().version , req.device.type.toUpperCase())
+
+//     }
+    
+// }
 
 exports.addCompItemDetails = async (req, res , next) => {
     const t = await db.sequelize.transaction();
@@ -422,7 +495,7 @@ exports.UpdateDistrictTarget = async (req, res, next) => {
     try {
         
         const data = req.body
-        const t = await sequelize.transaction();
+        // const t = await sequelize.transaction();
         const existingResult = await db.districtTarget.findAll({
              where: {CompId: data[0].CompId , Fin_Year : data[0].Fin_Year },
              raw:true
@@ -464,8 +537,6 @@ exports.UpdateDistrictTarget = async (req, res, next) => {
     }
    
 }
-
-
 
 exports.getDemonstrationIdCount = async (req,res) => {
     try {
@@ -515,9 +586,6 @@ exports.getBlocks = async (req,res) => {
     }
 }
 
-
-
-
 exports.getclusterDemonstration = async (req,res) => {
     try{
         if(req.query.Block_Code ==''){
@@ -563,11 +631,11 @@ exports.getclusterDemonstration = async (req,res) => {
     }
 }
 
-
 exports.getWardData = async (req,res) => {
     try{
          const queryText1 = `select "WardCode","WardName" from "WardMaster" where "WardCode" = '${req.query.WardCode}';`
          const result = await db.sequelize.query(queryText1);
+        //  console.log(result[0] , req.query.DemostrationId);
          result[0][0].DemostrationId = req.query.DemostrationId;
          res.send(result[0]);
     } catch (e){
@@ -614,6 +682,46 @@ exports.getItemDetails = async (req,res) => {
          const result = await db.sequelize.query(queryText1);
          res.send(result[0]);
     } catch (e){
+        res.status(500).send('Unexpected error');
+        console.error(e);
+    }
+}
+
+exports.getComponentCropDetails = async (req,res) => {
+    try{
+         const queryText1 = `SELECT a.* , b."CropName" , bb."CropName" AS "FixedCropName" , bbb."CropName" AS "AdditionalCropName",
+         c."SubCropName", cc."SubCropName" AS "FixedSubCropName" , ccc."SubCropName" AS "AdditionalSubCropName"
+         FROM "ComponentCropMapping" a
+         LEFT JOIN "CropMaster" b ON b."CropId" = a."CropId" 
+         LEFT JOIN "CropMaster" bb ON bb."CropId" = a."FixedCropId" 
+         LEFT JOIN "CropMaster" bbb ON bbb."CropId" = a."AdditionalCropId"
+         LEFT JOIN "SubCropMaster" c ON c."SubCropId" = a."SubCropId" 
+         LEFT JOIN "SubCropMaster" cc ON cc."SubCropId" = a."FixedSubCropId" 
+         LEFT JOIN "SubCropMaster" ccc ON ccc."SubCropId" = a."AdditionalSubCropId" 
+         WHERE "CompId" = '${req.query.CompId}' AND "Fin_Year" = '${req.query.Fin_Year}'`
+         console.log(queryText1);
+         const result = await db.sequelize.query(queryText1);
+         res.send(result[0][0]);
+    } catch (e){
+        res.status(500).send('Unexpected error');
+        console.error(e);
+    }
+}
+
+exports.UpdateComponentCostCropMapping = async (req,res) => {
+    const t = await sequelize.transaction();
+    try{
+         const data = req.body
+         data.Added_By = req.payload.user_id;
+         data.AddedOn = Date();
+         data.IPAddress = requestIP.getClientIp(req);
+         const updateSeason = await db.ComponentMaster.update({ Season: data.Season},{ where: { CompId: data.CompId , Fin_Year : data.Fin_Year }, transaction: t})
+         const updateCost = await db.ComponentCostMap.update({Total_Cost : data.Total_Cost},{ where: { CompId: data.CompId , Fin_Year : data.Fin_Year }, transaction: t})
+         const udpateCropData = await db.ComponentCropMapping.update(data, { where: { CompId: data.CompId , Fin_Year : data.Fin_Year } , transaction: t})
+         res.send({message:'Successfully Updated'});
+         await t.commit();
+    } catch (e){
+        await t.rollback();
         res.status(500).send('Unexpected error');
         console.error(e);
     }

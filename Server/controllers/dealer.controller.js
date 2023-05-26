@@ -296,7 +296,7 @@ exports.deleteInvoice = async(req,res) => {
         const queryText2 = `DELETE FROM "DealerSaleToAction" WHERE "InvoiceNo" = '${req.query.InvoiceNo}'`
         const result2 = await db.sequelize.query(queryText2); 
 
-        res.send({message :" Deleted Succesfully."})
+        res.send({message :"Deleted Succesfully."})
      } catch (e) {
         res.status(500).send('Unexpected error')
         console.error(e);

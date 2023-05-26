@@ -49,12 +49,12 @@ export class SeedRequiredComponent implements OnInit {
       this.layoutService.setPageHeadingDesc(this.pageDesc);
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
-      this.getDemonstrationData();
+      this.getAllDemonstrationData();
   }
 
-  getDemonstrationData = async() => {
+  getAllDemonstrationData = async() => {
     try {
-      this.demonstrationData = await this.baoService.getDemonstrationData().toPromise()
+      this.demonstrationData = await this.baoService.getAllDemonstrationData().toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);

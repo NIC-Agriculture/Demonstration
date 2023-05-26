@@ -25,6 +25,9 @@ export class ClusterDetailsComponent implements OnInit {
   demonstrationClusterTable:boolean = false;
   allComponent: any;
   WardData: any;
+  AllSchemeData: any;
+  SubschemeData: any;
+  ComponentData: any;
 
   constructor(
     private schemeService: SchemeserviceService,
@@ -36,10 +39,11 @@ export class ClusterDetailsComponent implements OnInit {
     this.pageDesc = 'Cluster Details';
     this.breadcrumbList = ['District And Block wise Cluster Details'];
     this.clusterForm = this.fb.group({
-      // block: [""],
-      distCode: ["", [Validators.required]],
-      blockCode: [""],
-      CompId: [""],
+      scheme: ['', [Validators.required]],
+      subscheme: ['', [Validators.required]],
+      distCode: ['', [Validators.required]],
+      blockCode: [''],
+      CompId: ['', [Validators.required]],
       FinYear: ["", [Validators.required]],
      })
   }
@@ -80,9 +84,40 @@ export class ClusterDetailsComponent implements OnInit {
     this.allBlocks = await this.schemeService.getBlocks(this.clusterForm.value.distCode).toPromise();   
   }
 
-  getAllComponent = async () => {
-    const FinYear = this.clusterForm.value.FinYear
-    this.allComponent = await this.schemeService.getAllComponent(FinYear).toPromise();
+  // getAllComponent = async () => {
+  //   const FinYear = this.clusterForm.value.FinYear
+  //   this.allComponent = await this.schemeService.getAllComponent(FinYear).toPromise();
+  // }
+
+  getAllScheme = async() => {
+    try {
+      this.AllSchemeData = await this.schemeService.getAllScheme().toPromise()
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
+  getSubscheme = async() => {
+    try {
+      const schemeId = this.clusterForm.value.scheme.schemeId
+      this.SubschemeData = await this.schemeService.getSubscheme(schemeId).toPromise()
+      this.clusterForm.patchValue({CompId : ''}) ;
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
+  getComponent = async() => {
+    try {
+      const FinYear = this.clusterForm.value.FinYear
+      const SubschemeId = this.clusterForm.value.subscheme.SubschemeId
+      this.allComponent = await this.schemeService.getComponent(FinYear,SubschemeId).toPromise()
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
   }
 
   getclusterDemonstration = async () => {
@@ -106,7 +141,7 @@ export class ClusterDetailsComponent implements OnInit {
               return e
             }
         });
-        if (e.lgd_wardcode != null) {
+        if (e.lgd_wardcode != null && e.lgd_wardcode != "") {
           var WardCode = e.lgd_wardcode.split(',')
           WardCode.forEach((y : any) => {     
              this.getWardData(y , e.DemostrationId);

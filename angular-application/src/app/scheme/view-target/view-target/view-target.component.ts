@@ -42,6 +42,7 @@ export class ViewTargetComponent implements OnInit {
   viewTargetCard: boolean = false
   totalTarget: number = 0;
   Season: any;
+  message1: boolean = false;
 
 
   constructor(
@@ -134,14 +135,15 @@ export class ViewTargetComponent implements OnInit {
 
   loadAllDistrictTarget = async() => {
     try {
-      this.viewTargetCard = true
       const CompId = this.ViewTargetForm.value.component.CompId
       const SubschemeId = this.ViewTargetForm.value.subscheme.SubschemeId
       const Fin_Year = this.ViewTargetForm.value.FinYear
+      this.viewTargetCard = true
 
       this.AllDistrictTargetData = await this.schemeService.getAllDistrictTarget(SubschemeId, CompId , Fin_Year).toPromise()
       this.ViewTargetForm.controls['subsidy'].enable();
-      if (this.AllDistrictTargetData.length > 0) {
+      if (this.AllDistrictTargetData.length > 0) {  
+        this.message1 = false 
         this.AllDistrictTargetDetails = {
           "schemeId": this.ViewTargetForm.value.scheme.schemeId,
           "SubschemeId": this.ViewTargetForm.value.subscheme.SubschemeId,
@@ -151,7 +153,9 @@ export class ViewTargetComponent implements OnInit {
           "AllDistrictTargetData": this.AllDistrictTargetData
         };
         this.loadAllDistrict();
-      }  
+      } else {
+        this.message1=true
+      }
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
@@ -161,7 +165,6 @@ export class ViewTargetComponent implements OnInit {
   loadAllDistrict = async() => {
     try {
         this.AllDistrictData = await this.schemeService.getAllDistrict().toPromise()
-
         this.AllDistrictTargetDetails.AllDistrictTargetData.forEach((y: any) => {
           this.AllDistrictData.forEach((e: any) => {
             if (y.Dist_Code == e.Dist_Code) {

@@ -27,6 +27,7 @@ export class DemonstrationClusterImplementationComponent implements OnInit {
   wardName: any;
   AllSchemeData: any;
   schemeId: any
+  message: boolean = false
 
   fileName= 'ClusterDetailsReport.xlsx';
   SubschemeData: any;
@@ -111,12 +112,15 @@ export class DemonstrationClusterImplementationComponent implements OnInit {
 
   getclusterDemonstration = async () => {
     try {
-      this.demonstrationClusterTable = true;
+      
       const FinYear = this.clusterFrom.value.FinYear;
       const schemeId =  this.clusterFrom.value.scheme;
       const SubschemeId = this.clusterFrom.value.subScheme
       const compId = this.clusterFrom.value.component
       this.clusterDemonstration = await this.baoService.getclusterDemonstration(FinYear,schemeId,SubschemeId,compId).toPromise()
+      
+      this.message = this.clusterDemonstration.result.length == 0 ? true : false
+      this.demonstrationClusterTable = this.clusterDemonstration.result.length != 0 ? true : false
       this.GpData = this.clusterDemonstration.GpData  
       this.clusterDemonstration.result.forEach((e: any) => {
           this.GpData.forEach((f: any) => {
@@ -140,7 +144,7 @@ export class DemonstrationClusterImplementationComponent implements OnInit {
             })
           }
       });
-      this.clusterReport = this.clusterDemonstration.result
+      this.clusterReport = this.clusterDemonstration.result      
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);

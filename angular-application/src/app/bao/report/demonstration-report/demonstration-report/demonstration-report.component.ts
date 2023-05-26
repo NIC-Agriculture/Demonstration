@@ -19,7 +19,7 @@ export class DemonstrationReportComponent implements OnInit {
   schemeName: any;
   SeedDistributionStatus: any;
   Season: any;
-  sttuasTable: boolean = false;
+  statusTable: boolean = false;
 
   demonstrationReport: any;
   message:boolean = false
@@ -89,9 +89,9 @@ export class DemonstrationReportComponent implements OnInit {
 
   getDemonstrationStatusReport = async () => {
     try {
-      this.sttuasTable = true
       this.demonstrationReport = await this.baoService.getDemonstrationStatusReport(this.FinYear,this.schemeName.schemeId,this.season).toPromise();
       this.message = this.demonstrationReport.length > 0 ? false : true
+      this.statusTable = this.demonstrationReport.length > 0 ? true : false
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);

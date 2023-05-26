@@ -281,11 +281,12 @@ exports.getAllApprovedFarmerList = async (req, res , next) => {
         FROM "Farmer_Permit" a
         INNER JOIN "ComponentCostMapping" b ON a."CompId" = b."CompId"
         INNER JOIN "ComponentMaster" c ON a."CompId" = c."CompId"
-        INNER JOIN "CropMaster" d ON a."CropId" = d."CropId"
-        INNER JOIN "CropVarietyMaster" e ON a."Variety_Code" = e."Variety_Code"
+        LEFT JOIN "CropMaster" d ON a."CropId" = d."CropId"
+        LEFT JOIN "CropVarietyMaster" e ON a."Variety_Code" = e."Variety_Code"
         LEFT JOIN "SubCropMaster" f ON a."SubCropId" = f."SubCropId"
         LEFT JOIN "itemPackageMaster" g ON a."bp_ItemId" = g."ItemId"
         WHERE "DemonstrationId" = '${req.query.DemonstrationId}'`
+        console.log(queryText);
         const result = await db.sequelize.query(queryText);
         res.send(result[0]);
     } catch (e) {

@@ -71,6 +71,7 @@ export class CompCostCropMappingComponent implements OnInit {
       SubschemeName: ['', [Validators.required]],
       CompName:['', [Validators.required]],
       Total_Cost: ['', [Validators.required]],
+      Season : ['',[Validators.required]],
       componentType: [''],
       cropCategory: [''],
       subCrop: [''],
@@ -130,7 +131,7 @@ export class CompCostCropMappingComponent implements OnInit {
       this.SubschemeData = []
       this.ComponentData = []
       this.ComponentCostData = []
-      this.ComponentForm.patchValue({ Total_Cost: '' })
+      this.ComponentForm.patchValue({ Total_Cost: '' , Season: '' , componentType: '' })
       this.AllSchemeData = await this.schemeService.getAllScheme().toPromise()
     } catch (e){
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -146,7 +147,7 @@ export class CompCostCropMappingComponent implements OnInit {
       this.SubschemeData = []
       this.ComponentData = []
       this.ComponentCostData = []
-      this.ComponentForm.patchValue({ Total_Cost: '' })
+      this.ComponentForm.patchValue({ Total_Cost: '' , Season: '' , componentType: ''})
       const schemeId = this.ComponentForm.value.schemeName.schemeId
       this.SubschemeData = await this.schemeService.getSubscheme(schemeId).toPromise()
     } catch (e){
@@ -162,10 +163,11 @@ export class CompCostCropMappingComponent implements OnInit {
       this.editAdditionalCrop = false;
       this.ComponentData = []
       this.ComponentCostData = []
-      this.ComponentForm.patchValue({ Total_Cost: '' })
+      this.ComponentForm.patchValue({ Total_Cost: '' , Season: '', componentType: ''})
       const FinYear = this.ComponentForm.value.Fin_Year
       const SubschemeId = this.ComponentForm.value.SubschemeName.SubschemeId
       this.ComponentData = await this.schemeService.getComponent(FinYear,SubschemeId).toPromise()
+      
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
@@ -207,14 +209,17 @@ export class CompCostCropMappingComponent implements OnInit {
   }
 
   getComponentCost = async() => {
-    try {
+    try {  
+      
       this.ComponentCostData = []
-      this.ComponentForm.patchValue({ Total_Cost: '' })
+      this.ComponentForm.patchValue({ Total_Cost: '' , Season: '', componentType: ''})
       const Fin_Year = this.ComponentForm.value.Fin_Year
       const CompId = this.ComponentForm.value.CompName.CompId;
       this.ComponentCostData = await this.schemeService.getComponentCost(CompId,Fin_Year).toPromise()
       this.ComponentCropDetails = await this.schemeService.getComponentCropDetails(CompId,Fin_Year).toPromise()
       
+      
+      this.ComponentForm.patchValue({ Season: this.ComponentForm.value.CompName.Season })
       this.ComponentForm.patchValue({ Total_Cost: this.ComponentCostData.Total_Cost })
       this.ComponentForm.patchValue({ Seed_Per_ha: this.ComponentCropDetails.Seed_Per_ha })
       this.ComponentForm.patchValue({ Unit: this.ComponentCropDetails.Unit })
@@ -243,6 +248,7 @@ export class CompCostCropMappingComponent implements OnInit {
         this.editFirstCrop = true
         this.editSecondCrop = false
         this.editAdditionalCrop = false
+        this.ComponentForm.controls['Season'].disable();
         this.ComponentForm.controls['Total_Cost'].disable();
         this.ComponentForm.controls['cropCategory'].disable();
         this.ComponentForm.controls['subCrop'].disable();
@@ -253,6 +259,7 @@ export class CompCostCropMappingComponent implements OnInit {
         this.editFirstCrop = true
         this.editSecondCrop = true
         this.editAdditionalCrop = false
+        this.ComponentForm.controls['Season'].disable();
         this.ComponentForm.controls['Total_Cost'].disable();
         this.ComponentForm.controls['cropCategory'].disable();
         this.ComponentForm.controls['subCrop'].disable();
@@ -269,6 +276,7 @@ export class CompCostCropMappingComponent implements OnInit {
         this.editFirstCrop = true
         this.editSecondCrop = false
         this.editAdditionalCrop = true
+        this.ComponentForm.controls['Season'].disable();
         this.ComponentForm.controls['Total_Cost'].disable();
         this.ComponentForm.controls['cropCategory'].disable();
         this.ComponentForm.controls['subCrop'].disable();
@@ -288,6 +296,7 @@ export class CompCostCropMappingComponent implements OnInit {
   }
 
   edit = () => {
+    this.ComponentForm.controls['Season'].enable();
     this.ComponentForm.controls['Total_Cost'].enable();
     this.ComponentForm.controls['cropCategory'].enable();
     this.ComponentForm.controls['subCrop'].enable();
@@ -340,8 +349,10 @@ export class CompCostCropMappingComponent implements OnInit {
   UpdateComponentCost = async() => {
     try {
       const UpdatedData = {
+
         Fin_Year : this.ComponentForm.value.Fin_Year,
         CompId : this.ComponentForm.value.CompName.CompId,
+        Season : this.ComponentForm.value.Season,
         Total_Cost: this.ComponentForm.value.Total_Cost,
         CropId: this.ComponentForm.value.cropCategory.CropId,
         SubCropId: this.ComponentForm.value.subCrop.SubCropId,
@@ -373,6 +384,17 @@ export class CompCostCropMappingComponent implements OnInit {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
       
+    }
+  }
+
+  getAllComponent = async() => {
+    try{   
+       const Fin_Year = this.ComponentForm.value.Fin_Year
+       const SubschemeId = this.ComponentForm.value.SubschemeName.SubschemeId
+       this.AllComponentData = await this.schemeService.getComponent(Fin_Year , SubschemeId).toPromise()
+    } catch (e){
+       this.toastr.error('Sorry. Server problem. Please try again.');
+       console.error(e);
     }
   }
 

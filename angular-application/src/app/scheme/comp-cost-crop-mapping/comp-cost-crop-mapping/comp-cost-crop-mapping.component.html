@@ -12,215 +12,6 @@
                     </div>
                 </div>
                 <div class="card-block table-bordered">
-                    <!-- <div class="row">
-                    <div class="col-sm-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <form [formGroup]="ComponentForm">
-                                    <div class="row">
-                                        <div class="col-lg-6 col md-6">
-                                            <div class="form-group row">
-                                                <div class="col-sm-4 col-lg-4">
-                                                    <label class="block" for="FinYear">Financial Year <label
-                                                            class="asterik">*</label>:</label>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-8">
-                                                    <select formControlName="Fin_Year" id="Fin_Year"
-                                                        class="form-control form-control-default" required>
-                                                        <option value="">--Select--</option>
-                                                        <option [ngValue]="x" *ngFor="let x of FinYears"> {{ x }}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <div class="col-sm-4 col-lg-4">
-                                                    <label class="block" for="SubschemeName">Subscheme <label
-                                                            class="asterik">*</label>:</label>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-8">
-                                                    <select formControlName="SubschemeName" id="SubschemeName"
-                                                        class="form-control form-control-default">
-                                                        <option value="" disabled>--Select--</option>
-                                                        <option [ngValue]="x" *ngFor="let x of SubschemeData">{{
-                                                            x.SubschemeName }}</option>
-                                                    </select>
-                                                </div>
-                                            </div>                                           
-
-                                            <div class="form-group row">
-                                                <div class="col-sm-4 col-lg-4">
-                                                    <label class="block" for="scheme">Component Type <label
-                                                            class="asterik">*</label>:</label>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-8">
-                                                    <select formControlName="componentType" id="componentType"
-                                                        class="form-control form-control-default"
-                                                        (change)="chooseCrop();">
-                                                        <option value="" disabled>--Select--</option>
-                                                        <option [ngValue]="x" *ngFor="let x of ComponentTypeList">{{
-                                                            x.CompTypeName }}</option>
-                                                        <!-- <option [ngValue]="x" *ngFor="let x of AllSchemeData">{{ x.schemeName }}</option> -->
-                    <!-- </select>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="form-group row">
-                                                <div class="col-sm-4 col-lg-4">
-                                                    <label class="block" for="Seed_Per_ha">Seed Per ha(per ha) <label
-                                                            class="asterik">*</label>:</label>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-8">
-                                                    <input type="number" formControlName="Seed_Per_ha"
-                                                        class="form-control form-control-default">
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <div class="col-sm-4 col-lg-4">
-                                                    <label class="block" for="Cost_of_Seed">Cost Of Seed Per ha<label
-                                                            class="asterik">*</label>:</label>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-8">
-                                                    <input type="number" formControlName="Cost_of_Seed"
-                                                        class="form-control form-control-default">
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row" *ngIf="subCropBox">
-                                                <div class="col-sm-4 col-lg-4">
-                                                    <label class="block" for="subCrop">Crop<label
-                                                            class="asterik">*</label>:</label>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-8">
-                                                    <select formControlName="subCrop" id="subCrop"
-                                                        class="form-control form-control-default">
-                                                        <option value="" disabled>--Select--</option>
-                                                        <option [ngValue]="x" *ngFor="let x of AllSubCropData">{{
-                                                            x.SubCropName }}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row" *ngIf="fixedSubCropBox">
-                                                <div class="col-sm-4 col-lg-4">
-                                                    <label class="block" for="fixedSubCrop">Fixed Crop <label
-                                                            class="asterik">*</label>:</label>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-8">
-                                                    <div style="width:100%">
-                                                        <ng-multiselect-dropdown [settings]="dropdownSettings"
-                                                            [data]="AllSubCropData" formControlName="fixedSubCrop"
-                                                            *ngIf="multiselect">
-                                                        </ng-multiselect-dropdown>
-                                                    </div>
-                                                    <select formControlName="fixedSubCrop" id="fixedSubCrop"
-                                                        class="form-control form-control-default" *ngIf="!multiselect">
-                                                        <option value="" disabled>--Select--</option>
-                                                        <option [ngValue]="x" *ngFor="let x of AllSubCropData">{{
-                                                            x.SubCropName }}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-lg-6 col md-6">
-
-                                            <div class="form-group row">
-                                                <div class="col-sm-4 col-lg-4">
-                                                    <label class="block" for="scheme">Scheme <label
-                                                            class="asterik">*</label>:</label>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-8">
-                                                    <select formControlName="schemeName" id="scheme"
-                                                        class="form-control form-control-default"
-                                                        (change)="getSubscheme();">
-                                                        <option value="" disabled>--Select--</option>
-                                                        <option [ngValue]="x" *ngFor="let x of AllSchemeData"> {{x.schemeName }}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                          
-
-                                            <div class="form-group row">
-                                                <div class="col-sm-4 col-lg-4">
-                                                    <label class="block" for="Component"> Component <label
-                                                            class="asterik">*</label>:</label>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-8">
-                                                    <select formControlName="CompName" id="CompName"
-                                                        class="form-control form-control-default"
-                                                        (change)="getSubscheme();">
-                                                        <option value="" disabled>--Select--</option>
-                                                        <option [ngValue]="x" *ngFor="let x of AllSchemeData"> {{x.schemeName }}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <div class="col-sm-4 col-lg-4">
-                                                    <label class="block" for="FinYear">Total
-                                                        Cost(component)<label class="asterik">*</label>:
-                                                    </label>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-8">
-                                                    <input type="number" formControlName="Total_Cost"
-                                                        class="form-control form-control-default">
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <div class="col-sm-4 col-lg-4">
-                                                    <label class="block" for="unit">Unit<label
-                                                            class="asterik">*</label>:</label>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-8">
-                                                    <select formControlName="Unit" id="unit"
-                                                        class="form-control form-control-default">
-                                                        <option value="" disabled>--Select--</option>
-                                                        <option value="Kilogram"> Kilogram </option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                
-                                            </div>
-
-
-                                            <div class="form-group row" *ngIf="additionalSubCropBox">
-                                                <div class="col-sm-4 col-lg-4">
-                                                    <label class="block" for="additionalSubCrop">Additional Crop <label
-                                                            class="asterik">*</label>:</label>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-8">
-                                                    <select formControlName="additionalSubCrop" id="additionalSubCrop"
-                                                        class="form-control form-control-default">
-                                                        <option value="" disabled>--Select--</option>
-                                                        <option [ngValue]="x" *ngFor="let x of AllSubCropData">{{
-                                                            x.SubCropName }}</option>
-                                                    </select>
-                                                </div>
-                                            </div>  
-
-                                             <div class="form-group row">
-                                            </div>
-                                            <div class="form-group row">
-                                            </div>
-                                            <div class="form-group row">
-                                            </div> 
-
-
-                                         </div>
-
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
                     <form [formGroup]="ComponentForm">
                         <div class="row">
                             <label class="col-sm-2 col-lg-2 col-form-label">Financial Year <label
@@ -304,13 +95,26 @@
                                     class="form-control form-control-default" />
                             </div>
                         </div>
+                        <br>
                         <div class="row">
+                            <label class="col-sm-2 col-lg-2 col-form-label">Season <label
+                                class="asterik">*</label>:</label>
+                                <div class="col-sm-4 col-lg-4">
+                                    <select formControlName="Season" id="Season"
+                                    class="form-control form-control-default">
+                                    <option value="" disabled>--Select--</option>
+                                    <option value="Kharif" > Kharif </option>
+                                    <option value="Rabi" > Rabi </option>
+                                    <option value="Kharif & Rabi" > Kharif & Rabi </option>
+                                </select>
+                                </div>
                             <label class="col-sm-2 col-lg-2 col-form-label">Edit :</label>
                             <div class="col-sm-4 col-lg-4">
                                 <mat-icon color="success" (click)="edit()">create</mat-icon>
                             </div>
                         </div>
                         <br />
+
                         <div *ngIf="editFirstCrop">
                             <h2 style="background-color: rgba(0, 128, 0, 0.58); color: white">
                                 Edit First Crop Details :
@@ -467,7 +271,7 @@
                 </div>
             </div>
 
-            <div class="card">
+            <!-- <div class="card">
                 <div class="card-header">
                     <h5>Component list</h5>
                     <div class="card-header-right">
@@ -518,7 +322,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

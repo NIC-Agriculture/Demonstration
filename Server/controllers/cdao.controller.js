@@ -161,7 +161,8 @@ exports.getSubscheme = async (req,res) => {
 
 exports.getComponent = async (req,res) => {
     try{
-        const queryText = `SELECT "CompId","CompName" , "CompTypeId" FROM "ComponentMaster" WHERE "SubschemeId" = '${req.query.SubschemeId}' AND "Active" = 1;`
+        const queryText = `SELECT "CompId","CompName" , "CompTypeId" FROM "ComponentMaster" WHERE "SubschemeId" = '${req.query.SubschemeId}' 
+        AND "Fin_Year" = '${req.query.Fin_Year}' AND "Active" = 1;`
         const result = await db.sequelize.query(queryText);
         res.send(result[0]);
     }catch(e){
@@ -202,8 +203,6 @@ exports.getCrops = async (req,res) => {
 exports.getSubCrop = async (req,res) => {
     try{
         const CompTypeId = req.query.CompTypeId
-        // console.log(req.query.CompTypeId);
-        // const CompTypeId = 'compType_3'
         if(CompTypeId === 'compType_1'){
             const queryText = `SELECT a."CompId", a."CropId" , a."SubCropId" AS SubCropId ,  a."CompTypeId" , b."SubCropName"  
             FROM "ComponentCropMapping" a 
@@ -562,10 +561,10 @@ exports.getAllDealerSale = async (req, res, next) => {
                 INNER JOIN "DealerSaleToAction" c ON c."InvoiceNo" = a."InvoiceNo"
                 WHERE a."verifyStatus" = 'Verifying' AND a."Block_Code" = '${req.query.Block_Code}' AND ('0'='${schemeId}' OR  a."schemeId" = '${schemeId}')
                 AND ('0'='${SubschemeId}' OR b."SubschemeId"='${SubschemeId}') AND ('0'='${CompId}' OR b."CompId"='${CompId}')
-                AND c."ddaRemark" is null
+                AND c."ddaAction" is null
+                AND a."Fin_year" = '${req.query.Fin_Year}'
                 GROUP BY a."InvoiceNo", a."DemonstrationId" , a."Permit_NO" , a."FarmerId" , a."Farmer_Category",a."dealerLiscenseNo",
                 a."SoldBy" , a."SoldOn" , a."FarmerName" , a."schemeId" , a."Block_Code"`;
-        // console.log(queryText);
         const result = await db.sequelize.query(queryText);
         res.send(result[0]);
     } catch (e) {
@@ -759,9 +758,55 @@ exports.getAllApprovedDealerSale = async (req, res, next) => {
                 WHERE a."verifyStatus" = 'Approved_By_CDAO'  AND a."Block_Code" = '${req.query.Block_Code}' AND ('0'='${schemeId}' OR  a."schemeId" = '${schemeId}')
                 AND ('0'='${SubschemeId}' OR b."SubschemeId"='${SubschemeId}') AND ('0'='${CompId}' OR b."CompId"='${CompId}')
                 AND c."ddaAction" = 'Approved'
+                AND a."Fin_year" = '${req.query.Fin_Year}'
                 GROUP BY a."InvoiceNo", a."DemonstrationId" , a."Permit_NO" , a."FarmerId" , a."Farmer_Category",a."dealerLiscenseNo",
                 a."SoldBy" , a."SoldOn" , a."FarmerName" , a."schemeId" , a."Block_Code",d."AccountNo" ,d."IFSC",d."AccountHolderName",d."BankName",d."aadhaarNo",d."ReferenceNo"`
-        
+        // console.log("queryText",queryText);
+        const result = await db.sequelize.query(queryText);
+        res.send(result[0]);
+    } catch (e) {
+        console.log(e);
+        next(createError.InternalServerError())
+    }
+}
+
+exports.getAllReturnedDealerSale = async (req, res, next) => {
+    try {
+        const schemeCode = req.query.schemeId
+        if (schemeCode == 2){
+            var schemeId = 'scheme_1'
+        }else if(schemeCode == 3){
+            var schemeId = 'scheme_2'
+        } else if (schemeCode == 4) {
+            var schemeId = 'scheme_3'
+        }else {
+            var schemeId = 0
+        }
+
+        if (req.query.SubschemeId == '') {
+            var SubschemeId = 0
+        }else{
+            var SubschemeId = req.query.SubschemeId;
+        }
+        if (req.query.CompId == '') {
+            var CompId = 0
+        }else{
+            var CompId = req.query.CompId; 
+        }
+
+        const queryText = `SELECT a."Block_Code", a."InvoiceNo", a."DemonstrationId" , a."Permit_NO" , a."FarmerId" , a."Farmer_Category",
+                a."dealerLiscenseNo", a."SoldBy" , a."SoldOn" , a."FarmerName",
+                SUM(cast(a."totalPrice" as numeric)) AS TotalSalePrice ,
+                SUM(cast(a."eligibleSubsidy" as numeric)) AS TotalEligibleSubsidy , a."schemeId"
+                FROM "DealerSale" a
+                INNER JOIN "DemonstrationPatchMaster" b ON a."DemonstrationId"= b."DemostrationId"
+                INNER JOIN "DealerSaleToAction" c ON c."InvoiceNo" = a."InvoiceNo"
+                WHERE a."verifyStatus" = 'Verifying'  AND a."Block_Code" = '${req.query.Block_Code}' AND ('0'='${schemeId}' OR  a."schemeId" = '${schemeId}')
+                AND ('0'='${SubschemeId}' OR b."SubschemeId"='${SubschemeId}') AND ('0'='${CompId}' OR b."CompId"='${CompId}')
+                AND c."ddaRemark" = 'Returned_To_BAO'
+                AND a."Fin_year" = '${req.query.Fin_Year}'
+                GROUP BY a."InvoiceNo", a."DemonstrationId" , a."Permit_NO" , a."FarmerId" , a."Farmer_Category",a."dealerLiscenseNo",
+                a."SoldBy" , a."SoldOn" , a."FarmerName" , a."schemeId" , a."Block_Code"`
         const result = await db.sequelize.query(queryText);
         res.send(result[0]);
     } catch (e) {
@@ -1112,7 +1157,7 @@ exports.getAvailableTarget = async (req,res) => {
 		from "DistrictTarget" a
         INNER JOIN "SchemeMaster" b ON a."schemeId" = b."schemeId"
         INNER JOIN "SubSchemeMaster" c ON a."SubschemeId" = c."SubschemeId"
-        INNER JOIN "ComponentMaster" d ON a."CompId" = d."CompId"
+        INNER JOIN "ComponentMaster" d ON a."CompId" = d."CompId" AND d."Fin_Year" = a."Fin_Year"
         where a."Dist_Code" = '${req.payload.Dist_Code}' AND a."Fin_Year" = '${req.query.Fin_Year}' AND a."schemeId" = '${req.query.schemeId}' `
         // console.log(queryText);
         const result = await db.sequelize.query(queryText);
@@ -1159,7 +1204,7 @@ exports.getDemonstrationStatusReport = async (req, res, next) => {
         const queryText = `SELECT c."SubschemeName",d."CompName",a."DemostrationId",a."SeedDistributionStatus",b."statusPhase1",b."statusPhase2",b."statusPhase3"
         FROM "DemonstrationPatchMaster" a
 		INNER JOIN "SubSchemeMaster" c on c."SubschemeId" = a."SubschemeId"
-		INNER JOIN "ComponentMaster" d on d."CompId" = a."CompId"
+		INNER JOIN "ComponentMaster" d on d."CompId" = a."CompId" AND d."Fin_Year" = a."Fin_Year"
         LEFT JOIN "FarmerLandDetails" b ON a."DemostrationId" = b."DemostrationId"
         WHERE "Dist_Code"='${req.payload.Dist_Code}' AND ('0'='${req.query.Block_Code}' or  a."Block_Code" = '${req.query.Block_Code}') AND a."Fin_Year" = '${req.query.Fin_Year}'`;
         // console.log(queryText);
@@ -1213,7 +1258,7 @@ exports.getclusterDemonstration = async (req,res) => {
            b."CompName",a."PhyGen", a."PhySCP", a."PhyTasp", a."AvlPhyGen", a."AvlPhySCP", a."AvlPhyTASP" 
            FROM "DemonstrationPatchMaster" a
            INNER JOIN "SubSchemeMaster" d ON a."SubschemeId" = d."SubschemeId"
-           INNER JOIN "ComponentMaster" b ON a."CompId" = b."CompId"
+           INNER JOIN "ComponentMaster" b ON a."CompId" = b."CompId" AND b."Fin_Year" = a."Fin_Year"
            LEFT JOIN "Farmer_Permit" c ON a."DemostrationId" = c."DemonstrationId"
            WHERE a."Block_Code" = '${req.query.Block_Code}' AND a."Fin_Year"='${req.query.Fin_Year}' 
            GROUP BY a."DemostrationId",d."SubschemeName",a."Gp_Code",a."lgd_wardcode",a."vaw_userId",

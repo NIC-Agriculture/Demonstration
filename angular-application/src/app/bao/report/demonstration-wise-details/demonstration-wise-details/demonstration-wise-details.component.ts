@@ -81,12 +81,12 @@ export class DemonstrationWiseDetailsComponent implements OnInit {
   }
 
   getDemonstrationData = async() => {
-    try {
-      this.demonstrationData = await this.baoService.getDemonstrationData().toPromise()
-    } catch (e) {
-      this.toastr.error('Sorry. Server problem. Please try again.');
-      console.error(e);
-    }
+    // try {
+    //   this.demonstrationData = await this.baoService.getDemonstrationData(this.FinYear).toPromise()
+    // } catch (e) {
+    //   this.toastr.error('Sorry. Server problem. Please try again.');
+    //   console.error(e);
+    // }
   }
 
   getDemonstrationStatus = async() => {

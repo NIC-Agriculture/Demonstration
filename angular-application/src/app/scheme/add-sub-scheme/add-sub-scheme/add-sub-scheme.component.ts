@@ -15,7 +15,6 @@ export class AddSubSchemeComponent implements OnInit {
   breadcrumbList: Array<string>;
   SubschemeForm: FormGroup;
   subSchemeList: Array<any>;
-  FinYear: string = "2022-23";
   loadSubschemeList: any;
   AllSubschemeData: any;
   AllSchemeData: any;
@@ -38,6 +37,7 @@ export class AddSubSchemeComponent implements OnInit {
     this.SubschemeForm = fb.group({
       schemeName: ['', [Validators.required]],
       SubschemeName: ['', [Validators.required]],
+      Fin_Year : ['', [Validators.required]]
     });
    }
 

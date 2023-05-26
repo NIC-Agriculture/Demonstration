@@ -44,8 +44,11 @@ export class BaoServiceService {
   getComponent(SubschemeId: any, Fin_Year: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getComponent?SubschemeId=${SubschemeId}&Fin_Year=${Fin_Year}`)
   }
-  getDemonstrationData(): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getDemonstrationData`)
+  getDemonstrationData(CompId: any,FinYear: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getDemonstrationData?CompId=${CompId}&Fin_Year=${FinYear}`)
+  }
+  getAllDemonstrationData(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllDemonstrationData`)
   }
   getVerifiedDemonstrationData(FinYear: any, schemeId: any, SubschemeId: any, CompId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getVerifiedDemonstrationData?Fin_Year=${FinYear}&schemeId=${schemeId}&SubschemeId=${SubschemeId}&CompId=${CompId}`)

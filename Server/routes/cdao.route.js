@@ -30,6 +30,7 @@ router.get('/getIncetiveList', cdaoController.getIncetiveList);
 router.post('/approveIncentiveList', cdaoController.approveIncentiveList);
 router.post('/returnDealerSaleToBAO', cdaoController.returnDealerSaleToBAO);
 router.get('/getAllApprovedDealerSale', cdaoController.getAllApprovedDealerSale);
+router.get('/getAllReturnedDealerSale', cdaoController.getAllReturnedDealerSale);
 
 router.get('/getCompTargetDetails', cdaoController.getCompTargetDetails);
 router.get('/getItemTechDetails', cdaoController.getItemTechDetails);

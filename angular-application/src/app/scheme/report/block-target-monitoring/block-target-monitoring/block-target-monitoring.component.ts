@@ -24,6 +24,8 @@ export class BlockTargetMonitoringComponent implements OnInit {
   BlockTargetMonitoring: any;
   BlockTargetViewTable: boolean = false;
   Season: any;
+  message1: boolean = false;
+
 
   constructor(
     private schemeService: SchemeserviceService,
@@ -126,12 +128,14 @@ export class BlockTargetMonitoringComponent implements OnInit {
 
   getBlockTarget = async ()  => {
     try {
-      this.BlockTargetViewTable = true;
+      
       const CompId = this.TargetMonitoringForm.value.component.CompId;
       const DistCode = this.TargetMonitoringForm.value.District.Dist_Code;
       const FinYear = this.TargetMonitoringForm.value.FinYear;
-      const result = await  this.schemeService.getBlockTarget(DistCode,CompId,FinYear).toPromise()
-      this.BlockTargetMonitoring = result;
+      this.BlockTargetMonitoring = await  this.schemeService.getBlockTarget(DistCode,CompId,FinYear).toPromise()
+      this.BlockTargetViewTable = this.BlockTargetMonitoring.length == 0 ? false : true;
+      this.message1 = this.BlockTargetMonitoring.length == 0 ? true : false
+      
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);

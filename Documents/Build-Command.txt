@@ -17,4 +17,4 @@ ng build --base-href /login/ --deploy-url /login/ --configuration=production --o
 Admin Page Build Command for Office Desktop
 =======================================///////////////////////
 
-ng build --base-href /login/ --deploy-url /login/ --configuration=production --outputPath=C:\Projects\Demonstration\Server\admin-template
+ng build --base-href /login/ --deploy-url /login/ --configuration=production --outputPath=E:\eDemoGitBackup\Demonstration\Server\admin-template

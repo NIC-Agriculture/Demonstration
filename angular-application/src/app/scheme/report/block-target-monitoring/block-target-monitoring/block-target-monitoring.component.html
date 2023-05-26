@@ -46,7 +46,7 @@
                                     </select>
                                     <div class="text-danger" *ngIf="TargetFormValid.subscheme.touched && !TargetFormValid.subscheme.valid">
                                     Subscheme is required.
-                                  </div>
+                                    </div>
                                   </div>
                                 </div>
                                 
@@ -231,5 +231,11 @@
               styleSheetFile="assets/css/custom1.css,assets/css/custom2.css"  printSectionId="print-section"  ngxPrint ><i class="icofont icofont-print"></i>Print</button>
           </div>
       </div>
+  </div>
+</div>
+
+<div class="card" *ngIf="message1">
+  <div class="card-block" >
+    <h4 style="text-align: center; color: red;">There is no target available under this District.</h4>
   </div>
 </div>
