@@ -15,7 +15,7 @@
                 <div class="col-sm-6 col-lg-5">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                        <select class="form-control" formControlName="FinYear" >
+                        <select class="form-control" formControlName="FinYear" (change)="getAllScheme()" >
                             <option value="">--Select--</option>
                             <option [ngValue]="x" *ngFor="let x of FinYears">
                                 {{ x }}
@@ -29,12 +29,20 @@
             </div>
             <div class="row">
                 <label class="col-sm-3 col-lg-3 col-form-label">Select Type <label class="asterik">*</label>:</label>
-                <div class="col-sm-9 col-lg-9">
-                    <mat-radio-group aria-label="Select an option" formControlName="Type" >
-                        <!-- <mat-radio-button value="1">All Scheme</mat-radio-button> -->
-                        <mat-radio-button value="ReturnByCDAO">Returned By CDAO</mat-radio-button>
-                        <mat-radio-button value="ReturnToDealer">Returned To Dealer</mat-radio-button>
-                    </mat-radio-group>
+                <div class="col-sm-6 col-lg-5">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
+                        <select class="form-control" formControlName="Type" (change)="getAllScheme()">
+                            <option value="">--Select--</option>
+                            <option value="ReturnByCDAO" >
+                                Returned By CDAO
+                            </option>
+                            <option value="ReturnToDealer">
+                                Returned To Dealer
+                            </option>
+                        </select>
+
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -89,7 +97,7 @@
                 <div class="col-sm-6 col-lg-5">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                        <select id="demonstrationId" formControlName="demonstrationId" class="required form-control">
+                        <select id="demonstrationId" formControlName="demonstrationId" class="required form-control" (change)="getGp()" >
                             <option value="">--Select--</option>
                             <option [ngValue]="x.DemostrationId" *ngFor="let x of demonstrationData">
                                 {{ x.DemostrationId }}
@@ -97,10 +105,18 @@
                         </select>
                     </div>
                 </div>
+                <label class="col-sm-1 col-lg-1 col-form-label">GP:</label>
+                <div class="col-sm-3 col-lg-3">
+                    <label *ngFor="let x of GpData" >{{x.Gp_Name}},&nbsp;</label>
+                </div>
+              
+            </div><br><br>
+            <div class="row">
+                <div class="col-sm-9 col-lg-8"></div>
                 <div class="col-sm-3 col-lg-4">
                     <button type="button" class="btn btn-primary" id="primary-popover-content" data-container="body"
                         data-toggle="popover" title="Primary color states" data-placement="bottom"
-                        (click)="getReturnedDealerSale()" [disabled]="!returneddealerSaleFrom.valid">
+                        (click)="getReturnedDealerSale()" [disabled]="!returneddealerSaleFrom.valid" style="float: right;" >
                         Get Sale List
                     </button>
                 </div>
@@ -117,12 +133,12 @@
                     <thead>
                         <tr>
                             <th>SL</th>
-                            <th>
+                            <!-- <th>
                                 <mat-checkbox class="example-margin" [checked]="allComplete"
                                     [indeterminate]="someComplete()" (change)="setAll($event.checked)">
                                 </mat-checkbox>
                                 Select All
-                            </th>
+                            </th> -->
                             <th>Permit No</th>
                             <th>Invoice No</th>
                             <th>Farmer Id</th>
@@ -140,10 +156,10 @@
                     <tbody>
                         <tr *ngFor="let x of allreturnedDealerResult; let i = index;">
                             <th scope="row"> {{i+1}} </th>
-                            <td>
+                            <!-- <td>
                                 <mat-checkbox [(ngModel)]="x.completed" (ngModelChange)="updateAllComplete()">
                                 </mat-checkbox>
-                            </td>
+                            </td> -->
                             <td> {{x.Permit_NO}} </td>
                             <td> {{x.InvoiceNo}} </td>
                             <td> {{x.FarmerId}} </td>

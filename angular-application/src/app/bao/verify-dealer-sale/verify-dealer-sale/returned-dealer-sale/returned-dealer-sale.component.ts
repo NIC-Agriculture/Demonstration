@@ -31,6 +31,7 @@ export class ReturnedDealerSaleComponent implements OnInit {
   rejectedDealerSale: any;
   allreturnedToDealerResult: any;
   confirmResult: any;
+  GpData: any;
 
   constructor(
     private baoService: BaoServiceService,
@@ -66,8 +67,12 @@ export class ReturnedDealerSaleComponent implements OnInit {
 
   getAllScheme = async () => {
     try {
+      this.returnedByCDAO = false;
+      this.returnedToDealerTable = false
       this.SubschemeData = []
       this.ComponentData = []
+      this.demonstrationData = []
+      this.GpData = []
       this.AllSchemeData = await this.baoService.getAllScheme().toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -77,8 +82,12 @@ export class ReturnedDealerSaleComponent implements OnInit {
 
   getSubscheme = async () => {
     try {
+      this.returnedByCDAO = false;
+      this.returnedToDealerTable = false
       this.SubschemeData = []
       this.ComponentData = []
+      this.demonstrationData = []
+      this.GpData = []
       switch (this.returneddealerSaleFrom.value.scheme) {
         case '2':
           this.schemeIdvar = 'scheme_1'
@@ -92,6 +101,8 @@ export class ReturnedDealerSaleComponent implements OnInit {
         default:
           this.SubschemeData = []
           this.ComponentData = []
+          this.demonstrationData = []
+          this.GpData = []
           break;
       }
       this.SubschemeData = await this.baoService.getSubscheme(this.schemeIdvar).toPromise()
@@ -103,7 +114,11 @@ export class ReturnedDealerSaleComponent implements OnInit {
 
   getComponent = async () => {
     try {
+      this.returnedByCDAO = false;
+      this.returnedToDealerTable = false
       this.ComponentData = []
+      this.demonstrationData = []
+      this.GpData = []
       const SubschemeId = this.returneddealerSaleFrom.value.subScheme
       const FinYear = this.returneddealerSaleFrom.value.FinYear
       this.ComponentData = await this.baoService.getComponent(SubschemeId, FinYear).toPromise()
@@ -115,6 +130,10 @@ export class ReturnedDealerSaleComponent implements OnInit {
 
   getDemonstrationData = async () => {
     try {
+      this.returnedByCDAO = false;
+      this.returnedToDealerTable = false
+      this.demonstrationData = []
+      this.GpData = []
       switch (this.returneddealerSaleFrom.value.scheme) {
         case '2':
           this.schemeIdvar = 'scheme_1'
@@ -136,6 +155,17 @@ export class ReturnedDealerSaleComponent implements OnInit {
 
       this.demonstrationData = await this.baoService.getVerifiedDemonstrationData(FinYear, this.schemeIdvar, subschemeId, compId).toPromise()
 
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.')
+      console.error(e);
+    }
+  }
+
+  getGp = async () => {
+    try {
+      this.GpData = []
+      const DemonstrationId = this.returneddealerSaleFrom.value.demonstrationId
+      this.GpData = await this.baoService.getGp(DemonstrationId).toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.')
       console.error(e);
@@ -178,6 +208,8 @@ export class ReturnedDealerSaleComponent implements OnInit {
         this.returnedByCDAO = true;
         this.returnedToDealerTable = false
         this.allreturnedDealerResult = await this.baoService.getReturnedByCDAODealerSale(subschemeId, compId, FinYear, demonstrationId).toPromise()
+        console.log(this.allreturnedDealerResult);
+        
         this.allreturnedDealerResult.length > 0 ? (this.message = false) : (this.message = true)
       } else if (this.returneddealerSaleFrom.value.Type == 'ReturnToDealer') {
         this.returnedToDealerTable = true;
@@ -185,6 +217,7 @@ export class ReturnedDealerSaleComponent implements OnInit {
         this.allreturnedToDealerResult = await this.baoService.getReturnedToDealerSale(subschemeId, compId, FinYear, demonstrationId).toPromise()        
         this.allreturnedToDealerResult.length > 0 ? (this.message = false) : (this.message = true)
       }
+      this.returneddealerSaleFrom.reset()
 
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.')

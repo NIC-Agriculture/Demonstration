@@ -44,6 +44,7 @@ export class ViewTargetComponent implements OnInit {
   ItemTechnicalName: any;
   modalTable: boolean = false
   modalMessage: boolean = false
+  message: boolean = false;
   fileName= 'blockTargetReport.xlsx';
  
 
@@ -58,11 +59,11 @@ export class ViewTargetComponent implements OnInit {
     this.pageDesc = 'View Target for Blocks';
     this.breadcrumbList = ['View Target to Blocks'];
     this.ViewTargetForm = this.fb.group({
-      scheme: [''],
+      FinYear: ['', [Validators.required]],
+      scheme: ['', [Validators.required]],
       subscheme: ['', [Validators.required]],
       component: ['', [Validators.required]],
       subsidy: ['', [Validators.required]],
-      FinYear: ['', [Validators.required]]
     });
 
   }
@@ -74,7 +75,6 @@ export class ViewTargetComponent implements OnInit {
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
     this.ViewTargetForm.controls['subsidy'].disable();
-    this.getAllScheme();
     this.loadBlocks()
     this.getFinYear();
   }
@@ -96,6 +96,9 @@ export class ViewTargetComponent implements OnInit {
 
   getAllScheme = async() => {
     try {
+      this.ViewTargetForm.patchValue({scheme: '', subscheme : '', component : '',subsidy: ''})
+      this.AllSchemeData = []; this.SubschemeData = []; this.ComponentData = []; this.ComponentCostData = []
+      this.viewTargetCard = false;
       this.AllSchemeData = await this.cdaoService.getAllScheme().toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -105,6 +108,9 @@ export class ViewTargetComponent implements OnInit {
 
   getSubscheme = async() => {
     try {
+      this.ViewTargetForm.patchValue({ subscheme : '', component : '',subsidy: ''})
+      this.SubschemeData = []; this.ComponentData = []; this.ComponentCostData = []
+      this.viewTargetCard = false;
       this.ViewTargetForm.patchValue({ subscheme : '' })
       const schemeId = this.ViewTargetForm.value.scheme.schemeId
       this.SubschemeData = await this.cdaoService.getSubscheme(schemeId).toPromise()
@@ -117,10 +123,15 @@ export class ViewTargetComponent implements OnInit {
 
   getComponent = async() => {
     try {
+      this.ViewTargetForm.patchValue({component : '',subsidy: ''})
+       this.ComponentData = []; this.ComponentCostData = []
+      this.viewTargetCard = false;
       this.ViewTargetForm.patchValue({ component : '' })
       const SubschemeId = this.ViewTargetForm.value.subscheme.SubschemeId
       const Fin_Year = this.ViewTargetForm.value.FinYear
       this.ComponentData = await this.cdaoService.getComponent(SubschemeId , Fin_Year).toPromise();
+      console.log(this.ComponentData);
+      
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
@@ -129,6 +140,9 @@ export class ViewTargetComponent implements OnInit {
   
   getComponentCost = async() => {
     try{
+      this.ViewTargetForm.patchValue({subsidy: ''})
+      this.ComponentCostData = []
+      this.viewTargetCard = false;
       const CompId = this.ViewTargetForm.value.component.CompId;
       this.ComponentCostData = await this.cdaoService.getComponentCost(CompId).toPromise()
       this.ViewTargetForm.patchValue({ subsidy : this.ComponentCostData[0].Total_Cost })

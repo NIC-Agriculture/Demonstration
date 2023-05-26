@@ -14,7 +14,7 @@
             <div class="col-sm-4 col-lg-4">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                    <select [(ngModel)]="FinYear" id="FinYear" class="form-control form-control-default" >
+                    <select [(ngModel)]="FinYear" id="FinYear" class="form-control form-control-default" (change)="getAllScheme()" >
                         <option value="">--Select--</option>
                         <option [ngValue]="x" *ngFor="let x of FinYears">
                           {{ x }}
@@ -36,10 +36,13 @@
             </div>
         </div>
 </div>
-<div id="print-section">
-    <div class="card-block" *ngIf="AvailableTargetTable">
+</div>
+
+<div class="card" *ngIf="AvailableTargetTable">
+    <div class="card-block">
+        <div id="print-section">
         <div class="dt-responsive table-responsive">
-            <table id="custom-btn" class="table table-striped table-bordered nowrap">
+            <table id="custom-btn" class="table table-striped table-bordered nowrap" id="excel-table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -65,7 +68,6 @@
             </table>
         </div>
     </div>
-    </div>
     <div class="card-block">
 
         <div class="row">
@@ -73,7 +75,11 @@
                 <button 
                 class="btn btn-primary mat-elevation-z8 float-right"  [useExistingCss]="true" 
                 styleSheetFile="assets/css/custom1.css,assets/css/custom2.css"  printSectionId="print-section"  ngxPrint ><i class="icofont icofont-print"></i>Print</button>
+                <button 
+                class="btn btn-primary mat-elevation-z8 float-right" (click)="exportexcel()" style="margin-right:10px;" ><i class="ion-ios-upload"></i> Export to Excel </button>
             </div>
         </div>
+    </div>
+
     </div>
 </div>

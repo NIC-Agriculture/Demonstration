@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { CdaoService } from 'src/app/services/cdao/cdao.service';
 import { LayoutserviceService } from 'src/app/services/layoutservice.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-target-allotment',
@@ -20,7 +21,7 @@ export class TargetAllotmentComponent implements OnInit {
   AvailableTarget: any;
   Season: any;
   AllSchemeData: any;
-
+  fileName= 'TargetAllotmentInDistrict.xlsx'; 
 
   constructor(
     private layoutService: LayoutserviceService,
@@ -39,7 +40,6 @@ export class TargetAllotmentComponent implements OnInit {
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
       this.getFinYear();
-      this.getAllScheme();
   }
 
   getFinYear = async() => {
@@ -55,6 +55,9 @@ export class TargetAllotmentComponent implements OnInit {
 
   getAllScheme = async () => {
     try {
+      this.schemeId = ''
+      this.AllSchemeData = []
+      this.AvailableTargetTable = false;
       this.AllSchemeData = await this.cdaoService.getAllScheme().toPromise();
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -74,5 +77,20 @@ export class TargetAllotmentComponent implements OnInit {
       console.error(e);
     }
   }
+
+  exportexcel(): void 
+  {
+     /* table id is passed over here */   
+     let element = document.getElementById('excel-table'); 
+     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+
+     /* generate workbook and add the worksheet */
+     const wb: XLSX.WorkBook = XLSX.utils.book_new();
+     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+     /* save to file */
+     XLSX.writeFile(wb, this.fileName);
+    
+}
 
 }
