@@ -32,6 +32,7 @@ export class ApproveIncentiveSeedCostComponent implements OnInit {
   pageTitle: string;
   pageDesc: string;
   breadcrumbList: Array<string>;
+  saleDetailsTable: boolean = false
 
   constructor(
     private cdaoService: CdaoService,
@@ -98,6 +99,7 @@ getBlocks = async() => {
 
 getAllIncentive = async() => {
   try {
+    this.saleDetailsTable = true
     if(this.BlockAndSchemeForm.value.block  != null && this.BlockAndSchemeForm.value.scheme){
       this.allIncentiveResult  = await this.cdaoService.getAllIncentive(this.BlockAndSchemeForm.value.block , this.BlockAndSchemeForm.value.scheme).toPromise()      
       this.countPending = +this.allIncentiveResult.length

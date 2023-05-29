@@ -578,7 +578,8 @@ exports.deleteDemoID = async (req, res, next) => {
         if (+demoTarget[0][0].AvlPhyGen != +demoTarget[0][0].TotalPhyGen || +demoTarget[0][0].AvlPhySCP != +demoTarget[0][0].TotalPhySCP || +demoTarget[0][0].AvlPhyTASP != +demoTarget[0][0].TotalPhyTASP)
             return res.send({ message: `${req.query.DemostrationId} can't be deleted.`, type: 'warning' })
 
-        const queryText1 = `SELECT * FROM "BlockTarget" WHERE "Block_Code" = '${demoTarget[0][0].Block_Code}' AND "SubschemeId" = '${demoTarget[0][0].SubschemeId}' AND "CompId" = '${demoTarget[0][0].CompId}' `
+        const queryText1 = `SELECT * FROM "BlockTarget" WHERE "Block_Code" = '${demoTarget[0][0].Block_Code}' AND "SubschemeId" = '${demoTarget[0][0].SubschemeId}' 
+        AND "CompId" = '${demoTarget[0][0].CompId}' AND "Fin_Year" = '${demoTarget[0][0].Fin_Year}' `
         const blockTarget = await db.sequelize.query(queryText1);
         // console.log("block",blockTarget[0][0]);
 
@@ -593,8 +594,9 @@ exports.deleteDemoID = async (req, res, next) => {
         // console.log("updateBlockData" , updateBlockData);
 
 
-        // const updateBlockTarget = await db.blockTarget.update(updateBlockData,{ where: {Block_Code: demoTarget[0][0].Block_Code , SubschemeId : demoTarget[0][0].SubschemeId , CompId: demoTarget[0][0].CompId } , transaction: t})
-        // const deleteDemoId = await db.DemonstrationPatch.destroy({where : {DemostrationId : demoTarget[0][0].DemostrationId } , transaction: t})
+        const updateBlockTarget = await db.blockTarget.update(updateBlockData,{ where: {Block_Code: demoTarget[0][0].Block_Code , SubschemeId : demoTarget[0][0].SubschemeId 
+         , CompId: demoTarget[0][0].CompId , Fin_Year : demoTarget[0][0].Fin_Year } , transaction: t})
+        const deleteDemoId = await db.DemonstrationPatch.destroy({where : {DemostrationId : demoTarget[0][0].DemostrationId } , transaction: t})
         res.send({ message: `'${req.query.DemostrationId}' has successfully deleted.`, type: 'success' });
 
         logController.addAuditLog(req.payload.user_id, req.protocol + '://' + req.get('host') + req.originalUrl, "Success", req.originalUrl.split("?").shift(), 'DELETE Demo ID', req.method, req.socket.remoteAddress, parser.setUA(req.headers['user-agent']).getOS().name, parser.setUA(req.headers['user-agent']).getOS().version, parser.setUA(req.headers['user-agent']).getBrowser().name, parser.setUA(req.headers['user-agent']).getBrowser().version, req.device.type.toUpperCase())
@@ -1001,5 +1003,36 @@ exports.returnedSaleCDAOToDealer = async (req, res, next) => {
         console.error(e);
         next(createError.InternalServerError());
         logController.addAuditLog(req.payload.user_id, req.protocol + '://' + req.get('host') + req.originalUrl, "Failure", req.originalUrl.split("?").shift(), 'Return', req.method, req.socket.remoteAddress, parser.setUA(req.headers['user-agent']).getOS().name, parser.setUA(req.headers['user-agent']).getOS().version, parser.setUA(req.headers['user-agent']).getBrowser().name, parser.setUA(req.headers['user-agent']).getBrowser().version, req.device.type.toUpperCase())
+    }
+}
+
+exports.getGp = async(req,res,next) => {
+    try {
+        const queryText = `select "Gp_Code" from "DemonstrationPatchMaster" where "DemostrationId" = '${req.query.DemostrationId}'`
+        const result = await db.sequelize.query(queryText);
+        const GpData = []
+        result[0].forEach(async(e, key) => {
+            if (e.Gp_Code != null) {
+                var GPCode = e.Gp_Code.split(',')
+                GPCode.forEach(async(y, key1) => {
+                    const queryText1 = `SELECT "Gp_Code" , "Gp_Name" FROM "LGGP" WHERE "Gp_Code" = '${y}';`
+                    const result1 = await db.sequelize.query(queryText1);
+                    result1[0][0].DemostrationId = e.DemostrationId;
+                    GpData.push(result1[0][0]);
+                    if(key+1==result[0].length){
+                        if (key1+1==GPCode.length) {
+                            res.send(GpData);
+                        }
+                    }
+                    
+                });
+            }
+          
+        })
+
+        
+    } catch (e) {
+        res.status(500).send('Unexpected error')
+        console.error(e);
     }
 }

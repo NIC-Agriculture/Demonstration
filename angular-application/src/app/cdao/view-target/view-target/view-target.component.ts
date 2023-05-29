@@ -130,7 +130,6 @@ export class ViewTargetComponent implements OnInit {
       const SubschemeId = this.ViewTargetForm.value.subscheme.SubschemeId
       const Fin_Year = this.ViewTargetForm.value.FinYear
       this.ComponentData = await this.cdaoService.getComponent(SubschemeId , Fin_Year).toPromise();
-      console.log(this.ComponentData);
       
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
