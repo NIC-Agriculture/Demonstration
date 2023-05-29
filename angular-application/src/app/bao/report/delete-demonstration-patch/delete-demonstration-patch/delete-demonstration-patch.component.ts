@@ -30,6 +30,7 @@ export class DeleteDemonstrationPatchComponent implements OnInit {
   SubschemeData: any;
   AllSchemeData: any;
   ComponentData: any;
+  message: boolean = false;
 
   constructor(
     private baoService:BaoServiceService,
@@ -84,8 +85,10 @@ export class DeleteDemonstrationPatchComponent implements OnInit {
 
   getSubscheme = async() => {
     try {
+      this.deletePatchFrom.patchValue({subScheme : '',component : ''})
       this.SubschemeData = []
       this.ComponentData = []
+      this.demonstrationClusterTable = false;
       const schemeId =  this.deletePatchFrom.value.scheme
       this.SubschemeData = await this.baoService.getSubscheme(schemeId).toPromise()
     } catch (e) {
@@ -96,7 +99,9 @@ export class DeleteDemonstrationPatchComponent implements OnInit {
 
   getComponent = async() => {
     try {
+      this.deletePatchFrom.patchValue({component : ''})
       this.ComponentData = []
+      this.demonstrationClusterTable = false;
       const SubschemeId = this.deletePatchFrom.value.subScheme
       const FinYear = this.deletePatchFrom.value.FinYear
       // console.log(SubschemeId);
@@ -115,7 +120,7 @@ export class DeleteDemonstrationPatchComponent implements OnInit {
       const SubschemeId = this.deletePatchFrom.value.subScheme
       const compId = this.deletePatchFrom.value.component
       this.clusterDemonstration = await this.baoService.getclusterDemonstration(FinYear,schemeId,SubschemeId,compId).toPromise()
-      this.GpData = this.clusterDemonstration.GpData  
+      this.GpData = this.clusterDemonstration.GpData 
       this.clusterDemonstration.result.forEach((e: any) => {
           this.GpData.forEach((f: any) => {
               if (e.DemostrationId == f.DemostrationId) {
@@ -138,6 +143,10 @@ export class DeleteDemonstrationPatchComponent implements OnInit {
           }
       });
       this.clusterReport = this.clusterDemonstration.result
+
+      this.demonstrationClusterTable = this.clusterReport.length == 0 ? false : true
+      this.message = this.clusterReport.length == 0 ? true : false
+      
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
