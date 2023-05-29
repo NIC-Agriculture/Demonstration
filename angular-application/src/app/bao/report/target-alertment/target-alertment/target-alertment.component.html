@@ -15,7 +15,7 @@
                 <div class="col-sm-4 col-lg-4">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                        <select [(ngModel)]="FinYear" id="FinYear" class="form-control form-control-default" (click)="getAllScheme()">
+                        <select [(ngModel)]="FinYear" id="FinYear" class="form-control form-control-default" (change)="getAllScheme()">
                             <option value="">--Select--</option>
                             <option [ngValue]="x" *ngFor="let x of FinYears">
                               {{ x }}
@@ -27,7 +27,7 @@
                 <div class="col-sm-4 col-lg-4">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="ion-arrow-down-b"></i></span>
-                        <select [(ngModel)]="schemeId" id="FinYear" class="form-control form-control-default" (change)="getAvailableTarget()"  >
+                        <select [(ngModel)]="schemeId" id="schemeId" class="form-control form-control-default" (change)="getAvailableTarget()"  >
                             <option value="">--Select--</option>
                             <option [ngValue]="x.schemeId" *ngFor="let x of AllSchemeData">
                             {{ x.schemeName }}

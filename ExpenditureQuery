@@ -9,3 +9,20 @@ where a."SubschemeId" = 'subscheme_31'
 --a."CompId" = 'comp_55' 
 and b."PymntFileGenerated" = '0'
 group by c."Dist_Name",f."CompName", e."SubschemeName"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+select a.*,b."IndicativeCost",b."newIndicativeCostJajpur" from "ItemMaster" a
+INNER JOIN "itemPackageMaster" b on a."ItemId" = b."ItemId"
+where a."CompId" = 'comp_33' and a."Fin_Year" = '2022-23'

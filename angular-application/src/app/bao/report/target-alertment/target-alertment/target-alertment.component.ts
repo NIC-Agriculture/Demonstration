@@ -53,6 +53,7 @@ export class TargetAlertmentComponent implements OnInit {
 
   getAllScheme = async() => {
     try {
+      this.schemeId = ''
       this.AllSchemeData = await this.baoService.getAllScheme().toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');

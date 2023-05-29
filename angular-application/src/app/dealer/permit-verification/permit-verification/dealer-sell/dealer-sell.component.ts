@@ -132,7 +132,7 @@ export class DealerSellComponent implements OnInit {
           const getPurchaseListResult = this.getPurchasedItemList()
 
           const result = await this.dealerService.getItemPrice(ItemId).toPromise();
-          const compIdArray = ['comp_55','comp_53','comp_54','comp_57','comp_56','comp_59']
+          const compIdArray = ['comp_55','comp_53','comp_54','comp_57','comp_56','comp_59','comp_33']
         
           const itemCost = compIdArray.includes(this.permitList.CompId) && this.permitList.Dist_Code == '352' ? result[0].newIndicativeCost : 
           compIdArray.includes(this.permitList.CompId) && this.permitList.Dist_Code == '369' ? result[0].newIndicativeCostPuri : 

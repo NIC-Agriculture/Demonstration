@@ -605,26 +605,31 @@ exports.getclusterDemonstration = async (req,res) => {
            AND a."Fin_Year"='${req.query.Fin_Year}'                   
            GROUP BY d."Block_Name" ,a."DemostrationId", a."Gp_Code",a."lgd_wardcode",a."vaw_userId",
            b."CompName",a."PhyGen", a."PhySCP", a."PhyTasp",a."AvlPhyGen", a."AvlPhySCP", a."AvlPhyTASP";`
+        //    console.log("queryText", queryText);
            
         const result = await db.sequelize.query(queryText);
         const GpData = []
-        result[0].forEach(async(e, key) => {
-            if (e.Gp_Code != null) {
-                var GPCode = e.Gp_Code.split(',')
-                GPCode.forEach(async(y, key1) => {
-                    const queryText1 = `SELECT "Gp_Code" , "Gp_Name" FROM "LGGP" WHERE "Gp_Code" = '${y}';`
-                    const result1 = await db.sequelize.query(queryText1);
-                    result1[0][0].DemostrationId = e.DemostrationId;
-                    GpData.push(result1[0][0]);
-                    if(key+1==result[0].length){
-                        if (key1+1==GPCode.length) {
-                            res.send({result:result[0],GpData:GpData});
+        if(result[0].length > 0){
+            result[0].forEach(async(e, key) => {
+                if (e.Gp_Code != null) {
+                    var GPCode = e.Gp_Code.split(',')
+                    GPCode.forEach(async(y, key1) => {
+                        const queryText1 = `SELECT "Gp_Code" , "Gp_Name" FROM "LGGP" WHERE "Gp_Code" = '${y}';`
+                        const result1 = await db.sequelize.query(queryText1);
+                        result1[0][0].DemostrationId = e.DemostrationId;
+                        GpData.push(result1[0][0]);
+                        if(key+1==result[0].length){
+                            if (key1+1==GPCode.length) {
+                                res.send({result:result[0],GpData:GpData});
+                            }
                         }
-                    }
-                    
-                });
-            }
-        })
+                        
+                    });
+                }
+            })
+        } else {
+            res.send({ result: result[0], GpData: GpData })
+        }
     } catch (e){
         res.status(500).send('Unexpected error');
         console.error(e);
@@ -699,7 +704,6 @@ exports.getComponentCropDetails = async (req,res) => {
          LEFT JOIN "SubCropMaster" cc ON cc."SubCropId" = a."FixedSubCropId" 
          LEFT JOIN "SubCropMaster" ccc ON ccc."SubCropId" = a."AdditionalSubCropId" 
          WHERE "CompId" = '${req.query.CompId}' AND "Fin_Year" = '${req.query.Fin_Year}'`
-         console.log(queryText1);
          const result = await db.sequelize.query(queryText1);
          res.send(result[0][0]);
     } catch (e){
