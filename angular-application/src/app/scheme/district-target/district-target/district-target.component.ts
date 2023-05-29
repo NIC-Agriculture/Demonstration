@@ -94,6 +94,7 @@ export class DistrictTargetComponent implements OnInit {
 
   getFinYear = async() => {
     try {
+        this.DistrictTargetForm.patchValue({scheme: '', subscheme: '',component:'',subsidy:''})
         const result = await this.layoutService.getFinYear().toPromise()
         this.FinYears = result.Years;
         this.Season = result.Season;
@@ -104,7 +105,8 @@ export class DistrictTargetComponent implements OnInit {
   }
 
   getAllScheme = async() => {
-    try {
+    try {      
+      this.DistrictTargetForm.patchValue({ subscheme: '',component:'',subsidy:''})
       this.AllSchemeData = await this.schemeService.getAllScheme().toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -114,6 +116,7 @@ export class DistrictTargetComponent implements OnInit {
 
   getSubscheme = async() => {
     try {
+      this.DistrictTargetForm.patchValue({component:'',subsidy:''})
       const schemeId = this.DistrictTargetForm.value.scheme.schemeId
       this.SubschemeData = await this.schemeService.getSubscheme(schemeId).toPromise()
       this.DistrictTargetForm.value.component = '';

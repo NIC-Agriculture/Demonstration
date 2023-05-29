@@ -43,7 +43,7 @@ export class ClusterDetailsComponent implements OnInit {
       subscheme: ['', [Validators.required]],
       distCode: ['', [Validators.required]],
       blockCode: [''],
-      CompId: ['', [Validators.required]],
+      CompId: [''],
       FinYear: ["", [Validators.required]],
      })
   }

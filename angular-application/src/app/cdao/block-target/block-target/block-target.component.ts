@@ -167,6 +167,7 @@ export class BlockTargetComponent implements OnInit {
 
   getAllScheme = async() => {
     try {
+      this.BlockTargetForm.patchValue({scheme: '', subscheme : '', component : '' })
       this.AllSchemeData = await this.cdaoService.getAllScheme().toPromise()
       this.getSubscheme();
     } catch (e) {
@@ -177,10 +178,9 @@ export class BlockTargetComponent implements OnInit {
 
   getSubscheme = async() => {
     try {
-      this.BlockTargetForm.patchValue({ subscheme : '' })
+      this.BlockTargetForm.patchValue({ subscheme : '', component : '' })
       const schemeId = this.BlockTargetForm.value.scheme.schemeId
       this.SubschemeData = await this.cdaoService.getSubscheme(schemeId).toPromise()
-      this.BlockTargetForm.patchValue({ component : '' })
       this.getComponent();      
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');

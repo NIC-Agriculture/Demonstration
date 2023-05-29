@@ -92,9 +92,7 @@ export class CompCostCropMappingComponent implements OnInit {
    }
 
    ngOnInit(): void {
-    // this.getAllScheme();
     this.getFinYear();
-    // this.getAllCrops();
     setTimeout(() => { 
       this.layoutService.setTitle(this.pageTitle);
       this.layoutService.setPageHeadingDesc(this.pageDesc);
@@ -193,11 +191,11 @@ export class CompCostCropMappingComponent implements OnInit {
           
         } else if (cropPhase == 'SecondCrop') {
           this.SecondSubCropData =[]
-          this.ComponentForm.patchValue({subCrop: ''})
+          this.ComponentForm.patchValue({fixedSubCrop: ''})
           this.SecondSubCropData = result
         } else {
           this.additionalSubCropData=[]
-          this.ComponentForm.patchValue({subCrop: ''})
+          this.ComponentForm.patchValue({additionalSubCrop: ''})
           this.additionalSubCropData = result
         }
         
@@ -376,6 +374,8 @@ export class CompCostCropMappingComponent implements OnInit {
       const result = await this.schemeService.UpdateComponentCostCropMapping(UpdatedData).toPromise()
       this.toastr.success(result.message);
       this.ComponentForm.reset()
+      this.AllCropData= [] ; this.SubCropData= [] ; this.SecondSubCropData = [] ; this.additionalSubCropData= [] ;
+      this.ComponentForm.patchValue({ cropCategory: '' , fixedCropCategory: '', additionalCropCategory: '' , subCrop: '',fixedSubCrop: '', additionalSubCrop: ''})
       this.editFirstCrop = false
       this.editSecondCrop = false
       this.editAdditionalCrop = false

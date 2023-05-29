@@ -165,4 +165,7 @@ export class BaoServiceService {
     return this.http.get(`${this.serverUrl}/${this.route}/getReturnedToDealerSale?DemonstrationId=${demonstrationId}&Fin_Year=${FinYear}&SubschemeId=${subschemeId}&CompId=${compId}`)
   }
 
+  getGp(DemonstrationId: string): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getGp?DemostrationId=${DemonstrationId}`)
+  }
 }
