@@ -148,10 +148,10 @@ export class DealerSellComponent implements OnInit {
           await getPurchaseListResult;
           
           this.DealerSaleForm.controls['prevsPurchasedSubsidy'].enable();
-         
+          
           const maxSubsidy =  (+itemCost * +this.permitList.LandArea) - +this.DealerSaleForm.value.prevsPurchasedSubsidy - selectedItemCost
           
-          this.DealerSaleForm.patchValue({maxSubsidy: maxSubsidy})
+          this.DealerSaleForm.patchValue({maxSubsidy: (maxSubsidy).toFixed(1)})
 
           this.DealerSaleForm.controls['prevsPurchasedSubsidy'].disable();
           this.getTechnicalName();

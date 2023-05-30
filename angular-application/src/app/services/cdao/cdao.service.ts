@@ -119,9 +119,9 @@ export class CdaoService {
   getDemonstrationIdCount(): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getDemonstrationIdCount`)
   }
-  getItemNameAndTechnicalName( CompId: any, Fin_Year: any, SubschemeId:any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getItemNameAndTechnicalNameReport?CompId=${CompId}&Fin_Year=${Fin_Year}&SubschemeId=${SubschemeId}`)
-  }
+  // getItemNameAndTechnicalName( CompId: any, Fin_Year: any, SubschemeId:any): Observable<any> {
+  //   return this.http.get(`${this.serverUrl}/${this.route}/getItemNameAndTechnicalNameReport?CompId=${CompId}&Fin_Year=${Fin_Year}&SubschemeId=${SubschemeId}`)
+  // }
   getclusterDemonstration( Block_Code:any, FinYear:any ): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getclusterDemonstration?Block_Code=${Block_Code}&Fin_Year=${FinYear}`)
   }

@@ -240,20 +240,20 @@ export class ViewTargetComponent implements OnInit {
     }
   }
   
-  getItemNameAndTechnicalName = async() => {
-    try {
-      const CompId = this.ViewTargetForm.value.component.CompId
-      const Fin_Year = this.ViewTargetForm.value.FinYear
-      const SubschemeId = this.ViewTargetForm.value.subscheme.SubschemeId
-      this.ItemTechnicalName = await this.cdaoService.getItemNameAndTechnicalName(CompId,Fin_Year,SubschemeId).toPromise()
+  // getItemNameAndTechnicalName = async() => {
+  //   try {
+  //     const CompId = this.ViewTargetForm.value.component.CompId
+  //     const Fin_Year = this.ViewTargetForm.value.FinYear
+  //     const SubschemeId = this.ViewTargetForm.value.subscheme.SubschemeId
+  //     this.ItemTechnicalName = await this.cdaoService.getItemNameAndTechnicalName(CompId,Fin_Year,SubschemeId).toPromise()
       
-      this.ItemTechnicalName.length > 0 ? (this.modalTable = true, this.modalMessage = false) : (this.modalTable = false,this.modalMessage = true)
+  //     this.ItemTechnicalName.length > 0 ? (this.modalTable = true, this.modalMessage = false) : (this.modalTable = false,this.modalMessage = true)
       
-    } catch (e) {
-      this.toastr.error('Sorry. Server problem. Please try again.');
-      console.error(e);
-    }
-  }
+  //   } catch (e) {
+  //     this.toastr.error('Sorry. Server problem. Please try again.');
+  //     console.error(e);
+  //   }
+  // }
 
   exportexcel(): void 
   {
