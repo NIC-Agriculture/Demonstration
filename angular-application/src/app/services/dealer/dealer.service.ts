@@ -29,8 +29,8 @@ export class DealerService {
   getDistrictPrefix(): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getDistrictPrefix`)
   }
-  getPermitList(FarmerId: any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getPermitList?FarmerId=${FarmerId}`)
+  getPermitList(FarmerId: any,FinYear:any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getPermitList?FarmerId=${FarmerId}&Fin_Year=${FinYear}`)
   }
   getItems(CompId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getItems?CompId=${CompId}`)

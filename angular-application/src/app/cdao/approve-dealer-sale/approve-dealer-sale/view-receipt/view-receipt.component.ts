@@ -16,6 +16,7 @@ export class ViewReceiptComponent implements OnInit {
   date: any;
   totalPricesum: any;
   totaleligibleamount: any;
+  totalFarmershare: any;
 
   constructor(
     private cdaoService: CdaoService,
@@ -38,12 +39,15 @@ export class ViewReceiptComponent implements OnInit {
         this.dealerSaleResult  = await this.cdaoService.getDealerSaleReciept(InvoiceNo).toPromise()
         var totalPricesum = 0;
         var totaleligibleamount = 0;
+        var totalFarmershare = 0;
         this.dealerSaleResult.forEach((e:any) => {
           totalPricesum += +e.totalPrice;
           totaleligibleamount += +e.eligibleSubsidy;
+          totalFarmershare += +e.totalPrice - e.eligibleSubsidy
         });
         this.totalPricesum = totalPricesum
         this.totaleligibleamount = totaleligibleamount
+        this.totalFarmershare = totalFarmershare
         this.getVAWSaleReciept();
     } catch (e) {
         this.toastr.error('Sorry. Server problem. Please try again.')

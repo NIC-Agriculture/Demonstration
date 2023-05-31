@@ -32,6 +32,10 @@ export class PermitVerificationComponent implements OnInit {
   prefixOfFarmerID: any;
   techDetails: any;
   permit: any = {};
+  FinYears: any;
+  Season: any;
+  FinYear:any
+  PermitTable: boolean = false
 
 
 
@@ -53,6 +57,18 @@ export class PermitVerificationComponent implements OnInit {
     });
     this.getDemonstrationId();
     this.getPSDDistrictName();
+    this.getFinYear();
+  }
+
+  getFinYear = async() => {
+    try {
+      const result = await this.layoutService.getFinYear().toPromise()
+      this.FinYears = result.Years;
+      this.Season = result.Season;
+    } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
   }
 
   getBlocks = async () => {
@@ -85,9 +101,10 @@ export class PermitVerificationComponent implements OnInit {
 
   getPermitList = async () => {
     try {
+      this.PermitTable = true
       if (this.farmerId != '') {
         const FarmerId = this.prefixOfFarmerID + '/' + this.farmerId;
-        this.permitList = await this.dealerService.getPermitList(FarmerId).toPromise()
+        this.permitList = await this.dealerService.getPermitList(FarmerId,this.FinYear).toPromise()
         if (this.permitList.length == 0) this.toastr.warning(`The Farmer ID  '${FarmerId}'  is not registered to get the benefits.`)               
       }else {
         this.toastr.warning(`Please enter the valid Farmer ID.`)
@@ -104,6 +121,7 @@ export class PermitVerificationComponent implements OnInit {
     try {
       this.sell = y;
       this.dealerPage = false;
+      this.PermitTable = false;
       this.dealerSell = true;
       this.submitButton = true;
       this.backButton1 = true;
@@ -118,6 +136,7 @@ export class PermitVerificationComponent implements OnInit {
   gobacktodealerPage = () => {
     this.dealerSell = false;
     this.dealerPage = true;
+    this.PermitTable = true;
     this.backButton1 = false;
     this.dealerCardheader = true;
     this.submitButton = false;
@@ -125,6 +144,7 @@ export class PermitVerificationComponent implements OnInit {
 
   goToSaleReceiptPage = () => {
     this.dealerPage = false;
+    this.PermitTable = false;
     this.dealerSell = false;
     this.dealerSaleReceipt = true
     this.backButton1 = false;
@@ -135,7 +155,8 @@ export class PermitVerificationComponent implements OnInit {
     this.dealerSaleReceipt = false;
     this.dealerSell = true;
     this.submitButton = true;
-    this.dealerPage = false
+    this.dealerPage = false;
+    this.PermitTable = false;
     this.backButton1 = true;
     this.backButton2 = false;
 
