@@ -39,7 +39,8 @@ export class VerifyDealerSaleComponent implements OnInit {
   SubschemeData: any;
   ComponentData: any;
   schemeIdvar: any;
-  filterTerm !: string
+  filterTerm !: string;  
+  clicked = false;
 
   constructor(
     private baoService: BaoServiceService,
@@ -210,6 +211,7 @@ export class VerifyDealerSaleComponent implements OnInit {
       this.toastr.success(this.confirmResult.message);
       this.allDealerResult = []
       this.showConfirm = false
+      this.clicked = false
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.')
       console.error(e);

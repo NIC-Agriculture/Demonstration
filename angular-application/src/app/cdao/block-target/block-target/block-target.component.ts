@@ -190,7 +190,7 @@ export class BlockTargetComponent implements OnInit {
 
   getComponent = async() => {
     try {
-      this.BlockTargetForm.patchValue({ component : '' })
+      this.BlockTargetForm.patchValue({ component : '' , cropCategory: '' ,subCrop: '' ,cropVariety: '', bpCropVariety: '' , bpSubCrop: ''})
       const SubschemeId = this.BlockTargetForm.value.subscheme.SubschemeId
       const Fin_Year = this.BlockTargetForm.value.FinYear
       this.ComponentData = await this.cdaoService.getComponent(SubschemeId , Fin_Year).toPromise()
@@ -214,10 +214,11 @@ export class BlockTargetComponent implements OnInit {
 
   getCrops = async() => {
     try {
+        this.BlockTargetForm.patchValue({ cropCategory: '' ,subCrop: '' ,cropVariety: '' , bpCropVariety: '' , bpSubCrop: '' , bp_status: ''})
         const SubschemeId = this.BlockTargetForm.value.subscheme.SubschemeId
         const CompId = this.BlockTargetForm.value.component.CompId;
-        this.cropData = await this.cdaoService.getCrops(SubschemeId,CompId).toPromise()
-        this.getSubCrop()
+        const Fin_Year = this.BlockTargetForm.value.FinYear
+        this.cropData = await this.cdaoService.getCrops(SubschemeId,CompId,Fin_Year).toPromise()
     } catch (e) {
         this.toastr.error('Sorry. Server problem. Please try again.');
         console.error(e);
@@ -226,20 +227,22 @@ export class BlockTargetComponent implements OnInit {
 
   getSubCrop = async() => {
     try {
+          this.BlockTargetForm.patchValue({cropVariety: '' })
           const CompId = this.BlockTargetForm.value.component.CompId;
           const CompTypeId = this.BlockTargetForm.value.component.CompTypeId
-          this.SubCropData = await this.cdaoService.getSubCrop(CompId,CompTypeId).toPromise()
+          const Fin_Year = this.BlockTargetForm.value.FinYear
+          this.SubCropData = await this.cdaoService.getSubCrop(CompId,CompTypeId,Fin_Year).toPromise()
           this.CropVariety = []
-          this.SubCropData.forEach((e:any) => { this.getCropVariety(e.subcropid) });
+          this.SubCropData.forEach((e:any) => { this.getCropVariety(e.SubCropId , e.FixedSubCropId , e.AdditionalSubCropId ) });
     } catch (e) {
           this.toastr.error('Sorry. Server problem. Please try again.');
           console.error(e);
     }
   }
 
-  getCropVariety = async(SubCropId: any) => {
+  getCropVariety = async(SubCropId: any , FixedSubCropId: any , AdditionalSubCropId: any) => {
     try {
-        const result = await this.cdaoService.getCropVariety(SubCropId).toPromise()
+        const result = await this.cdaoService.getCropVarietyFortarget(SubCropId, FixedSubCropId , AdditionalSubCropId).toPromise()
         this.CropVariety = [...this.CropVariety,...result];
           
     } catch (e) {
@@ -250,8 +253,10 @@ export class BlockTargetComponent implements OnInit {
   
   getBundPlantation = async() => {
     try {
+      
       if (this.BlockTargetForm.value.bp_status == 'yes') {
-        const itemId = await this.cdaoService.getbpItems(this.BlockTargetForm.value.component.CompId).toPromise()
+        const Fin_Year = this.BlockTargetForm.value.FinYear
+        const itemId = await this.cdaoService.getbpItems(this.BlockTargetForm.value.component.CompId, Fin_Year).toPromise()
           if(itemId != null){
             this.bp_ItemId = itemId.ItemId
             this.getAllbpSubCrop(itemId)
@@ -270,6 +275,7 @@ export class BlockTargetComponent implements OnInit {
 
   getAllbpSubCrop = async(ItemId: any) => {
     try {
+        this.BlockTargetForm.patchValue({ bpCropVariety: '' , bpSubCrop: ''})
         const CompId = this.BlockTargetForm.value.component.CompId
         const itemId = ItemId.ItemId
         this.bpSubCropData = await this.cdaoService.getAllbpSubCrop(CompId , itemId).toPromise();
@@ -282,6 +288,7 @@ export class BlockTargetComponent implements OnInit {
 
   getBPCropVariety = async(SubCropId: any) => {
     try {
+      this.BlockTargetForm.patchValue({ bpCropVariety: '' })
       this.bpCropVarietyData = await this.cdaoService.getBPCropVariety(SubCropId).toPromise();
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -309,7 +316,7 @@ export class BlockTargetComponent implements OnInit {
         this.DistrictTargetData = await this.cdaoService.getDistrictTarget(CompId, Fin_Year).toPromise();
         if(this.DistrictTargetData.length > 0){
             this.BlockTargetData  = await this.cdaoService.getBlockTargetData(CompId , Fin_Year).toPromise()
-            this.BlockTargetData.length > 0 ? (this.showOtherInputs = false, this.setModifyButton = true, this.showAddtable = false) : (this.showOtherInputs = true,this.setModifyButton = false, this.getCrops())
+            this.BlockTargetData.length > 0 ? (this.showOtherInputs = false, this.setModifyButton = true, this.showAddtable = false) : (this.showOtherInputs = true,this.setModifyButton = false)
         }else{
         this.toastr.warning(`There is no target for this Component in this District`)
         }
@@ -576,7 +583,7 @@ export class BlockTargetComponent implements OnInit {
   SubmitBlockTarget = async () => {
     try {
       const SubCropIds = this.SubCropData.map((e:any)=>{
-          return e.subcropid 
+          return e.SubCropId 
       })
       const Variety_Codes = this.BlockTargetForm.value.cropVariety.map((e:any)=>{
             return e.Variety_Code
@@ -607,6 +614,8 @@ export class BlockTargetComponent implements OnInit {
         this.BlockTargetList = [];
         this.showAddtable = false
         this.showSubmit = false
+        this.showTarget = false
+        this.clicked = false
         this.toastr.success(this.BlockTargetResult.message);
         this.router.navigate(['cdao/dashboard'])
       }else{
@@ -763,6 +772,10 @@ export class BlockTargetComponent implements OnInit {
       this.BlockTargetResult = await this.cdaoService.UpdateBlockTarget(data).toPromise()
       this.resetBlockDataArray()
       this.toastr.success(this.BlockTargetResult.message);
+      this.setModifyButton = false
+      this.showUpdate = false
+      this.showTarget = false
+      this.clicked = false
       this.router.navigate(['cdao/dashboard'])
      
    } catch (e) {

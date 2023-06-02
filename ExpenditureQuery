@@ -26,3 +26,117 @@ group by c."Dist_Name",f."CompName", e."SubschemeName"
 select a.*,b."IndicativeCost",b."newIndicativeCostJajpur" from "ItemMaster" a
 INNER JOIN "itemPackageMaster" b on a."ItemId" = b."ItemId"
 where a."CompId" = 'comp_33' and a."Fin_Year" = '2022-23'
+
+
+
+select COUNT("InvoiceNo"), "InvoiceNo" , "baoAction" , "baoTime" from "DealerSaleToAction"
+group by  "baoAction" , "baoTime" ,"InvoiceNo" having COUNT( "InvoiceNo")>1
+
+
+select * from "DealerSale" where "Permit_NO" ='PN/2022-23/97341'
+
+select * from "PaymentMaster" where "PaymentMaster"."ReferenceNo" = 'SUB-356-3403-3-05312023-20'
+
+--'SUB-356-3403-3-05312023-20'
+
+
+DELETE from "PaymentMaster" where "PaymentMaster"."ReferenceNo" = 'SUB-356-3403-3-05312023-20'
+
+
+
+
+
+SELECT a.*,f."SubschemeName", b."FarmerId", b."Farmer_Category", b."Gender", c."Block_Name",d."schemeName", e."Dist_Name"
+            FROM "PaymentMaster" a
+            INNER JOIN "Farmer_Permit" b ON a."Permit_NO" = b."Permit_NO"
+            INNER JOIN "LGBlocks" c ON c."Block_Code" = b."Block_Code"
+            INNER JOIN "SchemeMaster" d ON d."schemeId" = b."schemeId" 
+            INNER JOIN "SubSchemeMaster" f ON f."SubschemeId" = b."SubschemeId"
+            INNER JOIN "LGDistricts" e ON e."Dist_Code" = '356'  
+            WHERE a."ReferenceNo" = 'SUB-356-3403-3-05312023-20' AND a."schemeId" = 'scheme_3' AND a."PymntFileGenerated" = '0'
+            ORDER BY d."schemeName"
+			
+			
+Select COUNT("Permit_NO"), "Permit_NO" from "PaymentMaster"
+where "ReferenceNo" = 'SUB-356-3403-3-05312023-20'  AND "schemeId" = 'scheme_3'  AND "PymntFileGenerated" = '0'
+group by "Permit_NO" having COUNT("Permit_NO")>1
+
+			
+Select * from "PaymentMaster"
+where "ReferenceNo" = 'SUB-356-3403-3-05312023-20'  AND "schemeId" = 'scheme_3'  AND "PymntFileGenerated" = '0' AND "Permit_NO" = 'PN/2022-23/97341'
+group by "Permit_NO" having COUNT("Permit_NO")>1 
+
+
+
+
+select * from "DealerSaleToAction" where "bao_UserId" = 'BAO_3403'
+
+
+update "DealerSaleToAction"
+set "ddaAction" = '' and "dda_UserId" = '' and "ddaTime" = ''
+where "bao_UserId" = 'BAO_3403'
+
+
+select * from "LGBlocks" where "Block_Code" = '3403'
+
+select * from "DealerSale" where "Block_Code" = '3403' AND "DealerSale"."DemonstrationId" = 'FLD/2022-23/3403/4443'
+--"DealerSale"."schemeId" = 'scheme_3'
+
+select a."Block_Code", a."InvoiceNo", a."DemonstrationId" , a."Permit_NO" , a."FarmerId" , a."Farmer_Category",
+ a."dealerLiscenseNo", a."SoldBy" , a."SoldOn" , a."FarmerName",SUM(cast(a."totalPrice" as numeric)) AS TotalSalePrice ,a."ReferenceNo",
+ SUM(cast(a."eligibleSubsidy" as numeric)) AS TotalEligibleSubsidy , a."schemeId"
+ FROM "DealerSale" a where a."Block_Code" = '3403' AND a."DemonstrationId" = 'FLD/2022-23/3403/4443'
+ GROUP BY a."InvoiceNo", a."DemonstrationId" , a."Permit_NO" , a."FarmerId" , a."Farmer_Category",a."dealerLiscenseNo",
+ a."SoldBy" , a."SoldOn" , a."FarmerName" , a."schemeId" , a."Block_Code",a."ReferenceNo"
+ 
+ 
+ select * from "PaymentMaster" where "PaymentMaster"."ReferenceNo" = 'SUB-356-3403-3-05312023-22'
+
+
+
+
+
+select COUNT("InvoiceNo"), "InvoiceNo" , "baoAction" , "baoTime" from "DealerSaleToAction"
+group by  "baoAction" , "baoTime" ,"InvoiceNo" having COUNT( "InvoiceNo")>1
+
+
+SELECT count("InvoiceNo"), "InvoiceNo" ,"DemonstrationId" FROM "DealerSale" where "ReferenceNo" = SUB-371-3566-3-05252023-9
+group by "InvoiceNo"  ,"DemonstrationId"
+
+
+
+
+SELECT * FROM "DealerSaleToAction" where "DealerSaleToAction"."bao_UserId" = BAO_3566
+group by "InvoiceNo"
+
+delete from "PaymentMaster" where "ReferenceNo" = SUB-371-3566-3-05252023-9
+
+
+
+update "DealerSale"
+set "ReferenceNo" = null , "verifyStatus" = 
+where "ReferenceNo" = SUB-371-3566-3-05252023-9
+
+
+
+
+
+
+
+
+
+/////////////////////===============================================////////////////////////////////////
+
+' Delete duplicate ids from DealerSaleAction TotalEligibleSubsidy
+
+select COUNT("InvoiceNo"), "InvoiceNo"  from "DealerSaleToAction"
+group by "InvoiceNo" having COUNT( "InvoiceNo")>1
+
+Select "InvoiceNo" from "DealerSaleToAction"
+
+DELETE FROM
+    "DealerSaleToAction" a
+        USING "DealerSaleToAction" b
+WHERE
+    a.id < b.id
+    AND a."InvoiceNo" = b."InvoiceNo";
