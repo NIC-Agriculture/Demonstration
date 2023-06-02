@@ -53,6 +53,7 @@ export class ApproveDealerSaleComponent implements OnInit {
   FinYears: any;
   Season: any;
   filterTerm !: string
+  clicked: boolean = false;
 
 
 
@@ -242,6 +243,7 @@ export class ApproveDealerSaleComponent implements OnInit {
             this.toastr.success(this.approveResult.message);
             this.allDealerSaleResult= []
             this.showApprove = false
+            this.clicked = false
             this.getBlocks();
           }
       } catch (e) {

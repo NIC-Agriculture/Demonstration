@@ -161,7 +161,7 @@
                 Return To Dealer
               </button> -->
               <button class="btn btn-success mat-elevation-z8" [disabled]="!forwardButton" style="margin-left: 5px;"
-                (click)="confirmDealerSale()" style="float: right; margin-inline-end: 15px;">Forward to CDAO</button>
+                (click)="confirmDealerSale() ;clicked = true;" style="float: right; margin-inline-end: 15px;" [disabled]="clicked" >Forward to CDAO</button>
             </div>
           </div>
         </div>

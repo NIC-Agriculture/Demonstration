@@ -68,7 +68,7 @@
                       </div>
                       <div class="col-sm-4 col-lg-9">
                             <div *ngFor="let x of SubCropData">
-                              <b> {{ x.SubCropName }}*, </b> {{ x.additionalcrop || ' ' }}
+                              <b> {{ x.SubCropName }}* ,</b> <b>{{ x.FixedSubCropName || ' ' }} </b>, {{ x.additionalcrop || ' ' }}
                             </div>
                         <!-- <div style="width:100%">
                           <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="SubCropData"
@@ -135,7 +135,7 @@
                       </div>
                       <div class="col-sm-4 col-lg-9">
                         <select id="component" class="form-control form-control-default" formControlName="component"
-                          (change)="getComponentCost(); checkTargetAvailibity(); getCrops(); getSubCrop();">
+                          (change)="getComponentCost(); checkTargetAvailibity(); getCrops();">
                           <option value="" disabled>--Select--</option>
                           <option [ngValue]="x" *ngFor="let x of ComponentData">{{ x.CompName }}</option>
                         </select>
@@ -160,9 +160,9 @@
                       <div class="col-sm-4 col-lg-9">
                         
                         <select id="cropCategory" class="form-control form-control-default"
-                          formControlName="cropCategory">
+                          formControlName="cropCategory" (change)="getSubCrop();">
                           <option value="" disabled>--Select--</option>
-                          <option [ngValue]="x" *ngFor="let x of cropData">{{ x.CropName }}</option>
+                          <option [ngValue]="x" *ngFor="let x of cropData">{{ x.CropName }} / {{ x.FixedCropName || ''}} {{ x.AdditionalCropName }}</option>
                         </select>
                         <div class="text-danger" *ngIf="BlockFormValid.cropCategory.touched && !BlockFormValid.cropCategory.valid">
                         Crop Catagory is required.
@@ -355,7 +355,7 @@
     <div style="padding: 20px;">
 
       <button type="button" class="btn btn-primary
-      mat-elevation-z8" style="float: right;" [disabled]="clicked" (click)="SubmitBlockTarget(); clicked = true;">Submit</button>
+      mat-elevation-z8" style="float: right;" (click)="SubmitBlockTarget(); clicked = true;" [disabled]="clicked">Submit</button>
       <!-- <button type="button" class="btn
       btn-inverse mat-elevation-z8" style="float: right;margin-right: 10px;">Freeze</button> -->
       <br>
@@ -453,7 +453,7 @@
         <div style="padding: 20px">
           
           <button  type="button" class="btn btn-primary mat-elevation-z8"
-            style="float: right" (click)="UpdateBlockTarget();">Update
+            style="float: right" (click)="UpdateBlockTarget(); clicked = true;" [disabled]="clicked">Update
           </button>
     
           <!-- <button type="button" class="btn btn-inverse mat-elevation-z8" style="float: right; margin-right: 10px">

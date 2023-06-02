@@ -159,7 +159,8 @@
                             <!-- <button type="button" class="btn btn-primary mat-elevation-z8" style="float: right;" [disabled]="!forwardButton" (click)="returnbackDealerSaleToBAO()">
                                 Return To BAO
                              </button> -->
-                            <button class="btn btn-success mat-elevation-z8" [disabled]="!forwardButton" (click)="approveDealerSale();" style="float: right; margin-inline-end: 15px;" >Approve</button>&nbsp; &nbsp;
+                            <button class="btn btn-success mat-elevation-z8" [disabled]="!forwardButton" (click)="approveDealerSale() ; clicked = true;" 
+                            style="float: right; margin-inline-end: 15px;" [disabled]="clicked"> Approve </button>&nbsp; &nbsp;
                           
                         </div>
                     </div>

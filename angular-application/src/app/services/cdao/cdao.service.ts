@@ -35,22 +35,25 @@ export class CdaoService {
   getItems(CompId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getItems?CompId=${CompId}`)
   }
-  getbpItems(CompId: any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getbpItems?CompId=${CompId}`)
+  getbpItems(CompId: any , Fin_Year: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getbpItems?CompId=${CompId}&Fin_Year=${Fin_Year}`)
   }
   getTechnicalName(ItemId: any , SubCropId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getTechnicalName?ItemId=${ItemId}&SubCropId=${SubCropId}`)
   }
-  getCrops(SubschemeId: any, CompId: any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getCrops?SubschemeId=${SubschemeId}&CompId=${CompId}`)
+  getCrops(SubschemeId: any, CompId: any , Fin_Year: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getCrops?SubschemeId=${SubschemeId}&CompId=${CompId}&Fin_Year=${Fin_Year}`)
   }
   getAllbpSubCrop( CompId:any , ItemId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getAllbpSubCrop?CompId=${CompId}&ItemId=${ItemId}`)
   }
-  getSubCrop(CompId : any , CompTypeId: any ): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getSubCrop?CompId=${CompId}&CompTypeId=${CompTypeId}`)
+  getSubCrop(CompId : any , CompTypeId: any , Fin_Year: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getSubCrop?CompId=${CompId}&CompTypeId=${CompTypeId}&Fin_Year=${Fin_Year}`)
   }
-  getCropVariety(SubCropId: any): Observable<any> {
+  getCropVarietyFortarget(SubCropId: any , FixedSubCropId: any , AdditionalSubCropId: any ): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getCropVariety?SubCropId=${SubCropId}&FixedSubCropId=${FixedSubCropId}&AdditionalSubCropId=${AdditionalSubCropId}`)
+  }
+  getCropVariety(SubCropId: any ): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getCropVariety?SubCropId=${SubCropId}`)
   }
   getBPCropVariety(SubCropId: any): Observable<any> {
