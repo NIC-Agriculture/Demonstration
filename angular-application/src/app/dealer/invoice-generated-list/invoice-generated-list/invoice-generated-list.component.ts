@@ -43,9 +43,10 @@ export class InvoiceGeneratedListComponent implements OnInit {
   FarmerName: any;
   FarmerId: any;
   permitNo: any;
-  totalPrice: any;
-  totalPricesum: any;
-  totaleligibleamount: any;
+  totalPrice: number = 0;
+  totalPricesum: number = 0;
+  totaleligibleamount: number = 0;
+  totalFarmershare: number = 0;
 
   constructor(
     private dealerService: DealerService ,
@@ -98,12 +99,15 @@ export class InvoiceGeneratedListComponent implements OnInit {
         this.permitNo = this.dealerSaleResult[0].Permit_NO 
         var totalPricesum = 0;
         var totaleligibleamount = 0;
+        var totalFarmershare = 0;
         this.dealerSaleResult.forEach((e:any) => {
           totalPricesum += +e.totalPrice;
           totaleligibleamount += +e.eligibleSubsidy;
+          totalFarmershare += +e.totalPrice - +e.eligibleSubsidy
         });
         this.totalPricesum = totalPricesum
         this.totaleligibleamount = totaleligibleamount
+        this.totalFarmershare = totalFarmershare
         
         this.getDate();
         

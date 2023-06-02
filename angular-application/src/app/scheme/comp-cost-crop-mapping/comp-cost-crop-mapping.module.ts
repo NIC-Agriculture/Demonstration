@@ -21,8 +21,8 @@ import {MatIconModule} from '@angular/material/icon';
     MatRadioModule,
     FormsModule,
     ReactiveFormsModule,
-    NgMultiSelectDropDownModule,
-    MatIconModule
+    MatIconModule,
+    NgMultiSelectDropDownModule.forRoot(),
     
   ]
 })

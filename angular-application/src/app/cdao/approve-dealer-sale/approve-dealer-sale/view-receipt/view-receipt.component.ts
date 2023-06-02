@@ -14,9 +14,9 @@ export class ViewReceiptComponent implements OnInit {
   @Input() dealerSaleResult: any;
   @Input() vawSaleResult: any
   date: any;
-  totalPricesum: any;
-  totaleligibleamount: any;
-  totalFarmershare: any;
+  totalPricesum: number = 0;
+  totaleligibleamount: number = 0;
+  totalFarmershare: number = 0;
 
   constructor(
     private cdaoService: CdaoService,
