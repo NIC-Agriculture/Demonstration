@@ -54,6 +54,8 @@ export class CompCostCropMappingComponent implements OnInit {
   ComponentCropDetails: any;
   SecondSubCropData: any;
   additionalSubCropData: any;
+  fixedCropList: Array<any> = [];
+  cropIdsToMap: Array<any> = [];
 
   constructor(
     private schemeService: SchemeserviceService,
@@ -99,7 +101,7 @@ export class CompCostCropMappingComponent implements OnInit {
       this.layoutService.setBreadcrumb(this.breadcrumbList);
     });
     this.dropdownSettings = {
-      idField: 'SubCropId',
+      idField: 'SubCropId', 
       textField: 'SubCropName',
     };
     this.ComponentForm.controls['Total_Cost'].disable();
@@ -191,8 +193,9 @@ export class CompCostCropMappingComponent implements OnInit {
           
         } else if (cropPhase == 'SecondCrop') {
           this.SecondSubCropData =[]
-          this.ComponentForm.patchValue({fixedSubCrop: ''})
+          // this.ComponentForm.patchValue({fixedSubCrop: ''})
           this.SecondSubCropData = result
+          this.cropIdsToMap = [...this.cropIdsToMap, ...result]
         } else {
           this.additionalSubCropData=[]
           this.ComponentForm.patchValue({additionalSubCrop: ''})
@@ -346,6 +349,22 @@ export class CompCostCropMappingComponent implements OnInit {
 
   UpdateComponentCost = async() => {
     try {
+      this.ComponentForm.value.fixedSubCrop.forEach((e:any) => {
+             this.cropIdsToMap.forEach((x: any) => {
+                   if (x.SubCropId == e.SubCropId) {
+                      return e.CropId = x.CropId
+                   }
+             });
+      });
+
+      const FixedSubCropId = this.ComponentForm.value.fixedSubCrop.map((e:any)=>{
+        return e.SubCropId
+      })
+
+      const FixedCropId = this.ComponentForm.value.fixedSubCrop.map((e:any)=>{
+        return e.CropId
+      })
+      
       const UpdatedData = {
 
         Fin_Year : this.ComponentForm.value.Fin_Year,
@@ -358,8 +377,8 @@ export class CompCostCropMappingComponent implements OnInit {
         Unit: this.ComponentForm.value.Unit,
         Cost_of_Seed: this.ComponentForm.value.Cost_of_Seed,
 
-        FixedCropId: this.ComponentForm.value.fixedCropCategory.CropId,
-        FixedSubCropId:  this.ComponentForm.value.fixedSubCrop.SubCropId,
+        FixedCropId: FixedCropId.toString(),
+        FixedSubCropId:  FixedSubCropId.toString(),
         FixedCropSeedPerha: this.ComponentForm.value.fixedSeed_Per_ha,
         FixedCropUnit: this.ComponentForm.value.fixedUnit, 
         FixedCrop_CostofSeed: this.ComponentForm.value.fixedCost_of_Seed,

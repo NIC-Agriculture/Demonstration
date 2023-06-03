@@ -201,7 +201,7 @@ exports.getAllSubCrops = async (req,res) => {
 exports.getSubCrops = async (req,res) => {
     try{
         const SubCropData = await db.SubCropMaster.findAll({
-            attributes : ["SubCropId" , "SubCropName"],
+            attributes : ["CropId" ,"SubCropId" , "SubCropName"],
             where: { CropId : req.query.CropId },
             raw: true
         });
@@ -681,9 +681,9 @@ exports.getItemDetails = async (req,res) => {
     try{
          const queryText1 = `select a."ItemId",a."ItemName",b."IndicativeCost",c."CompName" 
          from "ItemMaster" a
-         INNER JOIN "itemPackageMaster" b ON a."ItemId" = b."ItemId"
-         INNER JOIN "ComponentMaster" c ON a."CompId" = c."CompId"
-         Where a."CompId" = '${req.query.CompId}'`
+         INNER JOIN "itemPackageMaster" b ON a."ItemId" = b."ItemId" and a."Fin_Year" = b."Fin_Year"
+         INNER JOIN "ComponentMaster" c ON a."CompId" = c."CompId" and c."Fin_Year" = a."Fin_Year"
+         Where a."CompId" = '${req.query.CompId}' AND a."Fin_Year" = '${req.query.Fin_Year}'`
          const result = await db.sequelize.query(queryText1);
          res.send(result[0]);
     } catch (e){
