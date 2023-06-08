@@ -60,10 +60,24 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group row">
-                <div class="col-sm-4 col-lg-2">
-                  <label class="block" for="farmerId">Demonstration ID <label class="asterik">*</label>:</label>
+                <div class="col-sm-2 col-lg-2">
+                  <label class="block" for="farmerId"> Financial Year <label class="asterik">*</label>:</label>
                 </div>
-                <div class="col-sm-4 col-lg-6">
+                <div class="col-sm-3 col-lg-3">
+                  <select id="FinYear" formControlName="FinYear" class="required form-control"
+                    (change)="getDemonstrationData();">
+                    <option value="">--Select--</option>
+                    <option [ngValue]="x" *ngFor="let x of FinYears">{{x}}</option>
+                  </select>
+                  <div class="text-danger"
+                    *ngIf="vawFormValid.FinYear.touched && !vawFormValid.FinYear.valid">
+                    Please Select Financial Year.
+                  </div>
+                </div>
+                <div class="col-sm-2 col-lg-2">
+                  <label class="block" for="farmerId"> Demonstration ID <label class="asterik">*</label>:</label>
+                </div>
+                <div class="col-sm-3 col-lg-3">
                   <select id="scheme" formControlName="demonstrationId" class="required form-control"
                     (change)="getDemonstrationTarget();">
                     <option value="">--Select--</option>
@@ -74,15 +88,15 @@
                     Please Select Demonstration Id.
                   </div>
                 </div>
-                <div class="col-sm-4 col-lg-4">
-                  <button class="btn btn-primary"  data-toggle="modal"  data-target="#exampleModal" (click)="getDemonstrationReport()" *ngIf="vawFormValid.demonstrationId.valid" >View Details</button>
+                <div class="col-sm-2 col-lg-2">
+                  <button class="btn btn-primary"  data-toggle="modal"  data-target="#exampleModal" (click)="getDemonstrationReport()" *ngIf="vawFormValid.demonstrationId.valid" style="float: right;" >View Details</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
+<hr style="border-top: 4px solid rgb(60 188 141) !important;" *ngIf="showFarmerSearch"><br>
       <div class="row" *ngIf="showFarmerSearch">
         <div class="col-sm-12">
           <div class="row">
@@ -275,22 +289,22 @@
                                           <table class="table table-hover table-striped view-table">
                                               <tbody>
                                                   <tr>
-                                                    <td> Scheme Name : {{Report.schemeName}}  </td>
+                                                    <td> Scheme Name : {{ Report.schemeName || '--' }}  </td>
                                                     <td>
-                                                      Subscheme Name : {{Report.SubschemeName}} 
+                                                      Subscheme Name : {{ Report.SubschemeName || '--' }} 
                                                   </td>
                                                       
                                                   </tr>
                                                   <tr>
-                                                    <td> Component Name : {{Report.CompName}} </td>
+                                                    <td> Component Name : {{ Report.CompName || '--' }} </td>
                                                     <td>
-                                                      Crop Name : {{Report.SubCropName}}  
+                                                      Crop Name : {{ Report.SubCropName || '--' }}  
                                                   </td>
                                                   </tr>
                                                   <tr >
-                                                  <td> District Name : {{Report.Dist_Name}}  </td>
+                                                  <td> District Name : {{Report.Dist_Name || '--' }}  </td>
                                                   <td>
-                                                      Block Name : {{Report.Block_Name}} 
+                                                      Block Name : {{Report.Block_Name || '--' }} 
                                                   </td>
                                               </tr>
                                               </tbody>

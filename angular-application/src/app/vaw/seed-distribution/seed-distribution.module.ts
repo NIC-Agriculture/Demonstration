@@ -6,6 +6,7 @@ import { SeedDistributionComponent } from './seed-distribution/seed-distribution
 import {MatRadioModule} from '@angular/material/radio';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPrintModule } from 'ngx-print';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     SeedDistributionRoutingModule,
     MatRadioModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    NgxPrintModule
   ]
 })
 export class SeedDistributionModule { }

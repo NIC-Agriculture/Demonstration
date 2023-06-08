@@ -1,142 +1,160 @@
 <div class="card">
-    <div class="card-block" id="print-section">
+    <div class="card-block">
         <div class="row">
             <div class="col-sm-12">
               <div class="row">
                 <div class="col-md-12">
                   <div class="form-group row">
-                    <div class="col-sm-4 col-lg-2">
+                    <div class="col-sm-2 col-lg-2">
+                        <label class="block" for="farmerId">Financial Year<label class="asterik">*</label>:</label>
+                      </div>
+                      <div class="col-sm-4 col-lg-4">
+                        <select id="Finyear" [(ngModel)]="Finyear" class="required form-control" (change)="getDemonstrationData()" >
+                          <option value="">--Select--</option>
+                          <option [ngValue]="x" *ngFor="let x of FinYears">{{x}}</option>
+                        </select>
+                      </div>
+                    <div class="col-sm-2 col-lg-2">
                       <label class="block" for="farmerId">Demonstration ID <label class="asterik">*</label>:</label>
                     </div>
-                    <div class="col-sm-4 col-lg-6">
+                    <div class="col-sm-4 col-lg-4">
                       <select id="demonstrationId" [(ngModel)]="demonstrationId" 
                         class="required form-control" (change)="getDemonstrationStatus()">
                         <option value="">--Select--</option>
                         <option [ngValue]="x" *ngFor="let x of demonstrationData">{{x.DemostrationId}}</option>
                       </select>
                     </div>
-                    <div class="col-sm-4 col-lg-4">
-                      
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="card-block">
-            <div class="view-info">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="general-info">
-                            <div class="row">
-                                <div class="col-lg-12 col-xl-6">
-                                    <table class="table m-0">
-                                        <tbody>
-                                          
-                                            <tr>
-                                                <th scope="row" ngDefaultControl [(ngModel)]="DemonstrationId">DemonstrationId</th>
-                                                <td> {{ DemonstrationId }} </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row" ngDefaultControl [(ngModel)]="subscheme">Subscheme</th>
-                                                <td> {{ subscheme }} </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row"  ngDefaultControl [(ngModel)]="cropCatagory">Crop Catagory</th>
-                                                <td> {{ cropCatagory }} </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row" ngDefaultControl [(ngModel)]="totalLand">Total Land (in ha)</th>
-                                                <td> {{ totalLand }} </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row" ngDefaultControl [(ngModel)]="bpCrop"> Crop(Bund Plant.) </th>
-                                                <td> {{ bpCrop || '---' }} </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row" ngDefaultControl [(ngModel)]="totalBPSeed">Total Required Seed (in Quintal) for Bund Plant.</th>
-                                                <td> {{ totalBpSeedInQuintal || 0 }} </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- end of table col-lg-6 -->
-                                <div class="col-lg-12 col-xl-6">
-                                    <table class="table">
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row" ngDefaultControl [(ngModel)]="scheme">Scheme</th>
-                                                <td> {{ scheme }} </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row" ngDefaultControl [(ngModel)]="compName">Component Name</th>
-                                                <td> {{ compName }} </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row" ngDefaultControl [(ngModel)]="cropVariety">Crop Variety</th>
-                                                <td> {{ cropVariety }} </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row" ngDefaultControl [(ngModel)]="totalSeed">Total Required Seed (in Quintal) for Component</th>
-                                                <td> {{ totalSeedInQuintal }} </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row" ngDefaultControl [(ngModel)]="bpCropVariety">Crop Variety(Bund Plant.)</th>
-                                                <td> {{ bpCropVariety || '---'}} </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- end of table col-lg-6 -->
-                            </div>
-                            <!-- end of row -->
-                        </div>
-                        <!-- end of general info -->
-                    </div>
-                    <!-- end of col-lg-12 -->
-                </div>
-                <!-- end of row -->
-            </div>
-            <!-- end of edit-info -->
-        </div>
-          <br>
-          
-    <div class="card-block table-border-style" *ngIf="farmerListTable">
-        <div class="table-responsive">
-            <table class="table table-styling">
-                <thead>
-                    <tr class="table-primary">
-                        <th>#</th>
-                        <th>Farmer Id</th>
-                        <th>Farmer Name</th>
-                        <th>Land(in ha)</th>
-                        <th>Seed</th>
-                        <th>Seed (Bund Plant.)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                        <tr *ngFor=" let x of farmer_list; let i = index;">
-                            <th scope="row"> {{i+1}} </th>
-                            <td> {{x.FarmerId}} </td>
-                            <td> {{x.FarmerName}} </td>
-                            <td> {{x.LandArea}} </td>
-                            <td> {{x.seedrequired}} Kg</td>
-                            <td> {{x.bpseedrequired || 0 }} Kg</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <br>
-    <div *ngIf="message">
-      <h4 style="text-align: center; color: red;">There is no data in this DemonstrationId</h4>
-    </div>
- 
-    </div>
-
+  
+</div>
+</div>
+<div class="card" *ngIf="farmerListTable" id="print-section">
     <div class="card-block">
-        <button type="button" class="btn btn-primary
-        mat-elevation-z8" style="float: right;" [useExistingCss]="true" 
-        styleSheetFile="assets/css/custom1.css,assets/css/custom2.css"  printSectionId="print-section"  ngxPrint ><i class="ion-printer"></i>print</button>
+        <div class="view-info">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="general-info">
+                        <div class="row">
+                            <div class="col-lg-12 col-xl-6">
+                                <table class="table m-0">
+                                    <tbody>
+                                      
+                                        <tr>
+                                            <th scope="row" ngDefaultControl [(ngModel)]="DemonstrationId">DemonstrationId</th>
+                                            <td> {{ DemonstrationId }} </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" ngDefaultControl [(ngModel)]="subscheme">Subscheme</th>
+                                            <td> {{ subscheme }} </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"  ngDefaultControl [(ngModel)]="cropCatagory">Crop Catagory</th>
+                                            <td> {{ cropCatagory }} </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" ngDefaultControl [(ngModel)]="totalLand">Total Land (in ha)</th>
+                                            <td> {{ totalLand }} </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" ngDefaultControl [(ngModel)]="bpCrop"> Crop(Bund Plant.) </th>
+                                            <td> {{ bpCrop || '---' }} </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" ngDefaultControl [(ngModel)]="totalBPSeed">Total Required Seed (in Quintal) for Bund Plant.</th>
+                                            <td> {{ totalBpSeedInQuintal || 0 }} </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end of table col-lg-6 -->
+                            <div class="col-lg-12 col-xl-6">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" ngDefaultControl [(ngModel)]="scheme">Scheme</th>
+                                            <td> {{ scheme }} </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" ngDefaultControl [(ngModel)]="compName">Component Name</th>
+                                            <td> {{ compName }} </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" ngDefaultControl [(ngModel)]="cropVariety">Crop Variety</th>
+                                            <td> {{ cropVariety }} </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" ngDefaultControl [(ngModel)]="totalSeed">Total Required Seed (in Quintal) for Component</th>
+                                            <td> {{ totalSeedInQuintal }} </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" ngDefaultControl [(ngModel)]="bpCropVariety">Crop Variety(Bund Plant.)</th>
+                                            <td> {{ bpCropVariety || '---'}} </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end of table col-lg-6 -->
+                        </div>
+                        <!-- end of row -->
+                    </div>
+                    <!-- end of general info -->
+                </div>
+                <!-- end of col-lg-12 -->
+            </div>
+            <!-- end of row -->
+        </div>
+        <!-- end of edit-info -->
+    </div>
+      <br>
+      
+<div class="card-block table-border-style">
+    <div class="table-responsive">
+        <table class="table table-styling" id="excel-table">
+            <thead>
+                <tr class="table-primary">
+                    <th>#</th>
+                    <th>Farmer Id</th>
+                    <th>Farmer Name</th>
+                    <th>Land(in ha)</th>
+                    <th>Seed</th>
+                    <th>Seed (Bund Plant.)</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr *ngFor=" let x of farmer_list; let i = index;">
+                        <th scope="row"> {{i+1}} </th>
+                        <td> {{x.FarmerId}} </td>
+                        <td> {{x.FarmerName}} </td>
+                        <td> {{x.LandArea}} </td>
+                        <td> {{x.seedrequired}} Kg</td>
+                        <td> {{x.bpseedrequired || 0 }} Kg</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
+<br>
+<div *ngIf="message">
+  <h4 style="text-align: center; color: red;">There is no data in this DemonstrationId</h4>
+</div>
+
+
+
+<div class="card-block">
+    <button type="button" class="btn btn-primary
+    mat-elevation-z8" style="float: right;" [useExistingCss]="true" 
+    styleSheetFile="assets/css/custom1.css,assets/css/custom2.css"  printSectionId="print-section"  ngxPrint ><i class="ion-printer"></i>print</button>
+    <button 
+    class="btn btn-primary mat-elevation-z8 float-right" (click)="exportexcel()" style="margin-right:10px;" ><i class="ion-ios-upload"></i> Export to Excel </button>
+</div>
+</div>
+
+<div class="card" *ngIf="message1">
+    <div><br>
+      <h4 style="text-align: center; color: red; font-weight: bold;">Please final submit the registered farmers against this Demonstration Id.</h4>
+  </div>
+  </div>

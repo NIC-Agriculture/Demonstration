@@ -96,49 +96,57 @@
             </div>
         </div>
       </div>
-
-      <div class="card-block table-border-style" *ngIf="farmerListTable">
-        <div class="table-responsive">
-            <table class="table table-styling">
-                <thead>
-                    <tr class="table-primary">
-                        <th>#</th>
-                        <th>Farmer Id</th>
-                        <th>Farmer Name</th>
-                        <th>Catagory</th>
-                        <th>Gender</th>
-                        <!-- <th>Crop</th> -->
-                        <th>Land(in ha)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <tr *ngFor=" let x of farmer_list; let i = index;">
-                            <th scope="row"> {{i+1}} </th>
-                            <td> {{x.FarmerId}} </td>
-                            <td> {{x.FarmerName}} </td>
-                            <td> {{x.Farmer_Category}} </td>
-                            <td> {{x.Gender}} </td>
-                            <!-- <td> {{x.CropId}} </td> -->
-                            <td> {{x.LandArea}} </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <br>
-    <div *ngIf="message">
-      <h4 style="text-align: center; color: red;">There is no data in this DemonstrationId</h4>
-    </div><br>
-    <button type="button" class="btn btn-primary
-    mat-elevation-z8" *ngIf="confirmButton" style="float: right;" (click)="returnBackToVAW();">
-       Return Back To VAW
-    </button>
-    <button type="button" class="btn btn-primary 
-    mat-elevation-z8"  *ngIf="confirmButton" style="float: right; margin-right: 10px;" (click)="confirmDemonstrationPatch();" >
-       Confirm
-    </button>
-
   
     </div>
+  </div>
+
+  <div class="card" *ngIf="farmerListTable">
+    <div class="card-block table-border-style" id="print-section">
+      <div class="table-responsive" >
+          <table class="table table-styling" id="excel-table">
+              <thead>
+                  <tr class="table-primary">
+                      <th>#</th>
+                      <th>Farmer Id</th>
+                      <th>Farmer Name</th>
+                      <th>Catagory</th>
+                      <th>Gender</th>
+                      <!-- <th>Crop</th> -->
+                      <th>Land(in ha)</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <tr *ngFor=" let x of farmer_list; let i = index;">
+                          <th scope="row"> {{i+1}} </th>
+                          <td> {{x.FarmerId}} </td>
+                          <td> {{x.FarmerName}} </td>
+                          <td> {{x.Farmer_Category}} </td>
+                          <td> {{x.Gender}} </td>
+                          <!-- <td> {{x.CropId}} </td> -->
+                          <td> {{x.LandArea}} </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
+  <br>
+  <div *ngIf="message">
+    <h4 style="text-align: center; color: red;">There is no data in this DemonstrationId</h4>
+  </div><br>
+  <button type="button" class="btn btn-primary
+  mat-elevation-z8" *ngIf="confirmButton" style="float: right;" (click)="returnBackToVAW();">
+     Return Back To VAW
+  </button>
+  <button type="button" class="btn btn-primary 
+  mat-elevation-z8"  *ngIf="confirmButton" style="float: right; margin-right: 10px;" (click)="confirmDemonstrationPatch();" >
+     Confirm
+  </button>
+  <div class="card-block" *ngIf="!confirmButton">
+    <button type="button" class="btn btn-primary
+    mat-elevation-z8" style="float: right;" [useExistingCss]="true" 
+    styleSheetFile="assets/css/custom1.css,assets/css/custom2.css"  printSectionId="print-section"  ngxPrint ><i class="ion-printer"></i>print</button>
+    <button 
+    class="btn btn-primary mat-elevation-z8 float-right" (click)="exportexcel()" style="margin-right:10px;" ><i class="ion-ios-upload"></i> Export to Excel </button>
+</div>
   </div>

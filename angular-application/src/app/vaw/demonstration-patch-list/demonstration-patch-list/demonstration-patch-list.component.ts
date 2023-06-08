@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { LayoutserviceService } from 'src/app/services/layoutservice.service';
 import { VawService } from 'src/app/services/vaw/vaw.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-demonstration-patch-list',
@@ -28,12 +29,18 @@ export class DemonstrationPatchListComponent implements OnInit {
   bpCrop: any;
   totalBPSeed: number = 0;
   bpCropVariety: any;
+  Finyear:any
 
   pageTitle: string;
   pageDesc: string;
   breadcrumbList: Array<string>;
   totalBpSeedInQuintal: number= 0;
-
+  FinYears: any;
+  Season: any;
+  message1: boolean = false;
+  
+  
+  fileName= 'FarmerList.xlsx';
 
   constructor(
     private vawService: VawService,
@@ -52,12 +59,25 @@ export class DemonstrationPatchListComponent implements OnInit {
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
 
-    this.getDemonstrationData();
+    this.getFinYear();
   }
 
-  getDemonstrationData = () => {
+  getFinYear = async() => {
+    try{
+      const result = await this.layoutService.getFinYear().toPromise()
+      this.FinYears = result.Years;
+      this.Season = result.Season;
+    } catch (e){
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
+  getDemonstrationData = async () => {
     try {
-      this.demonstrationData = this.vawService.getDemonstrationData().toPromise()
+      this.farmerListTable = false;
+      this.message1 = false;
+      this.demonstrationData = await this.vawService.getDemonstrationData(this.Finyear).toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
@@ -82,9 +102,11 @@ export class DemonstrationPatchListComponent implements OnInit {
           }else if (this.demonstrationId.ConfirmBy_vaw == 1 && this.demonstrationId.ConfirmBy_BAO == null){
               this.toastr.warning('This Demonstration Patch is not confirmed By BAO.');
               this.farmerListTable = false;
+              this.message1 = true;
 
           } else {
               this.farmerListTable = false;
+              this.message1 = true;
               this.toastr.warning('Please final submit the registered farmers against this Demonstration Id.');
           }
       
@@ -97,6 +119,7 @@ export class DemonstrationPatchListComponent implements OnInit {
   getAllApprovedFarmerList = async(DemostrationId: string) => {
     try {
       this.farmerListTable = true;
+      this.message1 = false;
       this.getTotalLandCount();
       this.farmer_list = await this.vawService.getAllApprovedFarmerList(DemostrationId).toPromise()
       this.farmer_list.forEach((e: any) => {
@@ -120,5 +143,20 @@ export class DemonstrationPatchListComponent implements OnInit {
     this.totalSeed = +this.totalLand *  +this.totalSeedCount[0].Seed_Per_ha;
     this.totalSeedInQuintal = +this.totalSeed * 0.01
   }  
+
+  exportexcel(): void 
+  {
+     /* table id is passed over here */   
+     let element = document.getElementById('excel-table'); 
+     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+
+     /* generate workbook and add the worksheet */
+     const wb: XLSX.WorkBook = XLSX.utils.book_new();
+     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+     /* save to file */
+     XLSX.writeFile(wb, this.fileName);
+    
+}
 
 }

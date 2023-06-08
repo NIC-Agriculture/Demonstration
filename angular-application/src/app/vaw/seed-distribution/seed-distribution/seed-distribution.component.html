@@ -5,10 +5,19 @@
         <div class="row">
           <div class="col-md-12">
             <div class="form-group row">
-              <div class="col-sm-4 col-lg-2">
+              <div class="col-sm-2 col-lg-2">
+                <label class="block" for="farmerId">Financial Year <label class="asterik">*</label>:</label>
+              </div>
+              <div class="col-sm-4 col-lg-4">
+                <select id="Finyear" [(ngModel)]="Finyear" class="required form-control" (change)="getDemonstrationData()" >
+                  <option value="">--Select--</option>
+                  <option [ngValue]="x" *ngFor="let x of FinYears">{{x}}</option>
+                </select>
+              </div>
+              <div class="col-sm-2 col-lg-2">
                 <label class="block" for="farmerId">Demonstration ID <label class="asterik">*</label>:</label>
               </div>
-              <div class="col-sm-4 col-lg-6">
+              <div class="col-sm-4 col-lg-4">
                 <select id="demonstrationId" [(ngModel)]="demonstrationId" (change)="getDemonstrationStatus()"
                   class="required form-control">
                   <option value="">--Select--</option>
@@ -17,7 +26,6 @@
                   </option>
                 </select>
               </div>
-              <div class="col-sm-4 col-lg-4"></div>
             </div>
           </div>
         </div>
@@ -62,8 +70,8 @@
 
 <div class="card" *ngIf="farmerListTable">
   <div class="card-block">
-    <div class="table-responsive">
-      <table class="table table-hover">
+    <div class="table-responsive" id="print-section">
+      <table class="table table-hover" id="excel-table">
         <thead>
           <tr>
             <th>#</th>
@@ -102,5 +110,18 @@
     <button type="button" class="btn btn-primary mat-elevation-z8" style="float: right" *ngIf="ConfirmOption == 'Yes'"
       (click)="ConfirmSeedDistributionStatus()">Confirm
     </button>
+    <div class="card-block" *ngIf="demonstrationId.SeedDistributionStatus == 'Over'">
+      <button type="button" class="btn btn-primary
+      mat-elevation-z8" style="float: right;" [useExistingCss]="true" 
+      styleSheetFile="assets/css/custom1.css,assets/css/custom2.css"  printSectionId="print-section"  ngxPrint ><i class="ion-printer"></i>print</button>
+      <button 
+      class="btn btn-primary mat-elevation-z8 float-right" (click)="exportexcel()" style="margin-right:10px;" ><i class="ion-ios-upload"></i> Export to Excel </button>
   </div>
+  </div>
+</div>
+
+<div class="card" *ngIf="message1">
+  <div><br>
+    <h4 style="text-align: center; color: red; font-weight: bold;">Please final submit the registered farmers against this Demonstration Id..</h4>
+</div>
 </div>

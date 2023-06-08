@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { LayoutserviceService } from 'src/app/services/layoutservice.service';
 import { VawService } from 'src/app/services/vaw/vaw.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-seed-distribution',
@@ -28,6 +29,11 @@ export class SeedDistributionComponent implements OnInit {
   totalSeed: any;
   totalSeedInQuintal: any;
   SeedDistributionStatus: any;
+  FinYears: any;
+  Season: any;
+  Finyear: any;
+  message1: boolean = false;
+  fileName= 'SeedDistributionDetails.xlsx';
 
   constructor(
     private layoutService: LayoutserviceService,
@@ -46,10 +52,24 @@ export class SeedDistributionComponent implements OnInit {
       this.layoutService.setPageHeadingDesc(this.pageDesc);
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
+      this.getFinYear()
+  }
+
+  getFinYear = async() => {
+    try{
+      const result = await this.layoutService.getFinYear().toPromise()
+      this.FinYears = result.Years;
+      this.Season = result.Season;
+    } catch (e){
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
   }
   getDemonstrationData = async() => {
     try {
-      this.demonstrationData = await this.vawService.getDemonstrationData().toPromise()
+      this.demonstrationId = '';
+      this.farmerListTable = false;
+      this.demonstrationData = await this.vawService.getDemonstrationData(this.Finyear).toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
@@ -121,6 +141,21 @@ export class SeedDistributionComponent implements OnInit {
       console.error(e)
     }
   }
+
+  exportexcel(): void 
+  {
+     /* table id is passed over here */   
+     let element = document.getElementById('excel-table'); 
+     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+
+     /* generate workbook and add the worksheet */
+     const wb: XLSX.WorkBook = XLSX.utils.book_new();
+     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+     /* save to file */
+     XLSX.writeFile(wb, this.fileName);
+    
+}
  
 
 }

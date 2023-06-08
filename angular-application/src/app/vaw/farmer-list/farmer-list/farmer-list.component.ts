@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { ToastrService } from 'ngx-toastr';
 import { LayoutserviceService } from 'src/app/services/layoutservice.service';
 import { VawService } from 'src/app/services/vaw/vaw.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-farmer-list',
@@ -36,6 +37,10 @@ export class FarmerListComponent implements OnInit {
   clicked : boolean = false
   totalArea1: any = 0;
   searchText: any
+  FinYears: any;
+  Season: any;
+  Finyear: any;
+  fileName= 'FarmerList.xlsx';
 
   constructor(
     private layoutService: LayoutserviceService,
@@ -62,18 +67,32 @@ export class FarmerListComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.getDemonstrationData();
     setTimeout(() => {
       this.layoutService.setTitle(this.pageTitle);
       this.layoutService.setPageHeadingDesc(this.pageDesc);
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
+      this.getFinYear()
+  }
+
+  getFinYear = async() => {
+    try{
+      const result = await this.layoutService.getFinYear().toPromise()
+      this.FinYears = result.Years;
+      this.Season = result.Season;
+    } catch (e){
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
   }
 
  
   getDemonstrationData = async() => {
     try {
-      this.demonstrationData = await this.vawService.getDemonstrationData().toPromise()      
+      this.farmerListTable = false;
+      this.demonstrationId = ''
+      this.demostrationArea = 0
+      this.demonstrationData = await this.vawService.getDemonstrationData(this.Finyear).toPromise()      
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
@@ -84,22 +103,23 @@ export class FarmerListComponent implements OnInit {
     try {
       this.totalArea = 0
       this.totalArea1 = 0
-      this.farmerListTable = true;
       const result = await this.vawService.getAllFarmerList(this.demonstrationId.DemostrationId).toPromise()
       this.farmer_list = result.farmerList;
       const demoPatchstatus = result.demoStatus[0];
       this.demostrationArea = this.demonstrationId.Demonstration_Area
       if(this.farmer_list.length == 0){
           this.message1 = true;
+          this.farmerListTable = false;
           this.SubmitButton = false;
       } else {
           this.farmer_list.forEach((e : any) => {
             this.message1 = false;
+            this.farmerListTable = true;
             this.totalArea1 += +e.LandArea
             this.totalArea = JSON.parse(this.totalArea1.toFixed(1))
       })
            
-      demoPatchstatus.ConfirmBy_vaw == null && demoPatchstatus.ConfirmBy_BAO == null ? (this.message1 = false,this.SubmitButton = true) : (this.message1 = true,this.SubmitButton = false) 
+      demoPatchstatus.ConfirmBy_vaw == null && demoPatchstatus.ConfirmBy_BAO == null ? (this.message1 = false,this.SubmitButton = true) : (this.message1 = false,this.SubmitButton = false) 
             
       }
     } catch (e) {
@@ -167,6 +187,21 @@ export class FarmerListComponent implements OnInit {
 
     }
   }
+
+  exportexcel(): void 
+  {
+     /* table id is passed over here */   
+     let element = document.getElementById('excel-table'); 
+     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+
+     /* generate workbook and add the worksheet */
+     const wb: XLSX.WorkBook = XLSX.utils.book_new();
+     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+     /* save to file */
+     XLSX.writeFile(wb, this.fileName);
+    
+}
 
 }
 

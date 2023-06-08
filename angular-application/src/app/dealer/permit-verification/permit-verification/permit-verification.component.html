@@ -13,12 +13,12 @@
             <div class="row">
                 <label class="col-sm-2 col-lg-2 col-form-label">Finalcial Year <label class="asterik">*</label>:</label>
                 <div class="col-sm-4 col-lg-4">
-                    <select  [(ngModel)]="FinYear" id="FinYear" class="form-control form-control-default">
+                    <select  [(ngModel)]="FinYear" id="FinYear" class="form-control form-control-default" (change)="getPSDDistrictName()">
                         <option value="">--Select--</option>
                         <option [ngValue]="x" *ngFor="let x of FinYears"> {{ x }} </option>
                     </select>
                 </div>
-                <label class="col-sm-2 col-lg-2 col-form-label">Select Farmer Id <label class="asterik">*</label>:</label>
+                <label class="col-sm-2 col-lg-2 col-form-label">Search Farmer Id <label class="asterik">*</label>:</label>
                 <div class="col-sm-4 col-lg-4">
                     <div class="input-group">
                         <div class="input-group">

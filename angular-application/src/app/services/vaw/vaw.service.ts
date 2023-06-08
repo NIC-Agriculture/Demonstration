@@ -19,8 +19,8 @@ export class VawService {
     private router: Router,
     private http: HttpClient
   ) { }
-  getDemonstrationData(): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getDemonstrationData`)
+  getDemonstrationData(Finyear:any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getDemonstrationData?Fin_Year=${Finyear}`)
   }
   getDistrictPrefix(Dist_Code: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getDistrictPrefix?Dist_Code=${Dist_Code}`)

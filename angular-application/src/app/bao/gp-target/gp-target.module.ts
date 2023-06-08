@@ -14,6 +14,7 @@ import { TargetAllocationComponent } from './gp-target/target-allocation/target-
 import { GenerateDemonstrationComponent } from './gp-target/generate-demonstration/generate-demonstration.component';
 import { ManageDemonstrationComponent } from './manage-demonstration/manage-demonstration.component';
 import {MatSelectModule} from '@angular/material/select';
+import { NgxPrintModule } from 'ngx-print';
 
 
 
@@ -35,7 +36,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatCheckboxModule,
     MatIconModule,
     MatStepperModule,
-    MatSelectModule
+    MatSelectModule,
+    NgxPrintModule
   ]
 })
 
