@@ -8,6 +8,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     MatDialogModule,
     MatButtonModule,
     MatFormFieldModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    NgxPrintModule
   ]
 })
 export class FarmerListModule { }

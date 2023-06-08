@@ -8,23 +8,32 @@
             <i class="icofont icofont-close-circled"></i>
         </div>
     </div>
-    <div class="card-block table-border-style">
+    
         <div class="card-block">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group row">
-                          <div class="col-sm-4 col-lg-2">
+                          <div class="col-sm-2 col-lg-2">
+                            <label class="block" for="farmerId">Financial Year<label class="asterik">*</label>:</label>
+                          </div>
+                          <div class="col-sm-3 col-lg-3">
+                            <select id="Finyear" [(ngModel)]="Finyear" class="required form-control" (change)="getDemonstrationData()" >
+                              <option value="">--Select--</option>
+                              <option [ngValue]="x" *ngFor="let x of FinYears">{{x}}</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-2 col-lg-2">
                             <label class="block" for="farmerId">Demonstration ID <label class="asterik">*</label>:</label>
                           </div>
-                          <div class="col-sm-4 col-lg-6">
+                          <div class="col-sm-3 col-lg-3">
                             <select id="demonstrationId" [(ngModel)]="demonstrationId" class="required form-control" (change)="getAllFarmerList()" >
                               <option value="">--Select--</option>
                               <option [ngValue]="x" *ngFor="let x of demonstrationData">{{x.DemostrationId}}</option>
                             </select>
                           </div>
-                          <div class="col-sm-4 col-lg-4">
+                          <div class="col-sm-2 col-lg-2">
                             <label class="block" for="TDA" style="font-weight: bold;" > Total Demonstration Area (in ha) : {{ demostrationArea }}</label>
                           </div>
                         </div>
@@ -33,61 +42,73 @@
                 </div>
               </div>
         </div>
-        
-         
-        <div class="table-responsive" *ngIf="farmerListTable">
-          <div class="card-block">
-            <!-- <div class="search-hero">
-              <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442; Search by FID or name or Catagory">
-            </div> -->
-            <table class="table table-hover">
-                <thead>
-                    <tr >
-                       <th>#</th>
-                        <th>Farmer Id</th>
-                        <th>Farmer Name</th>
-                        <th>Catagory</th>
-                        <th>Gender</th>
-                        <!-- <th>Crop</th> -->
-                        <th>Land(in ha)</th>
-                        <!-- <th>Edit</th> -->
-                        <th *ngIf="SubmitButton">Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor=" let x of farmer_list | filter:searchText; let i = index;">
-                        <th scope="row">{{i+1}}</th>
-                        <td> {{x.FarmerId}} </td>
-                        <td> {{x.FarmerName}} </td>
-                        <td> {{x.Farmer_Category}} </td>
-                        <td> {{x.Gender}} </td>
-                        <!-- <td> {{x.CropId}} </td> -->
-                        <td> {{x.LandArea}} </td>
-                        <!-- <td>  <button class="btn btn-info btn-icon" (click)="editFarmerDetails(x)" data-toggle="modal"  data-target="#exampleModal"><i class="ion-edit"></i></button></td> -->
-                        <!-- <td> <button class="btn btn-danger btn-icon" (click)="DeleteFarmerDetails(i)"><i class="ion-trash-a"></i></button></td> -->
-                        <td *ngIf="SubmitButton"><button class="btn btn-danger btn-icon" (click)="openDialog(i)"><i class="ion-trash-a"></i></button></td>
-                    </tr>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th> Total : {{ totalArea }} </th>
-                    </tr>
-                </tbody>
-            </table>
-        </div><br>
-        <div *ngIf="message1">
-            <h4 style="text-align: center; color: red;">There is no data in this DemonstrationId</h4>
-        </div>
-        </div>
-        <div class="card-block" *ngIf="SubmitButton">
-            <button type="button" class="btn btn-primary
-            mat-elevation-z8" [disabled]="clicked" style="float: right;" (click)="FinalSubmitfarmerDetails()">Final Submit</button>
-        </div><br><br>
-    </div>
+</div>
 
+<div class="card" *ngIf="farmerListTable">
+  <div class="card-block table-border-style">
+    <div class="table-responsive" *ngIf="farmerListTable">
+      <div class="card-block" id="print-section">
+        <!-- <div class="search-hero">
+          <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442; Search by FID or name or Catagory">
+        </div> -->
+        <table class="table table-hover" id="excel-table">
+            <thead>
+                <tr >
+                   <th>#</th>
+                    <th>Farmer Id</th>
+                    <th>Farmer Name</th>
+                    <th>Catagory</th>
+                    <th>Gender</th>
+                    <!-- <th>Crop</th> -->
+                    <th>Land(in ha)</th>
+                    <!-- <th>Edit</th> -->
+                    <th *ngIf="SubmitButton">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor=" let x of farmer_list | filter:searchText; let i = index;">
+                    <th scope="row">{{i+1}}</th>
+                    <td> {{x.FarmerId}} </td>
+                    <td> {{x.FarmerName}} </td>
+                    <td> {{x.Farmer_Category}} </td>
+                    <td> {{x.Gender}} </td>
+                    <!-- <td> {{x.CropId}} </td> -->
+                    <td> {{x.LandArea}} </td>
+                    <!-- <td>  <button class="btn btn-info btn-icon" (click)="editFarmerDetails(x)" data-toggle="modal"  data-target="#exampleModal"><i class="ion-edit"></i></button></td> -->
+                    <!-- <td> <button class="btn btn-danger btn-icon" (click)="DeleteFarmerDetails(i)"><i class="ion-trash-a"></i></button></td> -->
+                    <td *ngIf="SubmitButton"><button class="btn btn-danger btn-icon" (click)="openDialog(i)"><i class="ion-trash-a"></i></button></td>
+                </tr>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th> Total : {{ totalArea }} </th>
+                </tr>
+            </tbody>
+        </table>
+    </div><br>
+    </div>
+    <div class="card-block" *ngIf="SubmitButton">
+        <button type="button" class="btn btn-primary
+        mat-elevation-z8" [disabled]="clicked" style="float: right;" (click)="FinalSubmitfarmerDetails()">Final Submit</button>
+    </div>
+    <div class="card-block" *ngIf="!SubmitButton">
+      <button type="button" class="btn btn-primary
+      mat-elevation-z8" style="float: right;" [useExistingCss]="true" 
+      styleSheetFile="assets/css/custom1.css,assets/css/custom2.css"  printSectionId="print-section"  ngxPrint ><i class="ion-printer"></i>print</button>
+      <button 
+      class="btn btn-primary mat-elevation-z8 float-right" (click)="exportexcel()" style="margin-right:10px;" ><i class="ion-ios-upload"></i> Export to Excel </button>
+  </div>
+    <br><br>
+</div>
+</div>
+
+<div class="card" *ngIf="message1">
+  <div><br>
+    <h4 style="text-align: center; color: red; font-weight: bold;">There is no FarmerId registered in this DemonstrationId</h4>
+</div>
 </div>
 
 

@@ -91,6 +91,8 @@ export class PermitVerificationComponent implements OnInit {
 
   getPSDDistrictName = async()=>{
     try {
+      this.farmerId = '';
+      this.PermitTable = false
       const result = await this.dealerService.getDistrictPrefix().toPromise()
       this.prefixOfFarmerID = result.Dist_Prefix;     
     } catch (e) {

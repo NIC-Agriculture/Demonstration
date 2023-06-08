@@ -46,13 +46,22 @@ export class FamerRegistrationComponent implements OnInit {
   clicked: boolean = false;
   demonstrationReport: any;
 
-  Report: any = {};
+  Report = { 
+    schemeName: '',
+    SubschemeName: '',
+    CompName: '',
+    SubCropName: '',
+    Dist_Name: '',
+    Block_Name: ''
+  };
   GpDetails: any;
   value: any;
   tempGenCat: any = 0.0000;
   normalCompTarget: any = 0;
   showFarmerSearch: boolean = false;
   minAreaMsg: any;
+  FinYears: any;
+  Season: any;
 
 
   constructor(
@@ -67,6 +76,7 @@ export class FamerRegistrationComponent implements OnInit {
     this.breadcrumbList = ['Farmer Registration'];
     this.invalidFarmerMessage = '';
     this.FarmerDetailsForm = this.fb.group({
+      FinYear: ['', [Validators.required]],
       demonstrationId: ['', [Validators.required]],
       fid: ['', [Validators.required]],
       farmerName: ['', [Validators.required]],
@@ -89,6 +99,7 @@ export class FamerRegistrationComponent implements OnInit {
       this.layoutService.setPageHeadingDesc(this.pageDesc);
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
+      this.getFinYear()
  
   }
 
@@ -97,7 +108,16 @@ export class FamerRegistrationComponent implements OnInit {
   }
 
   // get farmerName() { return this.FarmerDetailsForm.get('farmerName') }
-
+  getFinYear = async() => {
+    try{
+      const result = await this.layoutService.getFinYear().toPromise()
+      this.FinYears = result.Years;
+      this.Season = result.Season;
+    } catch (e){
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
   
   getPSDDistrictName = async() => {
     try {
@@ -111,7 +131,15 @@ export class FamerRegistrationComponent implements OnInit {
 
   getDemonstrationData = async() => {
     try {
-      this.demonstrationData = await this.vawService.getDemonstrationData().toPromise()
+      this.allFarmerData = []
+      this.showFarmerSearch = false;
+      this.showFarmerDetails = false;
+      this.showtable = false;
+      this.loader = false;
+      this.searchFarmerID = ''
+      this.FarmerDetailsForm.patchValue({demonstrationId:'',farmerName: '',farmerGender: '',farmerCatagory: '',MobileNo: '',area: '' }) 
+      const FinYear = this.FarmerDetailsForm.value.FinYear
+      this.demonstrationData = await this.vawService.getDemonstrationData(FinYear).toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
@@ -375,6 +403,16 @@ export class FamerRegistrationComponent implements OnInit {
 
   getDemonstrationReport = async ()  => {
     try {
+      this.demonstrationReport  = [];
+      this.Report = { 
+        schemeName: '',
+        SubschemeName: '',
+        CompName: '',
+        SubCropName: '',
+        Dist_Name: '',
+        Block_Name: ''
+      };
+      this.GpDetails = [];
       const DemostrationId = this.FarmerDetailsForm.value.demonstrationId.DemostrationId;
       this.demonstrationReport = await this.vawService.getDemonstrationReport(DemostrationId).toPromise()
       this.Report = this.demonstrationReport.result[0];

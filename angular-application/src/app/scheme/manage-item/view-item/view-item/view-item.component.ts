@@ -21,6 +21,7 @@ export class ViewItemComponent implements OnInit {
   ComponentData: any;
   ItemDtails: any;
   viewTargetTable: boolean = false
+  message: boolean = false;
   constructor(
     private schemeService: SchemeserviceService,
     private layoutService: LayoutserviceService,
@@ -44,7 +45,6 @@ export class ViewItemComponent implements OnInit {
       this.layoutService.setPageHeadingDesc(this.pageDesc);
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
-      this.getAllScheme();
       this.getFinYear();
   }
   get ViewItemFormValid() {
@@ -64,6 +64,12 @@ export class ViewItemComponent implements OnInit {
 
   getAllScheme = async() => {
     try{
+      this.ViewItemForm.patchValue({scheme: '', subscheme: '', componentName: ''});
+      this.AllSchemeData = []
+      this.SubschemeData = []
+      this.ComponentData = []
+      this.viewTargetTable = false
+      this.message = false
       this.AllSchemeData = await this.schemeService.getAllScheme().toPromise()
     } catch (e){
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -73,6 +79,11 @@ export class ViewItemComponent implements OnInit {
 
   getSubscheme = async() => {
     try{
+      this.ViewItemForm.patchValue({ subscheme: '', componentName: ''});
+      this.SubschemeData = []
+      this.ComponentData = []
+      this.viewTargetTable = false
+      this.message = false
       const schemeId =  this.ViewItemForm.value.scheme.schemeId;
       this.SubschemeData =  await this.schemeService.getSubscheme(schemeId).toPromise()
     } catch (e){
@@ -83,6 +94,10 @@ export class ViewItemComponent implements OnInit {
 
   getComponent = async() => {
     try {
+      this.ViewItemForm.patchValue({componentName: ''});
+      this.ComponentData = []
+      this.viewTargetTable = false
+      this.message = false
       const FinYear = this.ViewItemForm.value.FinYear
       const SubschemeId = this.ViewItemForm.value.subscheme.SubschemeId
       this.ComponentData = await this.schemeService.getComponent(FinYear,SubschemeId).toPromise()
@@ -94,9 +109,11 @@ export class ViewItemComponent implements OnInit {
   
   getItemDetails = async() => {
     try{
-      this.viewTargetTable = true
       const CompId = this.ViewItemForm.value.component.CompId
-      this.ItemDtails = await this.schemeService.getItemDetails(CompId).toPromise()
+      const FinYear = this.ViewItemForm.value.component.FinYear
+      this.ItemDtails = await this.schemeService.getItemDetails(CompId,FinYear).toPromise()
+      this.viewTargetTable = this.ItemDtails > 0 ? true : false
+      this.message = this.ItemDtails > 0 ? false : true
     } catch (e){
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
