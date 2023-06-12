@@ -47,8 +47,8 @@ export class BaoServiceService {
   getDemonstrationData(CompId: any,FinYear: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getDemonstrationData?CompId=${CompId}&Fin_Year=${FinYear}`)
   }
-  getAllDemonstrationData(): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getAllDemonstrationData`)
+  getAllDemonstrationData(FinYear:any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getAllDemonstrationData?Fin_Year=${FinYear}`)
   }
   getVerifiedDemonstrationData(FinYear: any, schemeId: any, SubschemeId: any, CompId: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getVerifiedDemonstrationData?Fin_Year=${FinYear}&schemeId=${schemeId}&SubschemeId=${SubschemeId}&CompId=${CompId}`)

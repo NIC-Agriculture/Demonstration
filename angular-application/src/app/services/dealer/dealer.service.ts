@@ -32,8 +32,8 @@ export class DealerService {
   getPermitList(FarmerId: any,FinYear:any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getPermitList?FarmerId=${FarmerId}&Fin_Year=${FinYear}`)
   }
-  getItems(CompId: any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getItems?CompId=${CompId}`)
+  getItems(CompId: any,FinYear:any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getItems?CompId=${CompId}&Fin_Year=${FinYear}`)
   }
   // getTechnicalName(ItemId: any , SubCropId: any): Observable<any> {
   //   return this.http.get(`${this.serverUrl}/${this.route}/getTechnicalName?ItemId=${ItemId}&SubCropId=${SubCropId}`)
@@ -44,11 +44,11 @@ export class DealerService {
   // getEligibleTechnicalName(itemTechRefNo: any): Observable<any> {
   //   return this.http.get(`${this.serverUrl}/${this.route}/getEligibleTechnicalName?itemTechRefNo='${itemTechRefNo}'`)
   // }
-  getPurchasedTechnicalName(FarmerId: any , CompId: any , ItemId: any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getPurchasedTechnicalName?FarmerId=${FarmerId}&CompId=${CompId}&ItemId=${ItemId}`)
+  getPurchasedTechnicalName(FarmerId: any , CompId: any , ItemId: any , FinYear: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getPurchasedTechnicalName?FarmerId=${FarmerId}&CompId=${CompId}&ItemId=${ItemId}&Fin_Year=${FinYear}`)
   }
-  getItemPrice(ItemId: any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getItemPrice?ItemId=${ItemId}`)
+  getItemPrice(ItemId: any,FinYear: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getItemPrice?ItemId=${ItemId}&Fin_Year=${FinYear}`)
   }
   submitDealerSale(data: {}): Observable<any> {
     return this.http.post(`${this.serverUrl}/${this.route}/submitDealerSale`,data)
