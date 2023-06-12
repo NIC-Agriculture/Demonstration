@@ -34,6 +34,10 @@ itemMasterModel.init({
     IPAddress: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    Active: {
+        type: DataTypes.INTEGER,
+        allowNull: true
     }
 }, {
     sequelize,

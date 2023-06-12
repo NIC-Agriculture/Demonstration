@@ -26,7 +26,7 @@ const device = require('express-device')
 app.use(cors({
   origin: ['http://localhost:4200', 'https://dbtmbdodisha.nic.in/'],
   methods: 'GET, POST, PUT',
-  credentials: true
+  credentials: true,
 }));
 
 app.use(bodyParser.json({ limit: '50mb' }));

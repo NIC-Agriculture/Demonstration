@@ -50,8 +50,8 @@ export class CdaoService {
   getSubCrop(CompId : any , CompTypeId: any , Fin_Year: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getSubCrop?CompId=${CompId}&CompTypeId=${CompTypeId}&Fin_Year=${Fin_Year}`)
   }
-  getCropVarietyFortarget(SubCropId: any , FixedSubCropId: any , AdditionalSubCropId: any ): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getCropVariety?SubCropId=${SubCropId}&FixedSubCropId=${FixedSubCropId}&AdditionalSubCropId=${AdditionalSubCropId}`)
+  getCropVarietyFortarget(SubCropId: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getCropVariety?SubCropId=${SubCropId}`)
   }
   getCropVariety(SubCropId: any ): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getCropVariety?SubCropId=${SubCropId}`)

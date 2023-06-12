@@ -68,7 +68,8 @@
                       </div>
                       <div class="col-sm-4 col-lg-9">
                             <div *ngFor="let x of SubCropData">
-                              <b> {{ x.SubCropName }}* ,</b> <b>{{ x.FixedSubCropName || ' ' }} </b>, {{ x.additionalcrop || ' ' }}
+                              <b> {{ x.SubCropName }}* </b>
+                              , {{ x.additionalcrop || ' ' }}
                             </div>
                         <!-- <div style="width:100%">
                           <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="SubCropData"

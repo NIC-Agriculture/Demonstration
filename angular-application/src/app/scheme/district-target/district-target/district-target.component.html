@@ -264,8 +264,8 @@
       </table>
     </div>
     <div style="padding: 20px">
-      <button *ngIf="showSubmit" (click)="SubmitDistrictTarget()" type="button" class="btn btn-primary mat-elevation-z8"
-        style="float: right">Submit
+      <button *ngIf="showSubmit" (click)="SubmitDistrictTarget() ;clicked = true;" type="button" class="btn btn-primary mat-elevation-z8"
+        style="float: right" [disabled]="clicked">Submit
       </button>
 
       <!-- <button type="button" class="btn btn-inverse mat-elevation-z8" style="float: right; margin-right: 10px">

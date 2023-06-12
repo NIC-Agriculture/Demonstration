@@ -25,6 +25,7 @@ AllDistrictData: any = []
 selectedTarget: any = {}
 totalTarget : any;
 distributedTarget : any;
+clicked: boolean = false;
 
 @Input() AllDistrictTargetDetails: any= '';
   constructor(
@@ -150,6 +151,7 @@ distributedTarget : any;
   
   UpdateDistrictTarget = async () => { 
     try {
+      this.clicked = false
         const data = this.AllDistrictData.map((e: any) => {
           e.schemeId = this.AllDistrictTargetDetails.schemeId ,
           e.SubschemeId = this.AllDistrictTargetDetails.SubschemeId,

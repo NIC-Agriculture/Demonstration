@@ -40,7 +40,7 @@ exports.getDemonstrationData = async (req, res) => {
         LEFT JOIN "CropVarietyMaster" e ON a."Variety_Code" = e."Variety_Code"
         LEFT JOIN "SubCropMaster" dd ON a."BP_SubCropId" = dd."SubCropId"
         LEFT JOIN "CropVarietyMaster" ee ON a."BP_Variety_Code" = ee."Variety_Code"
-        WHERE "vaw_userId" ='${req.payload.user_id}';`
+        WHERE a."vaw_userId" ='${req.payload.user_id}' AND a."Fin_Year" = '${req.query.Fin_Year}';`
         
         const result = await db.sequelize.query(queryText);
 
@@ -279,14 +279,13 @@ exports.getAllApprovedFarmerList = async (req, res , next) => {
         e."Variety_Name" , f."SubCropName",  a."LandArea" * CAST((case when g."itemPackageSize" = '' then '0' else g."itemPackageSize" end) as int) as bpSeedRequired ,
         g."IndicativeCost" as bpItemCost , g."item_unit" as bpUnit
         FROM "Farmer_Permit" a
-        INNER JOIN "ComponentCostMapping" b ON a."CompId" = b."CompId"
-        INNER JOIN "ComponentMaster" c ON a."CompId" = c."CompId"
+        INNER JOIN "ComponentCostMapping" b ON a."CompId" = b."CompId" AND a."Fin_year" = b."Fin_Year"
+        INNER JOIN "ComponentMaster" c ON a."CompId" = c."CompId" AND a."Fin_year" = c."Fin_Year"
         LEFT JOIN "CropMaster" d ON a."CropId" = d."CropId"
         LEFT JOIN "CropVarietyMaster" e ON a."Variety_Code" = e."Variety_Code"
         LEFT JOIN "SubCropMaster" f ON a."SubCropId" = f."SubCropId"
         LEFT JOIN "itemPackageMaster" g ON a."bp_ItemId" = g."ItemId"
         WHERE "DemonstrationId" = '${req.query.DemonstrationId}'`
-        console.log(queryText);
         const result = await db.sequelize.query(queryText);
         res.send(result[0]);
     } catch (e) {
@@ -372,10 +371,10 @@ exports.getDemonstrationReport = async (req, res) => {
         FROM "DemonstrationPatchMaster" a
         INNER JOIN "SchemeMaster" aa ON a."schemeId" = aa."schemeId"
         INNER JOIN "SubSchemeMaster" bb ON a."SubschemeId" = bb."SubschemeId"
-        INNER JOIN "ComponentMaster" b ON a."CompId" = b."CompId" 
-        INNER JOIN "CropMaster" c ON a."CropId" = c."CropId"
-        INNER JOIN "SubCropMaster" d ON a."SubCropId" = d."SubCropId"
-        INNER JOIN "CropVarietyMaster" e ON a."Variety_Code" = e."Variety_Code"
+        INNER JOIN "ComponentMaster" b ON a."CompId" = b."CompId" AND a."Fin_Year" = b."Fin_Year"
+        LEFT JOIN "CropMaster" c ON a."CropId" = c."CropId"
+        LEFT JOIN "SubCropMaster" d ON a."SubCropId" = d."SubCropId"
+        LEFT JOIN "CropVarietyMaster" e ON a."Variety_Code" = e."Variety_Code"
         LEFT JOIN "SubCropMaster" dd ON a."BP_SubCropId" = dd."SubCropId"
         LEFT JOIN "CropVarietyMaster" ee ON a."BP_Variety_Code" = ee."Variety_Code"
         INNER JOIN "LGDistricts" f ON a."Dist_Code" = f."Dist_Code"
@@ -385,16 +384,20 @@ exports.getDemonstrationReport = async (req, res) => {
 
         const GpData = []
         const result = await db.sequelize.query(queryText);
-        var GPCode = result[0][0].Gp_Code.split(',')
 
-        GPCode.forEach(async(e,key) => {
-            const queryText1 = `SELECT "Gp_Code" , "Gp_Name" FROM "LGGP" WHERE "Gp_Code" = '${e}';`
-            const result1 = await db.sequelize.query(queryText1);
-            GpData.push(result1[0][0]);
-            if (key+1==GPCode.length) {
-                res.send({result:result[0],GpData:GpData});
-            }
-        });
+        if(result[0].length > 0) {
+            var GPCode = result[0][0].Gp_Code.split(',')
+            GPCode.forEach(async(e,key) => {
+                const queryText1 = `SELECT "Gp_Code" , "Gp_Name" FROM "LGGP" WHERE "Gp_Code" = '${e}';`
+                const result1 = await db.sequelize.query(queryText1);
+                GpData.push(result1[0][0]);
+                if (key+1==GPCode.length) {
+                    res.send({result:result[0],GpData:GpData});
+                }
+            });
+        } else {
+            res.send({result:result[0],GpData:GpData});
+        }      
         
     } catch (e) {
         res.status(500).send('Unexpected error')

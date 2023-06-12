@@ -33,10 +33,10 @@ router.get('/getAllApprovedDealerSale', cdaoController.getAllApprovedDealerSale)
 router.get('/getAllReturnedDealerSale', cdaoController.getAllReturnedDealerSale);
 
 router.get('/getCompTargetDetails', cdaoController.getCompTargetDetails);
-router.get('/getItemTechDetails', cdaoController.getItemTechDetails);
+// router.get('/getItemTechDetails', cdaoController.getItemTechDetails);
 router.get('/getAvailableTarget', cdaoController.getAvailableTarget);
 router.get('/getDemonstrationIdCount', cdaoController.getDemonstrationIdCount);
-router.get('/getItemNameAndTechnicalNameReport', cdaoController.getItemNameAndTechnicalNameReport);
+// router.get('/getItemNameAndTechnicalNameReport', cdaoController.getItemNameAndTechnicalNameReport);
 router.get('/getclusterDemonstration',cdaoController.getclusterDemonstration);
 router.get('/getDemonstrationStatusReport',cdaoController.getDemonstrationStatusReport);
 router.get('/getWardData',cdaoController.getWardData);

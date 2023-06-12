@@ -89,7 +89,7 @@
       <div style="padding: 20px">
         
         <button  type="button" class="btn btn-primary mat-elevation-z8"
-          style="float: right" (click)="UpdateDistrictTarget();">
+          style="float: right" (click)="UpdateDistrictTarget();clicked = true;" [disabled]="clicked">
          Update
         </button>
   

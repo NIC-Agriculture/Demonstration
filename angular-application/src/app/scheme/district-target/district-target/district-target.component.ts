@@ -43,7 +43,7 @@ export class DistrictTargetComponent implements OnInit {
   showSubmit: boolean = false;
   AllDistrictTargetDetails: any = {}
 
-  targetClose: boolean = true;
+  targetClose: boolean = false;
   pageTitle: string;
   pageDesc: string;
   breadcrumbList: Array<string>;
@@ -51,6 +51,7 @@ export class DistrictTargetComponent implements OnInit {
   totalTarget: number = 0;
   click: boolean = false;
   Season: any;
+  clicked: boolean = false;
   constructor(
     private schemeService: SchemeserviceService,
     private fb: FormBuilder,
@@ -305,6 +306,7 @@ export class DistrictTargetComponent implements OnInit {
 
   SubmitDistrictTarget = async() => {
     try {
+      this.clicked = false
       this.DistrictTargetForm.controls['subsidy'].enable();
       const DistrictTargetDetails = {
         "schemeId": this.DistrictTargetForm.value.scheme.schemeId,
@@ -313,7 +315,7 @@ export class DistrictTargetComponent implements OnInit {
         "Total_Cost": this.DistrictTargetForm.value.subsidy,
         "Fin_Year": this.DistrictTargetForm.value.FinYear,
       };
-
+      
       const data = {
         InputCompDetails: DistrictTargetDetails,
         ditrictTarget: this.AllDistrictData

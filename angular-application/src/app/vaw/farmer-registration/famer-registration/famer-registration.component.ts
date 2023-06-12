@@ -415,8 +415,10 @@ export class FamerRegistrationComponent implements OnInit {
       this.GpDetails = [];
       const DemostrationId = this.FarmerDetailsForm.value.demonstrationId.DemostrationId;
       this.demonstrationReport = await this.vawService.getDemonstrationReport(DemostrationId).toPromise()
-      this.Report = this.demonstrationReport.result[0];
+
+      this.Report = this.demonstrationReport.result.length == 0 ? this.demonstrationReport.result : this.demonstrationReport.result[0]
       this.GpDetails = this.demonstrationReport.GpData;
+      
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);

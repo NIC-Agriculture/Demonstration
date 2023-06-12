@@ -206,12 +206,12 @@ export class VerifyDealerSaleComponent implements OnInit {
 
   confirmDealerSale = async () => {
     try {
+      this.clicked = false
       const selectedDealerSale = this.allDealerResult.filter((e: any) => e.completed)
       this.confirmResult = await this.baoService.confirmDealerSale(selectedDealerSale).toPromise()
       this.toastr.success(this.confirmResult.message);
       this.allDealerResult = []
-      this.showConfirm = false
-      this.clicked = false
+      this.showConfirm = false     
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.')
       console.error(e);

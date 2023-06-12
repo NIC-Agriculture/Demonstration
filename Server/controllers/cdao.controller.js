@@ -188,9 +188,14 @@ exports.getComponentCost = async (req,res) => {
 
 exports.getCrops = async (req,res) => {
     try{
-        const queryText = `SELECT a."CropId" , b."CropName" FROM "ComponentCropMapping" a 
-        INNER JOIN "CropMaster" b on a."CropId" = b."CropId" WHERE "SubschemeId" = '${req.query.SubschemeId}' 
-        AND "CompId" = '${req.query.CompId}'  GROUP BY a."CropId", b."CropName";`
+        const queryText = `SELECT a."CropId" , b."CropName" , a."FixedCropId",c."CropName" AS "FixedCropName",a."AdditionalCropId" , d."CropName" AS "AdditionalCropName" 
+        FROM "ComponentCropMapping" a
+        INNER JOIN "CropMaster" b on a."CropId" = b."CropId" 
+		LEFT JOIN "CropMaster" c ON a."FixedCropId" = c."CropId"
+		LEFT JOIN "CropMaster" d ON a."AdditionalCropId" = d."CropId"
+        WHERE "SubschemeId" = '${req.query.SubschemeId}' 
+        AND "CompId" = '${req.query.CompId}' AND "Fin_Year" = '${req.query.Fin_Year}'
+        GROUP BY a."CropId", b."CropName", a."FixedCropId" , c."CropName" ,a."AdditionalCropId" , d."CropName";`
         // console.log(queryText);
         const result = await db.sequelize.query(queryText);
         res.send(result[0]);
@@ -204,33 +209,62 @@ exports.getSubCrop = async (req,res) => {
     try{
         const CompTypeId = req.query.CompTypeId
         if(CompTypeId === 'compType_1'){
-            const queryText = `SELECT a."CompId", a."CropId" , a."SubCropId" AS SubCropId ,  a."CompTypeId" , b."SubCropName"  
+            const queryText = `SELECT a."CompId", a."CropId" , a."SubCropId" AS "SubCropId" ,  a."CompTypeId" , b."SubCropName"  
             FROM "ComponentCropMapping" a 
             INNER JOIN "SubCropMaster" b 
             on a."SubCropId" = b."SubCropId"
-            WHERE a."CompTypeId" =  '${CompTypeId}' AND a."CompId" = '${req.query.CompId}';`
-            // console.log("queryText", queryText);     
+            WHERE a."CompTypeId" =  '${CompTypeId}' AND a."CompId" = '${req.query.CompId}' AND a."Fin_Year" = '${req.query.Fin_Year}';`
+
             const result = await db.sequelize.query(queryText);
-            // console.log(result[0]);
             res.send(result[0]);
+
          } else if(CompTypeId === 'compType_2'){
-            const queryText = `SELECT a."CompId", a."CropId" , a."FixedSubCropId" AS SubCropId ,
-            a."CompTypeId" , b."SubCropName" 
+            const queryText = `SELECT a."CompId", a."CropId" , a."SubCropId" AS "SubCropId", a."FixedSubCropId" ,
+            a."CompTypeId" , b."SubCropName"
             FROM "ComponentCropMapping" a
-            INNER JOIN "SubCropMaster" b ON a."FixedSubCropId" = b."SubCropId"
-            WHERE a."CompTypeId" =  '${CompTypeId}' AND a."CompId" = '${req.query.CompId}' GROUP BY 
-			a."CompId", a."CropId" , a."FixedSubCropId" , a."CompTypeId" , b."SubCropName" ;`
-            // console.log(queryText);
-            const result = await db.sequelize.query(queryText);
-            // console.log(result[0]);
-            res.send(result[0]);
+			INNER JOIN "SubCropMaster" b ON b."SubCropId" = a."SubCropId" 
+            WHERE a."CompTypeId" =  '${CompTypeId}' AND a."CompId" = '${req.query.CompId}' AND a."Fin_Year" = '${req.query.Fin_Year}'
+            GROUP BY a."CompId", a."CropId" , a."SubCropId" , a."FixedSubCropId" , a."CompTypeId" , b."SubCropName" ;`
+
+            const result = await db.sequelize.query(queryText); 
+
+            const SubCropData = []
+
+            if(result[0].length > 0){
+                let temp =result[0];
+                for (let i = 0; i < temp.length; i++) {
+                    if(temp[i].FixedSubCropId != null){
+                        var SubCropIDs = [temp[i].SubCropId]
+                        var fixedSubCropData = temp[i].FixedSubCropId.split(',')
+                        SubCropIDs = [ ...SubCropIDs, ...fixedSubCropData ];
+                    }
+
+                    if(temp.length == i+1){
+                        for (let j = 0; j < SubCropIDs.length; j++) {
+                             const queryText1 = `SELECT "CropId" , "SubCropId" , "SubCropName" FROM "SubCropMaster" WHERE "SubCropId" = '${SubCropIDs[j]}';`
+                             const result1 = await db.sequelize.query(queryText1);
+                             SubCropData.push(result1[0][0]);
+
+                             if(SubCropIDs.length == j+1){
+                                console.log(SubCropData,"SubCropData");
+                                res.send({result:result[0],SubCropData:SubCropData});
+                             }
+                            
+                        }
+                    }
+                    
+                }
+            } else {
+                res.send({ result: result[0],SubCropData:SubCropData})
+            } 
+
          } else {
-            const queryText = `SELECT a."CompId", a."CropId" , a."FixedSubCropId" AS SubCropId , a."AdditionalSubCropId",
+            const queryText = `SELECT a."CompId", a."CropId" , a."SubCropId" , a."AdditionalSubCropId",
             a."CompTypeId" , b."SubCropName" , c."SubCropName" AS additionalCrop
             FROM "ComponentCropMapping" a 
-            INNER JOIN "SubCropMaster" b ON a."FixedSubCropId" = b."SubCropId"
+            INNER JOIN "SubCropMaster" b ON a."SubCropId" = b."SubCropId"
             INNER JOIN "SubCropMaster" c ON a."AdditionalSubCropId" = c."SubCropId"
-            WHERE a."CompTypeId" = '${CompTypeId}' AND a."CompId" = '${req.query.CompId}';`
+            WHERE a."CompTypeId" = '${CompTypeId}' AND a."CompId" = '${req.query.CompId}' AND a."Fin_Year" = '${req.query.Fin_Year}';`
             const result = await db.sequelize.query(queryText);
             // console.log(result[0]);
             res.send(result[0]);
@@ -242,11 +276,67 @@ exports.getSubCrop = async (req,res) => {
     }
 }
 
+// exports.getSubCrop = async (req,res) => {
+//     try{
+//         const CompTypeId = req.query.CompTypeId
+//         if(CompTypeId === 'compType_1'){
+//             const queryText = `SELECT a."CompId", a."CropId" , a."SubCropId" AS "SubCropId" ,  a."CompTypeId" , b."SubCropName"  
+//             FROM "ComponentCropMapping" a 
+//             INNER JOIN "SubCropMaster" b 
+//             on a."SubCropId" = b."SubCropId"
+//             WHERE a."CompTypeId" =  '${CompTypeId}' AND a."CompId" = '${req.query.CompId}' AND a."Fin_Year" = '${req.query.Fin_Year}';`
+//             // console.log("queryText", queryText);     
+//             const result = await db.sequelize.query(queryText);
+//             // console.log(result[0]);
+//             res.send(result[0]);
+//          } else if(CompTypeId === 'compType_2'){
+//             // const queryText = `SELECT a."CompId", a."CropId" , a."SubCropId" AS "SubCropId", a."FixedSubCropId" AS "FixedSubCropId" ,
+//             // a."CompTypeId" , b."SubCropName" , c."SubCropName" AS "FixedSubCropName"
+//             // FROM "ComponentCropMapping" a
+// 			// INNER JOIN "SubCropMaster" b ON b."SubCropId" = a."SubCropId"
+//             // INNER JOIN "SubCropMaster" c ON c."SubCropId" = a."FixedSubCropId" 	
+//             // WHERE a."CompTypeId" =  '${CompTypeId}' AND a."CompId" = '${req.query.CompId}' AND a."Fin_Year" = '${req.query.Fin_Year}'
+//             // GROUP BY a."CompId", a."CropId" , a."SubCropId" , a."FixedSubCropId" , a."CompTypeId" , b."SubCropName" , c."SubCropName" ;`
+//             const queryText = `SELECT a."CompId", a."CropId" , a."SubCropId" AS "SubCropId", split_part(a."FixedSubCropId",',',1) AS "FixedSubCropId" , 
+//             split_part(a."FixedSubCropId",',',2) AS "FixedSubCropId2",split_part(a."FixedSubCropId",',',3) AS "FixedSubCropId3",
+// 		    split_part(a."FixedSubCropId",',',4) AS "FixedSubCropId4",
+//             a."CompTypeId" , b."SubCropName" , c."SubCropName" AS "FixedSubCropName", d."SubCropName" AS "FixedSubCropName2",
+// 			e."SubCropName" AS "FixedSubCropName3",f."SubCropName" AS "FixedSubCropName4"
+//             FROM "ComponentCropMapping" a
+//             INNER JOIN "SubCropMaster" b ON b."SubCropId" = a."SubCropId"
+// 			INNER JOIN "SubCropMaster" c ON c."SubCropId" = split_part(a."FixedSubCropId",',',1)
+// 			LEFT JOIN "SubCropMaster" d ON d."SubCropId" = split_part(a."FixedSubCropId",',',2)
+// 			LEFT JOIN "SubCropMaster" e ON e."SubCropId" = split_part(a."FixedSubCropId",',',3)
+// 			LEFT JOIN "SubCropMaster" f ON e."SubCropId" = split_part(a."FixedSubCropId",',',4)	
+//             WHERE a."CompTypeId" =  '${CompTypeId}' AND a."CompId" = '${req.query.CompId}' AND a."Fin_Year" = '${req.query.Fin_Year}';`
+//             console.log(queryText);
+//             const result = await db.sequelize.query(queryText);                       
+//             console.log(result[0]);
+//             res.send(result[0]);
+//          } else {
+//             const queryText = `SELECT a."CompId", a."CropId" , a."SubCropId" , a."AdditionalSubCropId",
+//             a."CompTypeId" , b."SubCropName" , c."SubCropName" AS additionalCrop
+//             FROM "ComponentCropMapping" a 
+//             INNER JOIN "SubCropMaster" b ON a."SubCropId" = b."SubCropId"
+//             INNER JOIN "SubCropMaster" c ON a."AdditionalSubCropId" = c."SubCropId"
+//             WHERE a."CompTypeId" = '${CompTypeId}' AND a."CompId" = '${req.query.CompId}' AND a."Fin_Year" = '${req.query.Fin_Year}';`
+//             const result = await db.sequelize.query(queryText);
+//             // console.log(result[0]);
+//             res.send(result[0]);
+//          }
+         
+//     }catch (e){
+//         res.status(500).send('Unexpected error')
+//         console.error(e);
+//     }
+// }
+
 exports.getCropVariety = async (req,res) => {
     try{
         const queryText = `SELECT * FROM "CropVarietyMaster" WHERE "SubCropId" = '${req.query.SubCropId}';`
-        // console.log("hello",queryText);
+        // console.log(queryText);
         const result = await db.sequelize.query(queryText);
+        // console.log(result[0]);
         res.send(result[0]);
     }catch (e){
         res.status(500).send('Unexpected error')
@@ -256,7 +346,8 @@ exports.getCropVariety = async (req,res) => {
 
 exports.getItems = async (req,res) => {
     try{
-        const queryText = `SELECT "ItemId","ItemName","Technical_Status" FROM "ItemMaster" WHERE "CompId" = '${req.query.CompId}' AND "Technical_Status" = 1 `
+        const queryText = `SELECT "ItemId","ItemName","Technical_Status" FROM "ItemMaster" WHERE "CompId" = '${req.query.CompId}' AND 
+        AND "Fin_Year" = '${req.query.Fin_Year}' AND "Technical_Status" = 1 `
         const result = await db.sequelize.query(queryText);
         res.send(result[0]);
     }catch(e){
@@ -267,7 +358,8 @@ exports.getItems = async (req,res) => {
 
 exports.getbpItems = async (req,res) => {
     try{
-        const queryText = `SELECT "ItemId","ItemName","Technical_Status" FROM "ItemMaster" WHERE "CompId" = '${req.query.CompId}' AND "Technical_Status" = 2 `
+        const queryText = `SELECT "ItemId","ItemName","Technical_Status" FROM "ItemMaster" WHERE "CompId" = '${req.query.CompId}'
+        AND "Fin_Year" = '${req.query.Fin_Year}' AND "Technical_Status" = 2`
         // console.log(queryText);
         const result = await db.sequelize.query(queryText);
         // console.log(result);
@@ -293,7 +385,7 @@ exports.getTechnicalName = async (req,res) => {
 
 exports.getItemPackageDetails = async (req,res) => {
     try{
-        const queryText = `SELECT "itemPackageSize","IndicativeCost" FROM "ItemMaster" WHERE "ItemId" = '${req.query.ItemId}';`
+        const queryText = `SELECT "itemPackageSize","IndicativeCost" FROM "ItemMaster" WHERE "ItemId" = '${req.query.ItemId}' AND "Fin_Year" = '${req.query.Fin_Year}';`
         const result = await db.sequelize.query(queryText);
         res.send(result[0]);
     }catch(e){
@@ -370,7 +462,7 @@ exports.SubmitBlockTarget = async (req, res , next) => {
     try {
         const data = req.body
         const distCode = `${req.payload.Dist_Code}`
-        const compDetails = data.compDetails        
+        const compDetails = data.compDetails      
         // TODO: add limit: 1 in fetch condition
         const existingResult = await db.blockTarget.findAll({ where: { Dist_Code: distCode, CompId: compDetails.CompId , Fin_Year: compDetails.Fin_Year}, raw: true })
         // TODO: Redirect to udpdate function instead of sending error message to client
@@ -405,15 +497,6 @@ exports.SubmitBlockTarget = async (req, res , next) => {
         if(targetCount.AvlPhyGen > distTarget.AvlPhyGen || targetCount.AvlPhySCP > distTarget.AvlPhySCP || targetCount.AvlPhyTASP > distTarget.AvlPhyTASP)
             return res.send({ message: "Invalid Target.Target exceeds the available target" })
 
-        // const maxQuery = `SELECT max(cast(substr("itemTechRefNo", 16, length("itemTechRefNo")) as int )) from "BlockTarget"
-        // where "Fin_Year"='${compDetails.FinYear}' and "CompId"= '${compDetails.CompId}' and "Dist_Code"= '${distCode}'`
-
-        // const max = await db.sequelize.query(maxQuery);
-        // const itemTechRefNo = max[0][0].max == null ? `${distCode}/${compDetails.CompId}/TN/${compDetails.Fin_Year}/1` : `${distCode}/${compDetails.CompId}/TN/${compDetails.Fin_Year}/${(parseInt(max[0][0].max) + 1)}`;
-
-        // data.itemTechnicalDetails.forEach(x => x.itemTechRefNo = itemTechRefNo)
-        // AllBlockTarget.forEach(x => x.itemTechRefNo = itemTechRefNo )
-
         const updateDistrictData = {
             AvlPhyGen : +distTarget.AvlPhyGen - targetCount.AvlPhyGen,
             AvlPhySCP : +distTarget.AvlPhySCP - targetCount.AvlPhySCP,
@@ -424,8 +507,7 @@ exports.SubmitBlockTarget = async (req, res , next) => {
         }
 
         const BlockTargetResult = await db.blockTarget.bulkCreate(AllBlockTarget, { transaction: t });
-        // const BlockTargetResult2 = await db.BlockTargetItemTechnicalMapping.bulkCreate(data.itemTechnicalDetails, { transaction: t })
-        const  UpdateDistrict = await db.districtTarget.update(updateDistrictData,{ where: {  Dist_Code: distCode , CompId: compDetails.CompId , Fin_Year: compDetails.Fin_Year} , transaction: t})
+        const  UpdateDistrict = await db.districtTarget.update(updateDistrictData,{ where: {  Dist_Code: distCode , CompId: compDetails.CompId , Fin_Year: compDetails.Fin_Year } , transaction: t})
         res.send({message:"Target Added Successfully."})
 
         logController.addAuditLog( req.payload.user_id, req.protocol + '://' + req.get('host') + req.originalUrl , "Success", req.originalUrl.split("?").shift(),'Submit', req.method , req.socket.remoteAddress , parser.setUA(req.headers['user-agent']).getOS().name , parser.setUA(req.headers['user-agent']).getOS().version , parser.setUA(req.headers['user-agent']).getBrowser().name, parser.setUA(req.headers['user-agent']).getBrowser().version , req.device.type.toUpperCase())
@@ -445,10 +527,8 @@ exports.UpdateBlockTarget = async (req, res , next) => {
     const t = await sequelize.transaction();
     try {
         const data = req.body
-        // const distCode = `${req.payload.Dist_Code}`
         const distCode = req.payload.Dist_Code
         const { compId, schemeId, totalCost, finYear } = data
-        // console.log(finYear , data);
         
         const distTarget = await db.districtTarget.findOne({
             where: { Dist_Code: distCode, CompId: compId , Fin_Year: finYear} ,
@@ -499,7 +579,7 @@ exports.UpdateBlockTarget = async (req, res , next) => {
             
             if(updateDistData.AvlPhyGen < +e.modifiedPhyGen || updateDistData.AvlPhySCP < +e.modifiedPhySCP || updateDistData.AvlPhyTASP < +e.modifiedPhyTASP)
             return res.send({ message: "Invalid Target.Target exceeds the available target" })
-            // console.log("e" , e);
+            
             const udpateData =  db.blockTarget.update(e, { where: {  Block_Code: e.Block_Code , CompId: e.CompId , Fin_Year: e.Fin_Year } , transaction: t})
             promiseArray.push(udpateData)
 
@@ -896,9 +976,9 @@ exports.getIncetiveList = async (req , res , next) => {
     FROM "Farmer_Permit" a 
     INNER JOIN "FarmerLandDetails" b ON b."DemostrationId" = a."DemonstrationId"
     INNER JOIN "DemonstrationPatchMaster" c ON c."DemostrationId" = a."DemonstrationId"
-    INNER JOIN "ItemMaster" d ON d."CompId" = a."CompId"
-    INNER JOIN "itemPackageMaster" e ON e."ItemId" = d."ItemId"
-    INNER JOIN "ComponentMaster" f ON f."CompId" = a."CompId"
+    INNER JOIN "ItemMaster" d ON d."CompId" = a."CompId" AND d."Fin_Year" = a."Fin_year"
+    INNER JOIN "itemPackageMaster" e ON e."ItemId" = d."ItemId" AND d."Fin_Year" = a."Fin_year"
+    INNER JOIN "ComponentMaster" f ON f."CompId" = a."CompId" AND f."Fin_Year" = a."Fin_year"
     WHERE c."Block_Code"='${req.query.Block_Code}' 
     AND ('0'='${schemeId}' or  c."schemeId" = '${schemeId}')
     AND b."statusPhase1" = 'Completed' 
@@ -1134,21 +1214,21 @@ exports.getCompTargetDetails  = async (req,res) => {
     }
 }
 
-exports.getItemTechDetails  = async (req,res) => {
-    try {
-        const queryText = `SELECT b."ItemName" , a."Technical_Name"
-        FROM "BlockTarget_ItemTechnical" a 
-        INNER JOIN "ItemMaster" b ON a."ItemId" = b."ItemId"
-        WHERE  a."CompId" = '${req.query.CompId}' AND a."itemTechRefNo" = '${req.query.itemTechRefNo}'`
+// exports.getItemTechDetails  = async (req,res) => {
+//     try {
+//         const queryText = `SELECT b."ItemName" , a."Technical_Name"
+//         FROM "BlockTarget_ItemTechnical" a 
+//         INNER JOIN "ItemMaster" b ON a."ItemId" = b."ItemId"
+//         WHERE  a."CompId" = '${req.query.CompId}' AND a."itemTechRefNo" = '${req.query.itemTechRefNo}'`
         
-        const result = await db.sequelize.query(queryText);
-        res.send(result[0]);  
+//         const result = await db.sequelize.query(queryText);
+//         res.send(result[0]);  
         
-    } catch (e) {
-        res.status(500).send('Unexpected error');
-        console.error(e);
-    }
-}
+//     } catch (e) {
+//         res.status(500).send('Unexpected error');
+//         console.error(e);
+//     }
+// }
 
 exports.getAvailableTarget = async (req,res) => {
     try{
@@ -1184,20 +1264,20 @@ exports.getDemonstrationIdCount = async (req,res) => {
     }
 }
 
-exports.getItemNameAndTechnicalNameReport = async (req,res) => {
-    try {
-        const queryText = `Select a."itemTechRefNo",b."ItemId",c."ItemName",b."Technical_Code",b."Technical_Name" from "BlockTarget" a
-        INNER JOIN "BlockTarget_ItemTechnical" b ON a."itemTechRefNo" = b."itemTechRefNo"
-        INNER JOIN "ItemMaster" c ON b."ItemId" = c."ItemId"
-        WHERE a."CompId"='${req.query.CompId}' AND a."Fin_Year"='${req.query.Fin_Year}' AND a."SubschemeId"='${req.query.SubschemeId}' AND a."Dist_Code"='${req.payload.Dist_Code}'
-        group by a."itemTechRefNo",b."ItemId",c."ItemName",b."Technical_Code",b."Technical_Name";`
-        const result = await db.sequelize.query(queryText);
-        res.send(result[0]);
-    } catch (e) {
-        res.status(500).send('Unexpected error');
-        console.error(e); 
-    }
-}
+// exports.getItemNameAndTechnicalNameReport = async (req,res) => {
+//     try {
+//         const queryText = `Select a."itemTechRefNo",b."ItemId",c."ItemName",b."Technical_Code",b."Technical_Name" from "BlockTarget" a
+//         INNER JOIN "BlockTarget_ItemTechnical" b ON a."itemTechRefNo" = b."itemTechRefNo"
+//         INNER JOIN "ItemMaster" c ON b."ItemId" = c."ItemId" 
+//         WHERE a."CompId"='${req.query.CompId}' AND a."Fin_Year"='${req.query.Fin_Year}' AND a."SubschemeId"='${req.query.SubschemeId}' AND a."Dist_Code"='${req.payload.Dist_Code}'
+//         group by a."itemTechRefNo",b."ItemId",c."ItemName",b."Technical_Code",b."Technical_Name";`
+//         const result = await db.sequelize.query(queryText);
+//         res.send(result[0]);
+//     } catch (e) {
+//         res.status(500).send('Unexpected error');
+//         console.error(e); 
+//     }
+// }
 
 exports.getDemonstrationStatusReport = async (req, res, next) => {
     try{
@@ -1215,41 +1295,6 @@ exports.getDemonstrationStatusReport = async (req, res, next) => {
         console.error(e);
     }
 }
-
-// exports.getclusterDemonstration = async (req,res) => {
-//     try{
-//         const queryText = `SELECT a."DemostrationId",a."Gp_Code",a."vaw_userId", SUM(CASE WHEN c."Farmer_Category"  = 'General' THEN 1 ELSE 0 END) as "GenFarmer",
-//            SUM(CASE WHEN c."Farmer_Category"  = 'SC' THEN 1 ELSE 0 END) as "SCFarmer", SUM(CASE WHEN c."Farmer_Category"  = 'ST' THEN 1 ELSE 0 END) as "STFarmer",
-//            d."schemeName", b."CompName",a."PhyGen", a."PhySCP", a."PhyTasp", a."AvlPhyGen", a."AvlPhySCP", a."AvlPhyTASP" 
-//            FROM "DemonstrationPatchMaster" a
-//            INNER JOIN "ComponentMaster" b ON a."CompId" = b."CompId"
-//            INNER JOIN "SchemeMaster" d ON d."schemeId" = a."schemeId"
-//            LEFT JOIN "Farmer_Permit" c ON a."DemostrationId" = c."DemonstrationId"
-//            WHERE a."Block_Code" = '${req.query.Block_Code}' AND a."Fin_Year"='${req.query.Fin_Year}' group by a."DemostrationId",a."Gp_Code",a."vaw_userId",
-//            b."CompName",a."PhyGen", a."PhySCP", a."PhyTasp",a."AvlPhyGen", a."AvlPhySCP", a."AvlPhyTASP" , d."schemeName";`
-//         const result = await db.sequelize.query(queryText);
-//         const GpData = []
-//         result[0].forEach(async(e, key) => {
-//             var GPCode = e.Gp_Code.split(',')
-//             GPCode.forEach(async(y, key1) => {
-//                 const queryText1 = `SELECT "Gp_Code" , "Gp_Name" FROM "LGGP" WHERE "Gp_Code" = '${y}';`
-//                 const result1 = await db.sequelize.query(queryText1);
-//                 result1[0][0].DemostrationId = e.DemostrationId;
-//                 GpData.push(result1[0][0]);
-//                 if(key+1==result[0].length){
-//                     if (key1+1==GPCode.length) {
-//                         res.send({result:result[0],GpData:GpData});
-//                     }
-//                 }
-                
-//             });
-//         })
-//     } catch (e){
-//         res.status(500).send('Unexpected error');
-//         console.error(e);
-//     }
-// }
-
 
 exports.getclusterDemonstration = async (req,res) => {
     try{

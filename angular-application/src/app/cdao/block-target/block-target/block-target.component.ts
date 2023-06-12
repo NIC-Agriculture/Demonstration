@@ -231,18 +231,24 @@ export class BlockTargetComponent implements OnInit {
           const CompId = this.BlockTargetForm.value.component.CompId;
           const CompTypeId = this.BlockTargetForm.value.component.CompTypeId
           const Fin_Year = this.BlockTargetForm.value.FinYear
-          this.SubCropData = await this.cdaoService.getSubCrop(CompId,CompTypeId,Fin_Year).toPromise()
+          const result = await this.cdaoService.getSubCrop(CompId,CompTypeId,Fin_Year).toPromise()
+          if (result.SubCropData) {
+             this.SubCropData = result.SubCropData  
+          } else {
+            this.SubCropData = result
+          }
+          
           this.CropVariety = []
-          this.SubCropData.forEach((e:any) => { this.getCropVariety(e.SubCropId , e.FixedSubCropId , e.AdditionalSubCropId ) });
+          this.SubCropData.forEach((e:any) => { this.getCropVariety(e.SubCropId) });
     } catch (e) {
           this.toastr.error('Sorry. Server problem. Please try again.');
           console.error(e);
     }
   }
 
-  getCropVariety = async(SubCropId: any , FixedSubCropId: any , AdditionalSubCropId: any) => {
+  getCropVariety = async(SubCropId: any ) => {
     try {
-        const result = await this.cdaoService.getCropVarietyFortarget(SubCropId, FixedSubCropId , AdditionalSubCropId).toPromise()
+        const result = await this.cdaoService.getCropVarietyFortarget(SubCropId).toPromise()
         this.CropVariety = [...this.CropVariety,...result];
           
     } catch (e) {
@@ -581,10 +587,12 @@ export class BlockTargetComponent implements OnInit {
   }
 
   SubmitBlockTarget = async () => {
-    try {
+    try {  
+      this.clicked = false
       const SubCropIds = this.SubCropData.map((e:any)=>{
           return e.SubCropId 
       })
+      
       const Variety_Codes = this.BlockTargetForm.value.cropVariety.map((e:any)=>{
             return e.Variety_Code
       })
@@ -607,7 +615,6 @@ export class BlockTargetComponent implements OnInit {
             // itemTechnicalDetails,
             blockTarget: this.BlockData
       }
-      
       this.BlockTargetResult = await this.cdaoService.SubmitBlockTarget(data).toPromise();
       if(this.BlockTargetResult.message == "Target Added Successfully.") {
         this.resetBlockDataArray()
@@ -615,7 +622,6 @@ export class BlockTargetComponent implements OnInit {
         this.showAddtable = false
         this.showSubmit = false
         this.showTarget = false
-        this.clicked = false
         this.toastr.success(this.BlockTargetResult.message);
         this.router.navigate(['cdao/dashboard'])
       }else{
@@ -762,6 +768,7 @@ export class BlockTargetComponent implements OnInit {
 
   UpdateBlockTarget = async () => { 
     try {
+      this.clicked = false
       const data = { 
         schemeId: this.BlockTargetData[0].schemeId,
         compId: this.BlockTargetData[0].CompId,
@@ -774,8 +781,7 @@ export class BlockTargetComponent implements OnInit {
       this.toastr.success(this.BlockTargetResult.message);
       this.setModifyButton = false
       this.showUpdate = false
-      this.showTarget = false
-      this.clicked = false
+      this.showTarget = false      
       this.router.navigate(['cdao/dashboard'])
      
    } catch (e) {

@@ -62,7 +62,7 @@ exports.getDistrictPrefix = async (req, res) => {
 exports.getPermitList = async(req,res) => {
     try {
         const FarmerId = await db.farmerPermit.findAll({
-            where: { FarmerId : req.query.FarmerId},
+            where: { FarmerId : req.query.FarmerId , Fin_year : req.query.Fin_Year},
             raw: true
         })
         res.send(FarmerId)
@@ -75,7 +75,8 @@ exports.getPermitList = async(req,res) => {
 
 exports.getItems = async (req,res) => {
     try{
-        const queryText = `SELECT "ItemId","ItemName","Technical_Status" FROM "ItemMaster" WHERE "CompId" = '${req.query.CompId}' AND "Technical_Status" in (1,11)`
+        const queryText = `SELECT "ItemId","ItemName","Technical_Status" FROM "ItemMaster" WHERE "CompId" = '${req.query.CompId}' AND
+        "Fin_Year" = '2022-23' AND "Technical_Status" in (1,11)`
         const result = await db.sequelize.query(queryText);
         res.send(result[0]);
     }catch(e){
@@ -151,7 +152,7 @@ exports.getPurchasedTechnicalName = async(req,res) => {
     try {
         const purchasedItem = await db.dealerSale.findAll({
             attributes : ['CompId', 'ItemId' , 'Technical_Code' ,'Technical_Name' , 'eligibleSubsidy'],
-            where: { FarmerId : req.query.FarmerId , CompId : req.query.CompId , ItemId : req.query.ItemId },
+            where: { FarmerId : req.query.FarmerId , CompId : req.query.CompId , ItemId : req.query.ItemId , Fin_year : '2022-23' },
             raw: true
         })
         res.send(purchasedItem)
@@ -165,7 +166,7 @@ exports.getItemPrice = async(req,res) => {
     try {
         const result = await db.itemPriceDetails.findAll({
             // attributes : ['CompId', 'ItemId' , 'Technical_Code' ,'Technical_Name','Fin_Year'],
-            where: { ItemId : req.query.ItemId},
+            where: { ItemId : req.query.ItemId , Fin_Year : '2022-23'},
             raw: true
         })
         res.send(result)
@@ -222,7 +223,7 @@ exports.submitDealerSale = async(req,res) => {
         })
 
         const result = await db.dealerSale.bulkCreate(data.DealerSaleForm , { transaction: t });
-        const updateFarmerPermit =  await db.farmerPermit.update({"saleStatus": 'sold' },{ where: {"FarmerId": FarmerId } , transaction: t })
+        const updateFarmerPermit =  await db.farmerPermit.update({"saleStatus": 'sold' },{ where: {"FarmerId": FarmerId ,"Fin_year" : Fin_year } , transaction: t })
         res.send({"dealerResult" : result})
         logController.addAuditLog( req.payload.user_id, req.protocol + '://' + req.get('host') + req.originalUrl , "Success", req.originalUrl.split("?").shift(),'Submit', req.method , req.socket.remoteAddress , parser.setUA(req.headers['user-agent']).getOS().name , parser.setUA(req.headers['user-agent']).getOS().version , parser.setUA(req.headers['user-agent']).getBrowser().name, parser.setUA(req.headers['user-agent']).getBrowser().version , req.device.type.toUpperCase())
 
@@ -259,7 +260,7 @@ exports.getInputDetails = async(req,res) => {
         const queryText = `SELECT a."InvoiceNo", a."Permit_NO" , a."DemonstrationId" ,a."FarmerId" ,a."LandArea",b."ItemName", a."Technical_Name",
                            a."totalPrice", a."eligibleSubsidy", a."verifyStatus",a."ItemId",a."Technical_Code"
                            FROM "DealerSale" a
-                           INNER JOIN "ItemMaster" b on a."ItemId" = b."ItemId" AND a."CompId" = b."CompId"
+                           INNER JOIN "ItemMaster" b on a."ItemId" = b."ItemId" AND a."CompId" = b."CompId" AND b."Fin_Year" = a."Fin_year"
                            WHERE a."FarmerId" = '${req.query.FarmerId}' AND (a."InvoiceNo" = '${InvoiceNo}' or '${InvoiceNo}'='0')`
         const result = await db.sequelize.query(queryText); 
         res.send(result[0])

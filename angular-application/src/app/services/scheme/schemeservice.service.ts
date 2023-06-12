@@ -125,8 +125,8 @@ export class SchemeserviceService {
   getCalculatedIncentiveCost(): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getCalculatedIncentiveCost`)
   }
-  getItemDetails(CompId:any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getItemDetails?CompId=${CompId}`)
+  getItemDetails(CompId:any , FinYear: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getItemDetails?CompId=${CompId}&FinYear=${FinYear}`)
   }
 
   UpdateComponentCostCropMapping(data: {}): Observable<any> {

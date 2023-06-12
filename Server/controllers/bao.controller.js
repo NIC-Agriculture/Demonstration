@@ -253,6 +253,7 @@ exports.getAllFarmerList = async (req, res, next) => {
 exports.SubmitDemonstrationPatch = async (req, res, next) => {
     const t = await sequelize.transaction();
     try {
+        
         const data = req.body.gpTarget
 
         const gpCode = req.body.gpList.map(e => {
@@ -285,7 +286,7 @@ exports.SubmitDemonstrationPatch = async (req, res, next) => {
         if ((+data.PhyGen + +data.PhySCP + +data.PhyTASP) > 100 && (+data.PhyGen + +data.PhySCP + +data.PhyTASP) < 100)
             return res.send({ message: "Invalid Target.Target should neither exceed 100 ha. nor below 100 ha." })
 
-        const blockTarget = await db.blockTarget.findOne({ where: { Dist_Code: `${req.payload.Dist_Code}`, Block_Code: req.payload.Block_Code, CompId: data.CompId }, raw: true })
+        const blockTarget = await db.blockTarget.findOne({ where: { Dist_Code: `${req.payload.Dist_Code}`, Block_Code: req.payload.Block_Code, CompId: data.CompId , Fin_Year: data.Fin_Year }, raw: true })
 
         if (+data.AvlPhyGen > +blockTarget.AvlPhyGen || +data.AvlPhySCP > +blockTarget.AvlPhySCP || +data.AvlPhyTASP > +blockTarget.AvlPhyTASP)
             return res.send({ message: "Invalid Target.Target exceeds the available target" })
@@ -300,7 +301,7 @@ exports.SubmitDemonstrationPatch = async (req, res, next) => {
         }
 
         const result = await db.DemonstrationPatch.create(data, { transaction: t })
-        const updateBlockTarget = await db.blockTarget.update(updateBlockData, { where: { Dist_Code: req.payload.Dist_Code, Block_Code: req.payload.Block_Code, CompId: data.CompId }, transaction: t })
+        const updateBlockTarget = await db.blockTarget.update(updateBlockData, { where: { Dist_Code: req.payload.Dist_Code, Block_Code: req.payload.Block_Code, CompId: data.CompId , Fin_Year: data.Fin_Year }, transaction: t })
         // console.log(result);
         res.send({ message: `Demonstration Patch created Successfully. Demonstration ID is '${result.DemostrationId} '` })
         logController.addAuditLog(req.payload.user_id, req.protocol + '://' + req.get('host') + req.originalUrl, "Success", req.originalUrl.split("?").shift(), 'Submit', req.method, req.socket.remoteAddress, parser.setUA(req.headers['user-agent']).getOS().name, parser.setUA(req.headers['user-agent']).getOS().version, parser.setUA(req.headers['user-agent']).getBrowser().name, parser.setUA(req.headers['user-agent']).getBrowser().version, req.device.type.toUpperCase())
@@ -843,7 +844,7 @@ exports.getAllDemonstrationData = async (req, res) => {
         INNER JOIN "SchemeMaster" ddd ON ddd."schemeId" = d."schemeId"
         LEFT JOIN "SubCropMaster" bb ON a."BP_SubCropId" = bb."SubCropId"
         LEFT JOIN "CropVarietyMaster" cc ON a."BP_Variety_Code" = cc."Variety_Code"
-        WHERE a."Block_Code"='${req.payload.Block_Code}'`
+        WHERE a."Block_Code"='${req.payload.Block_Code}' AND a.Fin_Year = '${req.query.Fin_Year}'`
         const result = await db.sequelize.query(queryText);
         // console.log(result[0]);
         res.send(result[0]);

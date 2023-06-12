@@ -10,10 +10,10 @@ const routes: Routes = [
     path: 'view-item',
     loadChildren: () => import('./view-item/view-item.module').then(module => module.ViewItemModule)
   },
-  {
-    path: 'modify-item',
-    loadChildren: () => import('./modify-item/modify-item.module').then(module => module.ModifyItemModule)
-  }
+  // {
+  //   path: 'modify-item',
+  //   loadChildren: () => import('./modify-item/modify-item.module').then(module => module.ModifyItemModule)
+  // }
 ];
 
 @NgModule({
