@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { BaoServiceService } from 'src/app/services/bao/bao-service.service';
 import { LayoutserviceService } from 'src/app/services/layoutservice.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-seed-required',
@@ -32,7 +33,10 @@ export class SeedRequiredComponent implements OnInit {
   totalBPSeedInQuintal: any;
   scheme: any;
   subscheme: any;
-
+  FinYears: any;
+  Season: any;
+  FinYear: any;
+  fileName= 'DemonstrationWiseSeedRequired.xlsx';
   constructor(
     private baoService:BaoServiceService,
     private toastr: ToastrService,
@@ -49,12 +53,35 @@ export class SeedRequiredComponent implements OnInit {
       this.layoutService.setPageHeadingDesc(this.pageDesc);
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
-      this.getAllDemonstrationData();
+      this.getFinYear()
+  }
+
+  getFinYear = async() => {
+    try{
+      const result = await this.layoutService.getFinYear().toPromise()
+      this.FinYears = result.Years;
+      this.Season = result.Season;
+    } catch (e){
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
   }
 
   getAllDemonstrationData = async() => {
     try {
-      this.demonstrationData = await this.baoService.getAllDemonstrationData().toPromise()
+      this.demonstrationId = []
+      this.scheme = '';
+      this.subscheme = '';
+      this.compName = '';
+      this.crop = '';
+      this.cropVariety = '';
+      this.bpCrop = '';
+      this.bpCropVariety = '';
+      this.totalLand = '';
+      this.totalSeedInQuintal = '';
+      this.totalBPSeedInQuintal = '';
+      this.farmerListTable = false
+      this.demonstrationData = await this.baoService.getAllDemonstrationData(this.FinYear).toPromise()
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
@@ -126,5 +153,20 @@ export class SeedRequiredComponent implements OnInit {
       this.totalSeed = +this.totalLand *  +this.totalSeedCount[0].Seed_Per_ha;
       this.totalSeedInQuintal = +this.totalSeed * 0.01
   }
+
+  exportexcel(): void 
+  {
+     /* table id is passed over here */   
+     let element = document.getElementById('excel-table'); 
+     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+
+     /* generate workbook and add the worksheet */
+     const wb: XLSX.WorkBook = XLSX.utils.book_new();
+     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+     /* save to file */
+     XLSX.writeFile(wb, this.fileName);
+    
+}
 
 }

@@ -73,7 +73,8 @@ export class DealerSellComponent implements OnInit {
   getItems = async() => {
     try {     
         const CompId = this.permitList.CompId
-        this.ItemData  =  await this.dealerService.getItems(CompId).toPromise()
+        const FinYear =  this.permitList.Fin_year
+        this.ItemData  =  await this.dealerService.getItems(CompId,FinYear).toPromise()
         // this.checkIsOrderPurchased()
     } catch (e) {
         this.toastr.error('Sorry. Server problem. Please try again.');
@@ -87,8 +88,9 @@ export class DealerSellComponent implements OnInit {
           const FarmerId = this.permitList.FarmerId
           const CompId = this.permitList.CompId
           const ItemId = this.DealerSaleForm.value.item.ItemId
+          const FinYear =  this.permitList.Fin_year
           
-          this.purchasedList = await this.dealerService.getPurchasedTechnicalName(FarmerId , CompId , ItemId).toPromise()
+          this.purchasedList = await this.dealerService.getPurchasedTechnicalName(FarmerId , CompId , ItemId, FinYear).toPromise()
           const prevPurchasedAmount = this.purchasedList.reduce((acc: any, cur: any) => acc + +cur.eligibleSubsidy, 0)
                    
 
@@ -128,10 +130,11 @@ export class DealerSellComponent implements OnInit {
   getItemPrice = async() => {
     try {
           const ItemId = this.DealerSaleForm.value.item.ItemId
+          const FinYear =  this.permitList.Fin_year
 
           const getPurchaseListResult = this.getPurchasedItemList()
 
-          const result = await this.dealerService.getItemPrice(ItemId).toPromise();
+          const result = await this.dealerService.getItemPrice(ItemId,FinYear).toPromise();
           const compIdArray = ['comp_55','comp_53','comp_54','comp_57','comp_56','comp_59','comp_33']
         
           const itemCost = compIdArray.includes(this.permitList.CompId) && this.permitList.Dist_Code == '352' ? result[0].newIndicativeCost : 
