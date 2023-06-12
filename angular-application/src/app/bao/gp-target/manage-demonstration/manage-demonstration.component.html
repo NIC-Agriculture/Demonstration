@@ -142,7 +142,7 @@
   mat-elevation-z8"  *ngIf="confirmButton" style="float: right; margin-right: 10px;" (click)="confirmDemonstrationPatch();" >
      Confirm
   </button>
-  <div class="card-block" *ngIf="!confirmButton">
+  <div class="card-block" *ngIf="!confirmButton || !message">
     <button type="button" class="btn btn-primary
     mat-elevation-z8" style="float: right;" [useExistingCss]="true" 
     styleSheetFile="assets/css/custom1.css,assets/css/custom2.css"  printSectionId="print-section"  ngxPrint ><i class="ion-printer"></i>print</button>
