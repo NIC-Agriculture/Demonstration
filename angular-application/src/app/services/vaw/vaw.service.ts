@@ -25,8 +25,8 @@ export class VawService {
   getDistrictPrefix(Dist_Code: any): Observable<any> {
     return this.http.get(`${this.serverUrl}/${this.route}/getDistrictPrefix?Dist_Code=${Dist_Code}`)
   }
-  checkFarmerIDExistance(farmerId:string ,newSchemeId : string,newSubschemeId: string ): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/checkFarmerRegistredOrNot?FarmerID=${farmerId}&schemeId=${newSchemeId}&SubschemeId=${newSubschemeId}`)
+  checkFarmerIDExistance(farmerId:string , newSchemeId : string , newSubschemeId: string , FinYear: any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/checkFarmerRegistredOrNot?FarmerID=${farmerId}&schemeId=${newSchemeId}&SubschemeId=${newSubschemeId}&Fin_Year=${FinYear}`)
   }
   getFarmerData(farmerId:string ): Observable<any> {
     return this.http.get(`https://mkuy.apicol.nic.in/api/FMN/GETPUMPTAKEN?FARMER_ID=${farmerId}`, { headers: { skip: 'true' } })

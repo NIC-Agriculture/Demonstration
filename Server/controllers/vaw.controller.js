@@ -64,18 +64,18 @@ exports.getDistrictPrefix = async (req, res) => {
 
 exports.checkFarmerRegistredOrNot = async (req, res) => {
     try {
+        var currentYear = new Date().getFullYear().toString()
         if(req.query.schemeId == 'scheme_3'){
-            const queryText = `SELECT exists (SELECT 1 FROM "Farmer_Permit" WHERE "FarmerId" = '${req.query.FarmerID}' AND "SubschemeId"='${req.query.SubschemeId}'  LIMIT 1);`
+            const queryText = `SELECT exists (SELECT 1 FROM "Farmer_Permit" WHERE "FarmerId" = '${req.query.FarmerID}' AND "SubschemeId"='${req.query.SubschemeId}' 
+            AND "Fin_year"='${req.query.Fin_Year}' LIMIT 1);`
             const result = await db.sequelize.query(queryText);
-            // console.log(result)
             res.send(result[0][0]);
         } else {
-            const queryText = `SELECT exists (SELECT 1 FROM "Farmer_Permit" WHERE "FarmerId" = '${req.query.FarmerID}' AND "schemeId"='${req.query.schemeId}'  LIMIT 1);`
+            const queryText = `SELECT exists (SELECT 1 FROM "Farmer_Permit" WHERE "FarmerId" = '${req.query.FarmerID}' AND "schemeId"='${req.query.schemeId}' 
+            AND cast(left("Farmer_Permit"."Fin_year",4) as int)+3 > ${currentYear}  LIMIT 1);`
             const result = await db.sequelize.query(queryText);
-            // console.log(result)
             res.send(result[0][0]);
-        }
-        
+        }        
     } catch (e) {
         res.status(500).send('Unexpected error');
         console.error(e);

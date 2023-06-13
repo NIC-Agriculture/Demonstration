@@ -358,8 +358,9 @@ exports.getItems = async (req,res) => {
 
 exports.getbpItems = async (req,res) => {
     try{
-        const queryText = `SELECT "ItemId","ItemName","Technical_Status" FROM "ItemMaster" WHERE "CompId" = '${req.query.CompId}'
-        AND "Fin_Year" = '${req.query.Fin_Year}' AND "Technical_Status" = 2`
+        const queryText = `SELECT "ItemId","ItemName","Technical_Status" FROM "ItemMaster" WHERE "CompId" = '${req.query.CompId}' AND "Technical_Status" = 2`
+        // const queryText = `SELECT "ItemId","ItemName","Technical_Status" FROM "ItemMaster" WHERE "CompId" = '${req.query.CompId}'
+        // AND "Fin_Year" = '${req.query.Fin_Year}' AND "Technical_Status" = 2`
         // console.log(queryText);
         const result = await db.sequelize.query(queryText);
         // console.log(result);

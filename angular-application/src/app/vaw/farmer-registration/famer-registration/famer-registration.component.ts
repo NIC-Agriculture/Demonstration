@@ -182,12 +182,13 @@ export class FamerRegistrationComponent implements OnInit {
             const newSchemeId = this.FarmerDetailsForm.value.demonstrationId.schemeId
             const newSubschemeId = this.FarmerDetailsForm.value.demonstrationId.SubschemeId
             const farmerId = this.prefixOfFarmerID + '/' + this.searchFarmerID;
+            const FinYear = this.FarmerDetailsForm.value.FinYear
             this.loader = true; this.showFarmerDetails = false; this.invalidFarmerMessage = '';
-            const result1 = await this.vawService.checkFarmerIDExistance(farmerId, newSchemeId , newSubschemeId ).toPromise()
+            const result1 = await this.vawService.checkFarmerIDExistance(farmerId, newSchemeId , newSubschemeId , FinYear ).toPromise()
             
             if(result1.exists){
                 this.loader = false;
-                this.invalidFarmerMessage = `Sorry, This Farmer-ID Already Registered under this Scheme to getting benefits.`
+                this.invalidFarmerMessage = `Sorry, This Farmer-ID Already Registered under this Scheme to getting benefits./A beneficiary can only get the benefits under NFSM once in a 3years. `
                 this.showFarmerDetails = false;
             }else{
                 try {

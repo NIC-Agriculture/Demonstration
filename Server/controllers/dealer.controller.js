@@ -76,7 +76,7 @@ exports.getPermitList = async(req,res) => {
 exports.getItems = async (req,res) => {
     try{
         const queryText = `SELECT "ItemId","ItemName","Technical_Status" FROM "ItemMaster" WHERE "CompId" = '${req.query.CompId}' AND
-        "Fin_Year" = '2022-23' AND "Technical_Status" in (1,11)`
+        "Fin_Year" = '${req.query.Fin_Year}' AND "Technical_Status" in (1,11)`
         const result = await db.sequelize.query(queryText);
         res.send(result[0]);
     }catch(e){
@@ -152,7 +152,7 @@ exports.getPurchasedTechnicalName = async(req,res) => {
     try {
         const purchasedItem = await db.dealerSale.findAll({
             attributes : ['CompId', 'ItemId' , 'Technical_Code' ,'Technical_Name' , 'eligibleSubsidy'],
-            where: { FarmerId : req.query.FarmerId , CompId : req.query.CompId , ItemId : req.query.ItemId , Fin_year : '2022-23' },
+            where: { FarmerId : req.query.FarmerId , CompId : req.query.CompId , ItemId : req.query.ItemId , Fin_year : req.query.Fin_Year },
             raw: true
         })
         res.send(purchasedItem)
@@ -166,7 +166,7 @@ exports.getItemPrice = async(req,res) => {
     try {
         const result = await db.itemPriceDetails.findAll({
             // attributes : ['CompId', 'ItemId' , 'Technical_Code' ,'Technical_Name','Fin_Year'],
-            where: { ItemId : req.query.ItemId , Fin_Year : '2022-23'},
+            where: { ItemId : req.query.ItemId , Fin_Year : req.query.Fin_Year},
             raw: true
         })
         res.send(result)

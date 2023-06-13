@@ -43,7 +43,7 @@ export class DistrictTargetComponent implements OnInit {
   showSubmit: boolean = false;
   AllDistrictTargetDetails: any = {}
 
-  targetClose: boolean = false;
+  targetClose: boolean = true;
   pageTitle: string;
   pageDesc: string;
   breadcrumbList: Array<string>;

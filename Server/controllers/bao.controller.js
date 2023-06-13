@@ -844,7 +844,7 @@ exports.getAllDemonstrationData = async (req, res) => {
         INNER JOIN "SchemeMaster" ddd ON ddd."schemeId" = d."schemeId"
         LEFT JOIN "SubCropMaster" bb ON a."BP_SubCropId" = bb."SubCropId"
         LEFT JOIN "CropVarietyMaster" cc ON a."BP_Variety_Code" = cc."Variety_Code"
-        WHERE a."Block_Code"='${req.payload.Block_Code}' AND a.Fin_Year = '${req.query.Fin_Year}'`
+        WHERE a."Block_Code"='${req.payload.Block_Code}' AND a."Fin_Year" = '${req.query.Fin_Year}'`
         const result = await db.sequelize.query(queryText);
         // console.log(result[0]);
         res.send(result[0]);
