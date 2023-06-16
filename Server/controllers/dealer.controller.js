@@ -61,11 +61,16 @@ exports.getDistrictPrefix = async (req, res) => {
 
 exports.getPermitList = async(req,res) => {
     try {
-        const FarmerId = await db.farmerPermit.findAll({
-            where: { FarmerId : req.query.FarmerId , Fin_year : req.query.Fin_Year},
-            raw: true
-        })
-        res.send(FarmerId)
+        // const FarmerId = await db.farmerPermit.findAll({
+        //     where: { FarmerId : req.query.FarmerId , Fin_year : req.query.Fin_Year},
+        //     raw: true
+        // })
+        // res.send(FarmerId)
+        const queryText = `SELECT * FROM "Farmer_Permit" a
+        INNER JOIN "DemonstrationPatchMaster" b ON a."DemonstrationId" = b."DemostrationId"
+        WHERE a."FarmerId" = '${req.query.FarmerId}' AND a."Fin_year" = '${req.query.Fin_Year}' AND b."ConfirmBy_vaw" = '1' and b."ConfirmBy_BAO" = '1';`
+        const result = await db.sequelize.query(queryText);
+        res.send(result[0]);
     } catch (e) {
         res.status(500).send('Unexpected error')
         console.error(e);
