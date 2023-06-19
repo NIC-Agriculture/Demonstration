@@ -924,11 +924,12 @@ exports.generatePaymntFile = async (req, res, next) => {
             logController.addAuditLog( req.payload.user_id, req.protocol + '://' + req.get('host') + req.originalUrl , "Success", req.originalUrl.split("?").shift(), 'Generate' , req.method , req.socket.remoteAddress , parser.setUA(req.headers['user-agent']).getOS().name , parser.setUA(req.headers['user-agent']).getOS().version , parser.setUA(req.headers['user-agent']).getBrowser().name, parser.setUA(req.headers['user-agent']).getBrowser().version , req.device.type.toUpperCase())
         }else if( req.query.paymentType=='incentive' ) {
 
-            const queryText = `SELECT a.*,a."totalEligibleIncentive" AS totaleligiblesubsidy ,b."FarmerId",b."Farmer_Category",b."Gender",c."Block_Name",d."schemeName",e."Dist_Name"
+            const queryText = `SELECT a.*,a."totalEligibleIncentive" AS totaleligiblesubsidy ,b."FarmerId",b."Farmer_Category",b."Gender",c."Block_Name",d."schemeName", f."SubschemeName",e."Dist_Name"
             FROM "InctvPaymentMaster" a
             INNER JOIN "Farmer_Permit" b ON a."Permit_NO" = b."Permit_NO"
             INNER JOIN "LGBlocks" c ON c."Block_Code" = b."Block_Code"
             INNER JOIN "SchemeMaster" d ON d."schemeId" = b."schemeId"
+            INNER JOIN "SubSchemeMaster" f ON f."SubschemeId" = b."SubschemeId"
             INNER JOIN "LGDistricts" e ON e."Dist_Code" = '${req.payload.Dist_Code}'
             WHERE a."ReferenceNo" = '${req.query.ReferenceNo}' AND a."schemeId" = '${req.query.schemeId}'
             AND a."PymntFileGenerated" IS NULL AND a."PymntSt" IS NULL
@@ -1369,11 +1370,12 @@ exports.RegeneratePaymntFile = async (req, res, next) => {
             const result = await db.sequelize.query(queryText);
             res.send(result[0]);
         }else if( paymentType == 'incentive') {
-            const queryText = `SELECT a.*,a."totalEligibleIncentive" AS totaleligiblesubsidy ,b."FarmerId",b."Farmer_Category",b."Gender",c."Block_Name",d."schemeName",e."Dist_Name"
+            const queryText = `SELECT a.*,a."totalEligibleIncentive" AS totaleligiblesubsidy , b."FarmerId", b."Farmer_Category", b."Gender", c."Block_Name", d."schemeName", f."SubschemeName", e."Dist_Name"
             FROM "InctvPaymentMaster" a
             INNER JOIN "Farmer_Permit" b ON a."Permit_NO" = b."Permit_NO"
             INNER JOIN "LGBlocks" c ON c."Block_Code" = b."Block_Code"
             INNER JOIN "SchemeMaster" d ON d."schemeId" = b."schemeId"
+            INNER JOIN "SubSchemeMaster" f ON f."SubschemeId" = b."SubschemeId"
             INNER JOIN "LGDistricts" e ON e."Dist_Code" = '${req.payload.Dist_Code}'
             WHERE a."ReferenceNo" = '${req.query.ReferenceNo}' AND a."schemeId" = '${req.query.schemeId}'
             AND a."PymntFileGenerated" = '0'
