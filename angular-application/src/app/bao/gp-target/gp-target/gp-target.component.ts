@@ -17,7 +17,7 @@ export class GpTargetComponent implements OnInit {
   // pageDesc: string;
   // breadcrumbList: Array<string>;
   SelectedGpTargetDetails: any = {}
-  targetClose: boolean = false
+  targetClose: boolean = true
  
   target: boolean = true
   createDemo: boolean = true

@@ -39,7 +39,7 @@ export class ModifyItemComponent implements OnInit {
       itemName: ['', [Validators.required]],
       itemType: ['', [Validators.required]],
       indicativeCost: ['', [Validators.required]],
-      packageSize: ['', [Validators.required]],
+      itemPackageSize: ['', [Validators.required]],
       itemUnit: ['', [Validators.required]],
       status: ['',[Validators.required]]
       
@@ -69,7 +69,7 @@ export class ModifyItemComponent implements OnInit {
 
   getAllScheme = async() => {
     try{
-      this.ModifyItemForm.patchValue({scheme: '', subscheme: '', componentName: '',itemName:'', itemType: '',indicativeCost:'',packageSize:'',itemUnit:''});
+      this.ModifyItemForm.patchValue({scheme: '', subscheme: '', componentName: '',itemName:'', itemType: '',indicativeCost:'',itemPackageSize:'',itemUnit:''});
       this.AllSchemeData = []
       this.SubschemeData = []
       this.ComponentData = []
@@ -85,7 +85,7 @@ export class ModifyItemComponent implements OnInit {
 
   getSubscheme = async() => {
     try{
-      this.ModifyItemForm.patchValue({ subscheme: '', componentName: '',itemName:'', itemType: '',indicativeCost:'',packageSize:'',itemUnit:''});
+      this.ModifyItemForm.patchValue({ subscheme: '', componentName: '',itemName:'', itemType: '',indicativeCost:'',itemPackageSize:'',itemUnit:''});
       this.SubschemeData = []
       this.ComponentData = []
       this.ItemDtails = []
@@ -101,7 +101,7 @@ export class ModifyItemComponent implements OnInit {
 
   getComponent = async() => {
     try {
-      this.ModifyItemForm.patchValue({ componentName: '',itemName:'', itemType: '',indicativeCost:'',packageSize:'',itemUnit:''});
+      this.ModifyItemForm.patchValue({ componentName: '',itemName:'', itemType: '',indicativeCost:'',itemPackageSize:'',itemUnit:''});
       this.ComponentData = []
       this.ItemDtails = []
       this.Itemcost = []
@@ -117,13 +117,12 @@ export class ModifyItemComponent implements OnInit {
 
   getItemDetails = async() => {
     try{
-      this.ModifyItemForm.patchValue({itemName:'', itemType: '',indicativeCost:'',packageSize:'',itemUnit:''});
+      this.ModifyItemForm.patchValue({itemName:'', itemType: '',indicativeCost:'',itemPackageSize:'',itemUnit:''});
       this.ItemDtails = []
       this.Itemcost = []
       const CompId = this.ModifyItemForm.value.componentName.CompId
       const finYear = this.ModifyItemForm.value.FinYear
-      console.log(CompId,finYear);
-      
+
       this.ItemDtails = await this.schemeService.getItemDetails(CompId,finYear).toPromise()
     } catch (e){
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -133,13 +132,14 @@ export class ModifyItemComponent implements OnInit {
 
   getItemCostAndSize = async() => {
     try{
-      this.ModifyItemForm.patchValue({itemType: '',indicativeCost:'',packageSize:'',itemUnit:''});
+      this.ModifyItemForm.patchValue({itemType: '',indicativeCost:'',itemPackageSize:'',itemUnit:''});
       this.Itemcost = []
       const ItemId = this.ModifyItemForm.value.itemName.ItemId
       const finYear = this.ModifyItemForm.value.FinYear
       this.Itemcost = await this.schemeService.getItemCostAndSize(ItemId,finYear).toPromise()
+      
       this.ModifyItemForm.patchValue({ indicativeCost: this.Itemcost[0].IndicativeCost })
-      this.ModifyItemForm.patchValue({ packageSize: this.Itemcost[0].itemPackageSize })
+      this.ModifyItemForm.patchValue({ itemPackageSize: this.Itemcost[0].itemitemPackageSize })
       
     } catch (e){
       this.toastr.error('Sorry. Server problem. Please try again.');
@@ -150,19 +150,21 @@ export class ModifyItemComponent implements OnInit {
   updateItemDetails = async () => {
     try {
      const updateData ={
+      Fin_Year: this.ModifyItemForm.value.FinYear,
       CompId: this.ModifyItemForm.value.componentName.CompId,
       ItemId: this.ModifyItemForm.value.itemName.ItemId,
-      itemType: this.ModifyItemForm.value.itemType,
       indicativeCost: this.ModifyItemForm.value.indicativeCost,
-      packageSize: this.ModifyItemForm.value.packageSize,
-      itemUnit: this.ModifyItemForm.value.itemUnit,
-      status: this.ModifyItemForm.value.status 
+      itemPackageSize: this.ModifyItemForm.value.itemPackageSize,
+      item_unit: this.ModifyItemForm.value.itemUnit,
+      Active: this.ModifyItemForm.value.status,
+      Technical_Status: this.ModifyItemForm.value.itemType
+
       }
-      console.log(updateData);
-      
+
       const result = await this.schemeService.updateItemDetails(updateData).toPromise()
-      
-      
+      this.toastr.success(result.message)
+      this.ModifyItemForm.reset()
+            
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);

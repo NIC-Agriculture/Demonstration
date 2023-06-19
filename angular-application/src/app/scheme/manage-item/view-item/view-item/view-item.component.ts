@@ -110,10 +110,10 @@ export class ViewItemComponent implements OnInit {
   getItemDetails = async() => {
     try{
       const CompId = this.ViewItemForm.value.component.CompId
-      const FinYear = this.ViewItemForm.value.component.FinYear
+      const FinYear = this.ViewItemForm.value.FinYear
       this.ItemDtails = await this.schemeService.getItemDetails(CompId,FinYear).toPromise()
-      this.viewTargetTable = this.ItemDtails > 0 ? true : false
-      this.message = this.ItemDtails > 0 ? false : true
+      this.viewTargetTable = this.ItemDtails.length > 0 ? true : false
+      this.message = this.ItemDtails.length > 0 ? false : true
     } catch (e){
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);

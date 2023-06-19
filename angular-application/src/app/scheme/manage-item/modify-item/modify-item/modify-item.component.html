@@ -98,13 +98,16 @@
                                     <div class="col-lg-4 col-md-4">
                                         <div class="form-group row">
                                             <div class="col-sm-4 col-lg-4">
-                                                <label class="block" for="packageSize">Item type<label class="asterik">*</label>:</label>
+                                                <label class="block" for="itemType">Item type<label class="asterik">*</label>:</label>
                                             </div>
                                             <div class="col-sm-4 col-lg-8">
                                                 <select formControlName="itemType" id="itemType" class="form-control form-control-default">
                                                     <option value="" disabled>--Select--</option>
                                                     <option value="1"> All Pesticides/Micronutrients/Weedicide/Herbicides/Fertilizers </option>
                                                     <option value="2"> Bund Plantation </option>
+                                                    <option value="11"> Light Trap </option>
+                                                    <option value="22"> Seeds </option>
+                                                    <option value="3"> Incentive </option>
                                                     <option value="0"> Others </option>
                                                 </select>
                                             </div>
@@ -128,10 +131,10 @@
                                     <div class="col-lg-4 col-md-4">
                                         <div class="form-group row">
                                             <div class="col-sm-4 col-lg-4">
-                                                <label class="block" for="packageSize">Package Size<label class="asterik">*</label>:</label>
+                                                <label class="block" for="itemPackageSize">Package Size<label class="asterik">*</label>:</label>
                                             </div>
                                             <div class="col-sm-4 col-lg-8">
-                                                <input type="number" min="0" formControlName="packageSize"
+                                                <input type="number" min="0" formControlName="itemPackageSize"
                                                     class="form-control form-control-default" />
                                             </div>
                                         </div>
@@ -157,13 +160,13 @@
                                     <div class="col-lg-4 col-md-4">
                                         <div class="form-group row">
                                             <div class="col-sm-4 col-lg-4">
-                                                <label class="block" for="packageSize">Status<label class="asterik">*</label>:</label>
+                                                <label class="block" for="status">Status<label class="asterik">*</label>:</label>
                                             </div>
                                             <div class="col-sm-4 col-lg-8">
                                                 <select formControlName="status" id="status" class="form-control form-control-default">
                                                     <option value="" disabled>--Select--</option>
-                                                    <option value="Actice"> Actice</option>
-                                                    <option value="Inactive"> Inactive </option>
+                                                    <option value="1"> Actice</option>
+                                                    <option value="0"> Inactive </option>
                                                 </select>
                                             </div>
                                         </div>

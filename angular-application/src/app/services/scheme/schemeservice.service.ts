@@ -133,4 +133,12 @@ export class SchemeserviceService {
     return this.http.post(`${this.serverUrl}/${this.route}/UpdateComponentCostCropMapping`, data);
   }
 
+  getItemCostAndSize(ItemId:any,finYear:any): Observable<any> {
+    return this.http.get(`${this.serverUrl}/${this.route}/getItemCostAndSize?ItemId=${ItemId}&FinYear=${finYear}`)
+  }
+
+  updateItemDetails(data: {}): Observable<any> {
+    return this.http.post(`${this.serverUrl}/${this.route}/updateItemDetails`, data);
+  }
+
 }

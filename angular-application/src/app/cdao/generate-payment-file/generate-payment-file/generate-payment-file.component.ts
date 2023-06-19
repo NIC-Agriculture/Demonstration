@@ -74,6 +74,13 @@ export class GeneratePaymentFileComponent implements OnInit {
     try {
         const schemeId = this.SchemeId.schemeId
         this.pymntFile = await this.cdaoService.generatePaymntFile(this.referenceId.referenceno , schemeId ,this.paymentType).toPromise();
+        
+        this.pymntFile.forEach(async (e:any)=> {
+          const result1 = await this.cdaoService.getFarmerBankDetails(e.FarmerId).toPromise()
+          e.GpName = result1.vch_GPNameOr
+          e.VillageName = result1.vch_VillageNameOr    
+        })   
+
         this.pendingFile =  this.pymntFile.length
         if(this.pymntFile){          
           switch (schemeId) {
