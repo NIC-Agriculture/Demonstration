@@ -23,6 +23,8 @@ export class AddItemComponent implements OnInit {
   FinYears: any;
   ComponentData: any;
   Season: any;
+  ItemDtails: any;
+  itemTable: boolean = false
 
   constructor(
     private schemeService: SchemeserviceService,
@@ -53,7 +55,6 @@ export class AddItemComponent implements OnInit {
       this.layoutService.setPageHeadingDesc(this.pageDesc);
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
-      this.getAllScheme();
       this.getFinYear();
       this.CompItemList= [];
   }
@@ -71,6 +72,11 @@ export class AddItemComponent implements OnInit {
 
   getAllScheme = async() => {
     try{
+      this.AddCompItemForm.patchValue({scheme: '', subscheme: '', componentName: '',itemName:'', itemType: '',indicativeCost:'',packageSize:'',itemUnit:''});
+      this.AllSchemeData = []
+      this.SubschemeData = []
+      this.ComponentData = []
+      this.itemTable = false
       const result = await this.schemeService.getAllScheme().toPromise()
       this.AllSchemeData = result;
     } catch (e){
@@ -81,6 +87,10 @@ export class AddItemComponent implements OnInit {
 
   getSubscheme = async() => {
     try{
+      this.AddCompItemForm.patchValue({subscheme: '', componentName: '',itemName:'', itemType: '',indicativeCost:'',packageSize:'',itemUnit:''});
+      this.SubschemeData = []
+      this.ComponentData = []
+      this.itemTable = false
       const schemeId =  this.AddCompItemForm.value.scheme.schemeId
       const result =  await this.schemeService.getSubscheme(schemeId).toPromise()
       this.SubschemeData = result;
@@ -92,11 +102,29 @@ export class AddItemComponent implements OnInit {
 
   getComponent = async() => {
     try {
+      this.AddCompItemForm.patchValue({ componentName: '',itemName:'', itemType: '',indicativeCost:'',packageSize:'',itemUnit:''});
+      this.ComponentData = []
+      this.itemTable = false
       const FinYear = this.AddCompItemForm.value.FinYear
       const SubschemeId = this.AddCompItemForm.value.subscheme.SubschemeId
       const result = await this.schemeService.getComponent(FinYear,SubschemeId).toPromise()
       this.ComponentData = result;
     } catch (e) {
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
+  getItemDetails = async() => {
+    try{
+      this.itemTable = true
+      this.ItemDtails = []
+      const CompId = this.AddCompItemForm.value.componentName.CompId
+      const finYear = this.AddCompItemForm.value.FinYear
+      this.ItemDtails = await this.schemeService.getItemDetails(CompId,finYear).toPromise()
+      console.log(this.ItemDtails);
+      
+    } catch (e){
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);
     }
