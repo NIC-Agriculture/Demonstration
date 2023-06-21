@@ -25,6 +25,9 @@
                                                     <option value="">--Select--</option>
                                                     <option [ngValue]="x" *ngFor="let x of FinYears"> {{ x }} </option>
                                                 </select>
+                                                <div class="text-danger" *ngIf="ModifyItemFormValid.FinYear.touched && !ModifyItemFormValid.FinYear.valid">
+                                                    Financial Year is required.
+                                                  </div>  
                                             </div>
                                         </div>
 
@@ -40,6 +43,9 @@
                                                     <option value="" disabled>--Select--</option>
                                                     <option [ngValue]="x" *ngFor="let x of AllSchemeData">{{ x.schemeName }}</option>
                                                 </select>
+                                                <div class="text-danger" *ngIf="ModifyItemFormValid.scheme.touched && !ModifyItemFormValid.scheme.valid">
+                                                    Scheme is required.
+                                                  </div> 
                                             </div>
                                         </div>
 
@@ -55,6 +61,9 @@
                                                     <option value="" disabled>--Select--</option>
                                                     <option [ngValue]="x" *ngFor="let x of SubschemeData">{{ x.SubschemeName }}</option>
                                                 </select>
+                                                <div class="text-danger" *ngIf="ModifyItemFormValid.subscheme.touched && !ModifyItemFormValid.subscheme.valid">
+                                                    Subscheme is required.
+                                                  </div> 
                                             </div>
                                         </div>
 
@@ -74,6 +83,9 @@
                                                         {{ x.CompName }}
                                                     </option>
                                                 </select>
+                                                <div class="text-danger" *ngIf="ModifyItemFormValid.componentName.touched && !ModifyItemFormValid.componentName.valid">
+                                                    Component is required.
+                                                  </div> 
                                             </div>
                                         </div>
 
@@ -91,6 +103,9 @@
                                                     {{ x.ItemName }}
                                                 </option>
                                             </select>
+                                            <div class="text-danger" *ngIf="ModifyItemFormValid.itemName.touched && !ModifyItemFormValid.itemName.valid">
+                                                Item is required.
+                                              </div>
                                             </div>
                                         </div>
 
@@ -101,7 +116,7 @@
                                                 <label class="block" for="itemType">Item type<label class="asterik">*</label>:</label>
                                             </div>
                                             <div class="col-sm-4 col-lg-8">
-                                                <select formControlName="itemType" id="itemType" class="form-control form-control-default">
+                                                <select formControlName="itemType" id="itemType" class="form-control form-control-default" (change)="getAllCrops()" >
                                                     <option value="" disabled>--Select--</option>
                                                     <option value="1"> All Pesticides/Micronutrients/Weedicide/Herbicides/Fertilizers </option>
                                                     <option value="2"> Bund Plantation </option>
@@ -110,6 +125,9 @@
                                                     <option value="3"> Incentive </option>
                                                     <option value="0"> Others </option>
                                                 </select>
+                                                <div class="text-danger" *ngIf="ModifyItemFormValid.itemType.touched && !ModifyItemFormValid.itemType.valid">
+                                                    Itemtype is required.
+                                                  </div>
                                             </div>
                                         </div>
 
@@ -123,6 +141,9 @@
                                             <div class="col-sm-4 col-lg-8">
                                                 <input type="number" min="0" formControlName="indicativeCost"
                                                     class="form-control form-control-default" />
+                                                    <div class="text-danger" *ngIf="ModifyItemFormValid.indicativeCost.touched && !ModifyItemFormValid.indicativeCost.valid">
+                                                        Indicative Cost is required.
+                                                      </div>
                                             </div>
                                         </div>
 
@@ -136,6 +157,9 @@
                                             <div class="col-sm-4 col-lg-8">
                                                 <input type="number" min="0" formControlName="itemPackageSize"
                                                     class="form-control form-control-default" />
+                                                    <div class="text-danger" *ngIf="ModifyItemFormValid.itemPackageSize.touched && !ModifyItemFormValid.itemPackageSize.valid">
+                                                        Package Size is required.
+                                                      </div>
                                             </div>
                                         </div>
                                     </div>
@@ -154,6 +178,9 @@
                                                     <option value="ml/ha">ml/ha</option>
                                                     <option value="lit/ha">lit/ha</option>
                                                 </select>
+                                                <div class="text-danger" *ngIf="ModifyItemFormValid.itemUnit.touched && !ModifyItemFormValid.itemUnit.valid">
+                                                    Unit is required.
+                                                  </div>
                                             </div>
                                         </div>
                                     </div>
@@ -168,10 +195,56 @@
                                                     <option value="1"> Actice</option>
                                                     <option value="0"> Inactive </option>
                                                 </select>
+                                                <div class="text-danger" *ngIf="ModifyItemFormValid.status.touched && !ModifyItemFormValid.status.valid">
+                                                    Status is required.
+                                                  </div>
                                             </div>
                                         </div>
 
                                     </div>
+                                        <div class="col-lg-4 col-md-4" *ngIf="this.ModifyItemForm.value.itemType == '22'">
+                                            <div class="form-group row">
+                                                <div class="col-sm-4 col-lg-4">
+                                                    <label class="block" for="item">Crop Catagory<label class="asterik">*</label>:</label>
+                                                </div>
+                                                <div class="col-sm-4 col-lg-8">
+                                                    <select formControlName="cropCatagory" id="cropCatagory"
+                                                    class="form-control form-control-default" (change)="getSubCrops()">
+                                                    <option value="">--Select--</option>
+                                                    <option [ngValue]="x" *ngFor="let x of AllCropData">
+                                                        {{ x.CropName }}
+                                                    </option>
+                                                </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4" *ngIf="this.ModifyItemForm.value.itemType == '22'">
+                                            <div class="form-group row">
+                                                <div class="col-sm-4 col-lg-4">
+                                                    <label class="block" for="item">Crop<label class="asterik">*</label>:</label>
+                                                </div>
+                                                <div class="col-sm-4 col-lg-8">
+                                                    <select formControlName="crop" id="crop"
+                                                    class="form-control form-control-default">
+                                                    <option value="">--Select--</option>
+                                                    <option [ngValue]="x" *ngFor="let x of SubCropData">
+                                                        {{ x.SubCropName }}
+                                                    </option>
+                                                </select>
+                                                </div>
+                                            </div>
+    
+                                        </div>
+                                        <div class="col-lg-4 col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-lg-4 col-form-label">Edit :</label>
+                                                <div class="col-sm-4 col-lg-8">
+                                                    <mat-icon color="success" (click)="edit()" >create</mat-icon>
+                                                </div>
+    
+                                            </div>
+                                        </div>
+                                 
                                 </div>
                             </div>
                         </div>

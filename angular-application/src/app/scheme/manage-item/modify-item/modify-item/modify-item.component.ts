@@ -21,6 +21,9 @@ export class ModifyItemComponent implements OnInit {
   SubschemeData: any;
   ItemDtails: any;
   Itemcost: any;
+  showDiv: boolean = false;
+  AllCropData: any;
+  SubCropData: any;
 
   constructor(
     private schemeService: SchemeserviceService,
@@ -41,7 +44,9 @@ export class ModifyItemComponent implements OnInit {
       indicativeCost: ['', [Validators.required]],
       itemPackageSize: ['', [Validators.required]],
       itemUnit: ['', [Validators.required]],
-      status: ['',[Validators.required]]
+      status: ['',[Validators.required]],
+      crop: [''],
+      cropCatagory: ['']
       
 
     });
@@ -54,6 +59,15 @@ export class ModifyItemComponent implements OnInit {
       this.layoutService.setBreadcrumb(this.breadcrumbList);
       });
       this.getFinYear();
+      this.ModifyItemForm.controls['itemType'].disable();
+      this.ModifyItemForm.controls['indicativeCost'].disable();
+      this.ModifyItemForm.controls['itemPackageSize'].disable();
+      this.ModifyItemForm.controls['itemUnit'].disable();
+      this.ModifyItemForm.controls['status'].disable();
+  }
+
+  get ModifyItemFormValid() {
+    return this.ModifyItemForm.controls;
   }
 
   getFinYear = async() => {
@@ -69,7 +83,7 @@ export class ModifyItemComponent implements OnInit {
 
   getAllScheme = async() => {
     try{
-      this.ModifyItemForm.patchValue({scheme: '', subscheme: '', componentName: '',itemName:'', itemType: '',indicativeCost:'',itemPackageSize:'',itemUnit:''});
+      this.ModifyItemForm.patchValue({scheme: '', subscheme: '', componentName: '',itemName:'', itemType: '',indicativeCost:'',itemPackageSize:'',itemUnit:'',cropCatagory: '',crop: ''});
       this.AllSchemeData = []
       this.SubschemeData = []
       this.ComponentData = []
@@ -85,7 +99,7 @@ export class ModifyItemComponent implements OnInit {
 
   getSubscheme = async() => {
     try{
-      this.ModifyItemForm.patchValue({ subscheme: '', componentName: '',itemName:'', itemType: '',indicativeCost:'',itemPackageSize:'',itemUnit:''});
+      this.ModifyItemForm.patchValue({ subscheme: '', componentName: '',itemName:'', itemType: '',indicativeCost:'',itemPackageSize:'',itemUnit:'',cropCatagory: '',crop: ''});
       this.SubschemeData = []
       this.ComponentData = []
       this.ItemDtails = []
@@ -101,7 +115,7 @@ export class ModifyItemComponent implements OnInit {
 
   getComponent = async() => {
     try {
-      this.ModifyItemForm.patchValue({ componentName: '',itemName:'', itemType: '',indicativeCost:'',itemPackageSize:'',itemUnit:''});
+      this.ModifyItemForm.patchValue({ componentName: '',itemName:'', itemType: '',indicativeCost:'',itemPackageSize:'',itemUnit:'',cropCatagory: '',crop: ''});
       this.ComponentData = []
       this.ItemDtails = []
       this.Itemcost = []
@@ -117,7 +131,7 @@ export class ModifyItemComponent implements OnInit {
 
   getItemDetails = async() => {
     try{
-      this.ModifyItemForm.patchValue({itemName:'', itemType: '',indicativeCost:'',itemPackageSize:'',itemUnit:''});
+      this.ModifyItemForm.patchValue({itemName:'', itemType: '',indicativeCost:'',itemPackageSize:'',itemUnit:'',cropCatagory: '',crop: ''});
       this.ItemDtails = []
       this.Itemcost = []
       const CompId = this.ModifyItemForm.value.componentName.CompId
@@ -132,7 +146,7 @@ export class ModifyItemComponent implements OnInit {
 
   getItemCostAndSize = async() => {
     try{
-      this.ModifyItemForm.patchValue({itemType: '',indicativeCost:'',itemPackageSize:'',itemUnit:''});
+      this.ModifyItemForm.patchValue({itemType: '',indicativeCost:'',itemPackageSize:'',itemUnit:'',cropCatagory: '',crop: ''});
       this.Itemcost = []
       const ItemId = this.ModifyItemForm.value.itemName.ItemId
       const finYear = this.ModifyItemForm.value.FinYear
@@ -147,6 +161,36 @@ export class ModifyItemComponent implements OnInit {
     }
   }
 
+  getAllCrops = async() => {
+    try{
+      this.ModifyItemForm.patchValue({crop: ''});
+      this.AllCropData = []
+      this.AllCropData = await this.schemeService.getAllCrops().toPromise()
+    } catch (e){
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+  }
+
+  getSubCrops = async() => {
+    try{
+      this.SubCropData = []
+      const CropId = this.ModifyItemForm.value.cropCatagory.CropId
+      this.SubCropData = await this.schemeService.getSubCrops(CropId).toPromise()
+    } catch (e){
+      this.toastr.error('Sorry. Server problem. Please try again.');
+      console.error(e);
+    }
+}
+
+  edit = () => {
+    this.ModifyItemForm.controls['itemType'].enable();
+    this.ModifyItemForm.controls['indicativeCost'].enable();
+    this.ModifyItemForm.controls['itemPackageSize'].enable();
+    this.ModifyItemForm.controls['itemUnit'].enable();
+    this.ModifyItemForm.controls['status'].enable();
+  }
+
   updateItemDetails = async () => {
     try {
      const updateData ={
@@ -157,8 +201,9 @@ export class ModifyItemComponent implements OnInit {
       itemPackageSize: this.ModifyItemForm.value.itemPackageSize,
       item_unit: this.ModifyItemForm.value.itemUnit,
       Active: this.ModifyItemForm.value.status,
-      Technical_Status: this.ModifyItemForm.value.itemType
-
+      Technical_Status: this.ModifyItemForm.value.itemType,
+      CropId: this.ModifyItemForm.value.cropCatagory.CropId,
+      SubCropId: this.ModifyItemForm.value.crop.SubCropId
       }
 
       const result = await this.schemeService.updateItemDetails(updateData).toPromise()
