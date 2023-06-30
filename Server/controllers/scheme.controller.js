@@ -598,7 +598,7 @@ exports.getclusterDemonstration = async (req,res) => {
            SUM(CASE WHEN c."Farmer_Category"  = 'SC' THEN 1 ELSE 0 END) as "SCFarmer", SUM(CASE WHEN c."Farmer_Category"  = 'ST' THEN 1 ELSE 0 END) as "STFarmer",
            b."CompName",a."PhyGen", a."PhySCP", a."PhyTasp", a."AvlPhyGen", a."AvlPhySCP", a."AvlPhyTASP" 
            FROM "DemonstrationPatchMaster" a
-           INNER JOIN "ComponentMaster" b ON a."CompId" = b."CompId"
+           INNER JOIN "ComponentMaster" b ON a."CompId" = b."CompId" AND b."Fin_Year" = a."Fin_Year"
            INNER JOIN "LGBlocks" d ON a."Block_Code" = d."Block_Code"
            LEFT JOIN "Farmer_Permit" c ON a."DemostrationId" = c."DemonstrationId"
            WHERE a."Dist_Code"='${req.query.Dist_Code}' AND (a."Block_Code" = '${req.query.Block_Code}' or '${req.query.Block_Code}'='0') AND (a."CompId"='${req.query.CompId}' or '${req.query.CompId}'='0')  
@@ -679,12 +679,12 @@ exports.getCalculatedIncentiveCost = async (req,res) => {
 
 exports.getItemDetails = async (req,res) => {
     try{
-         const queryText1 = `select a."ItemId",a."ItemName",b."IndicativeCost",c."CompName" 
-         from "ItemMaster" a
+         const queryText = `select a."ItemId",a."ItemName",b."IndicativeCost",c."CompName",a."Fin_Year"
+         FROM "ItemMaster" a
          INNER JOIN "itemPackageMaster" b ON a."ItemId" = b."ItemId" and a."Fin_Year" = b."Fin_Year"
          INNER JOIN "ComponentMaster" c ON a."CompId" = c."CompId" and c."Fin_Year" = a."Fin_Year"
-         Where a."CompId" = '${req.query.CompId}' AND a."Fin_Year" = '${req.query.Fin_Year}'`
-         const result = await db.sequelize.query(queryText1);
+         Where a."CompId" = '${req.query.CompId}' AND a."Fin_Year" = '${req.query.FinYear}'`
+         const result = await db.sequelize.query(queryText);
          res.send(result[0]);
     } catch (e){
         res.status(500).send('Unexpected error');
@@ -725,6 +725,44 @@ exports.UpdateComponentCostCropMapping = async (req,res) => {
          res.send({message:'Successfully Updated'});
          await t.commit();
     } catch (e){
+        await t.rollback();
+        res.status(500).send('Unexpected error');
+        console.error(e);
+    }
+}
+
+exports.getItemCostAndSize = async(req,res) => {
+    try{
+         const queryText = `SELECT * FROM "itemPackageMaster" WHERE "ItemId" = '${req.query.ItemId}' AND "Fin_Year" = '${req.query.FinYear}'`
+         const result = await db.sequelize.query(queryText);
+         res.send(result[0]);
+    } catch (e){
+        res.status(500).send('Unexpected error');
+        console.error(e);
+    }
+}
+
+exports.updateItemDetails = async(req,res) => {
+    const t = await sequelize.transaction();
+    try {
+         const data = req.body
+         data.IPAddress = requestIP.getClientIp(req);
+         const updateItemMaster = await db.ItemMaster.update({ Technical_Status: data.Technical_Status , IPAddress : data.IPAddress , Active : data.Active },{ where: { CompId: data.CompId , ItemId: data.ItemId , Fin_Year : data.Fin_Year }, transaction: t})
+         const updateItemCostDetails = await db.itemPriceDetails.update({itemPackageSize : data.itemPackageSize , IndicativeCost: data.indicativeCost ,item_unit: data.item_unit , IPAddress: data.IPAddress },{ where: { ItemId: data.ItemId , Fin_Year : data.Fin_Year }, transaction: t})
+         if(data.itemType == '22') {
+            const itemCropDetails = {
+                ItemId: data.ItemId ,
+                CropId: data.CropId ,
+                SubCropId: data.SubCropId ,
+                Fin_Year : data.Fin_Year
+            }
+            const updateItemCropMapping = await db.itemCropMapping.create(itemCropDetails, { transaction: t })   
+        }
+         
+         res.send({message:'Successfully Updated'});
+        
+        await t.commit();        
+    } catch (e) {
         await t.rollback();
         res.status(500).send('Unexpected error');
         console.error(e);
