@@ -168,14 +168,14 @@ export class ViewTargetComponent implements OnInit {
          this.DistrictTargetData = await this.cdaoService.getDistrictTarget(CompId, Fin_Year).toPromise()
         
          if(this.DistrictTargetData.length > 0) {
-            this.totalPhyGen = this.DistrictTargetData[0].avl_phygen;
-            this.totalFinGen = this.DistrictTargetData[0].DistributedPhyGen ;
-            this.totalPhySCP = this.DistrictTargetData[0].avl_physcp;
-            this.totalFinSCP = this.DistrictTargetData[0].DistributedPhySCP;
-            this.totalPhyTASP = this.DistrictTargetData[0].avl_phytasp;
-            this.totalFinTASP = this.DistrictTargetData[0].DistributedPhyTASP;
+            this.totalPhyGen = +this.DistrictTargetData[0].avl_phygen;
+            this.totalFinGen = +this.DistrictTargetData[0].DistributedPhyGen ;
+            this.totalPhySCP = +this.DistrictTargetData[0].avl_physcp;
+            this.totalFinSCP = +this.DistrictTargetData[0].DistributedPhySCP;
+            this.totalPhyTASP = +this.DistrictTargetData[0].avl_phytasp;
+            this.totalFinTASP = +this.DistrictTargetData[0].DistributedPhyTASP;
             this.totalPhy = +this.totalPhyGen + +this.totalPhySCP + +this.totalPhyTASP;
-            this.totalFin = this.totalFinGen + this.totalFinSCP + this.totalFinTASP;
+            this.totalFin = +this.totalFinGen + +this.totalFinSCP + +this.totalFinTASP;
 
          }else {
             this.totalPhyGen = 0;
@@ -206,17 +206,17 @@ export class ViewTargetComponent implements OnInit {
             this.BlockTargetData.forEach((y: any) => {
                 this.BlockData.forEach((e: any) => {
                     if(y.Block_Code == e.Block_Code){
-                          e.PhyGen =  y.avl_phygen,
-                          e.FinGen = y.DistributedPhyGen,
-                          e.PhySCP =  y.avl_physcp,
-                          e.FinSCP =  y.DistributedPhySCP,
-                          e.PhyTASP = y.avl_phytasp,
-                          e.FinTASP = y.DistributedPhyTASP,
+                          e.PhyGen =  +y.avl_phygen,
+                          e.FinGen = +y.DistributedPhyGen,
+                          e.PhySCP =  +y.avl_physcp,
+                          e.FinSCP =  +y.DistributedPhySCP,
+                          e.PhyTASP = +y.avl_phytasp,
+                          e.FinTASP = +y.DistributedPhyTASP,
                           e.totalPhyByDistrict = +e.PhyGen + +e.PhySCP + +e.PhyTASP,
                           e.totalFinByDistrict = +e.FinGen + +e.FinSCP + +e.FinTASP;
                           e.totalPhyByBlock = +e.PhyGen + +e.PhySCP + +e.PhyTASP; 
                           e.totalFinByBlock = +e.FinGen + +e.FinSCP + +e.FinTASP;
-                          e.totalTarget = y.totalTarget
+                          e.totalTarget = +y.totalTarget
                           this.totalTarget += +y.totalTarget
                           // console.log(e);
                           

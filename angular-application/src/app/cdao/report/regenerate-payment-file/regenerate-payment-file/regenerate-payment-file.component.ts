@@ -79,13 +79,8 @@ export class RegeneratePaymentFileComponent implements OnInit {
       if (this.regeneratepaymentFile.length == 0) {
         this.message = true
       }
-      this.calculateShare();
-      this.regeneratepaymentFile.forEach(async (e:any)=> {
-        const result1 = await this.cdaoService.getFarmerBankDetails(e.FarmerId).toPromise()
-        e.GpName = result1.vch_GPNameOr
-        e.VillageName = result1.vch_VillageNameOr    
-      })    
-
+      this.calculateShare();        
+      
       if(schemeId == 'scheme_3'){          
         this.pfsm = false
         this.stateplan = true;     
@@ -93,6 +88,19 @@ export class RegeneratePaymentFileComponent implements OnInit {
         this.pfsm = true
         this.stateplan = false;
       }  
+      // this.regeneratepaymentFile.forEach(async (e:any)=> {
+      //   const result1 = await this.cdaoService.getFarmerBankDetails(e.FarmerId).toPromise()
+      //   console.log("result1" , e.FarmerId , result1 );
+        
+      //   e.GpName = result1.vch_GPNameOr
+      //   e.VillageName = result1.vch_VillageNameOr    
+      // }) 
+      for (let i = 0; i < this.regeneratepaymentFile.length; i++) {
+        const result1 = await this.cdaoService.getFarmerBankDetails(this.regeneratepaymentFile[i].FarmerId).toPromise()
+        this.regeneratepaymentFile[i].GpName = result1.vch_GPNameOr
+        this.regeneratepaymentFile[i].VillageName = result1.vch_VillageNameOr    
+      }
+     
       this.paymentType = '';
       this.refNos=[];
       this.AllSchemeData=[];

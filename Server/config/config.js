@@ -57,5 +57,6 @@ db.InctvPaymentMaster = require('../models/InctvPaymentMaster.model')
 db.ActivityLog = require('../models/ActivityLog.model')
 db.CropVarietyMaster = require('../models/CropVariety.model');
 db.LightTrapMaster = require('../models/LightTrap.model');
+db.itemCropMapping = require('../models/ItemCropMapping.model')
 
 exports.db = db;
