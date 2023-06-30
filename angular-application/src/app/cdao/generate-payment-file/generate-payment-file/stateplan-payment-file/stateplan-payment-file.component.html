@@ -4,6 +4,7 @@
             <tr>
                
                 <th>Sl.</th>
+                <th>Invoice No.</th>
                 <th>Reference No.</th>
                 <th> Permit No </th>
                 <th>Scheme</th>
@@ -23,6 +24,7 @@
         <tbody>
             <tr *ngFor="let x of pymntDetails; let i = index;">
                 <th scope="row"> {{ i+1 }} </th>
+                <td> {{ x.InvoiceNo }} </td>
                 <td> {{ x.ReferenceNo }} </td>
                 <td> {{ x.Permit_NO }} </td>
                 <td> {{ x.schemeName }} </td>

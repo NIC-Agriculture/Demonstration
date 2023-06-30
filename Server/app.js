@@ -70,10 +70,9 @@ app.use( (err, req, res, next) => {
     })
 } )
 
-
+let randomString = (Math.random() + 1).toString(36).substring(5);
 
 // console.log(process.env.ACCESS_TOKEN_SECRET);
-process.env.ACCESS_TOKEN_SECRET = 'Hello world'
-// console.log(process.env.ACCESS_TOKEN_SECRET);
+process.env.ACCESS_TOKEN_SECRET = randomString
 
 module.exports = app;

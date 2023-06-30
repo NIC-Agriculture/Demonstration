@@ -11,22 +11,21 @@ itemCropMappingModel.init({
     },
     CropId: {
         type: DataTypes.STRING,
-        primaryKey: true,
         allowNull: false
     },
     SubCropId: {
         type: DataTypes.STRING,
-        primaryKey: true,
         allowNull: false
     },
     Fin_Year: {
         type: DataTypes.STRING,
+        primaryKey: true,
         allowNull: true
     },
 }, {
     sequelize,
     modelName: 'itemCropMappingModel',
-    tableName: 'item_crop_mapping',
+    tableName: 'itemCropMapping',
     timestamps: false
 });
 
