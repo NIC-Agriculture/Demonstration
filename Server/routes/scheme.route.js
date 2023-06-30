@@ -34,3 +34,5 @@ router.get('/getWardData',schemeBal.getWardData);
 router.get('/getCalculatedInputCost',schemeBal.getCalculatedInputCost);
 router.get('/getCalculatedIncentiveCost',schemeBal.getCalculatedIncentiveCost);
 router.get('/getItemDetails',schemeBal.getItemDetails);
+router.get('/getItemCostAndSize',schemeBal.getItemCostAndSize)
+router.post('/updateItemDetails',schemeBal.updateItemDetails)

@@ -902,11 +902,12 @@ exports.generatePaymntFile = async (req, res, next) => {
         const referenceNo = req.query.ReferenceNo
         const schemeId = req.query.schemeId
         if (req.query.paymentType=='subsidy') {
-            const queryText = `SELECT a.*, b."FarmerId", b."Farmer_Category", b."Gender", c."Block_Name",d."schemeName", e."Dist_Name"
+            const queryText = `SELECT a.*, b."FarmerId", b."Farmer_Category", b."Gender", c."Block_Name",d."schemeName",f."SubschemeName", e."Dist_Name"
             FROM "PaymentMaster" a
             INNER JOIN "Farmer_Permit" b ON a."Permit_NO" = b."Permit_NO"
             INNER JOIN "LGBlocks" c ON c."Block_Code" = b."Block_Code"
             INNER JOIN "SchemeMaster" d ON d."schemeId" = b."schemeId" 
+            INNER JOIN "SubSchemeMaster" f ON f."SubschemeId" = b."SubschemeId"
             INNER JOIN "LGDistricts" e ON e."Dist_Code" = '${req.payload.Dist_Code}'  
             WHERE a."ReferenceNo" = '${req.query.ReferenceNo}' AND a."schemeId" = '${req.query.schemeId}' AND a."PymntFileGenerated" is null
             ORDER BY d."schemeName"`
@@ -1194,7 +1195,7 @@ exports.getCompTargetDetails  = async (req,res) => {
         INNER JOIN "LGDistricts" aa ON a."Dist_Code" = aa."Dist_Code" 
         INNER JOIN "SchemeMaster" b ON a."schemeId" = b."schemeId" 
         INNER JOIN "SubSchemeMaster" c ON a."SubschemeId" = c."SubschemeId"
-        INNER JOIN "ComponentMaster" d ON a."CompId" = d."CompId"
+        INNER JOIN "ComponentMaster" d ON a."CompId" = d."CompId" AND d."Fin_Year" = a."Fin_Year"
         INNER JOIN "CropMaster" e ON a."CropId" = e."CropId"
         INNER JOIN "SubCropMaster" f ON a."SubCropId" = f."SubCropId"
         INNER JOIN "CropVarietyMaster" g ON a."Variety_Code" = g."Variety_Code"
