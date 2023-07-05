@@ -36,3 +36,4 @@ router.get('/getCalculatedIncentiveCost',schemeBal.getCalculatedIncentiveCost);
 router.get('/getItemDetails',schemeBal.getItemDetails);
 router.get('/getItemCostAndSize',schemeBal.getItemCostAndSize)
 router.post('/updateItemDetails',schemeBal.updateItemDetails)
+router.get('/complianceReport',schemeBal.complianceReport)
