@@ -126,7 +126,7 @@ export class SchemeserviceService {
     return this.http.get(`${this.serverUrl}/${this.route}/getCalculatedIncentiveCost`)
   }
   getItemDetails(CompId:any , FinYear: any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getItemDetails?CompId=${CompId}&FinYear=${FinYear}`)
+    return this.http.get(`${this.serverUrl}/${this.route}/getItemDetails?CompId=${CompId}&Fin_Year=${FinYear}`)
   }
 
   UpdateComponentCostCropMapping(data: {}): Observable<any> {
@@ -134,11 +134,16 @@ export class SchemeserviceService {
   }
 
   getItemCostAndSize(ItemId:any,finYear:any): Observable<any> {
-    return this.http.get(`${this.serverUrl}/${this.route}/getItemCostAndSize?ItemId=${ItemId}&FinYear=${finYear}`)
+    return this.http.get(`${this.serverUrl}/${this.route}/getItemCostAndSize?ItemId=${ItemId}&Fin_Year=${finYear}`)
   }
 
   updateItemDetails(data: {}): Observable<any> {
     return this.http.post(`${this.serverUrl}/${this.route}/updateItemDetails`, data);
+  }
+
+  complianceReport(FinYear: any,SchemeId:any , SubschemeId:any , CompId:any): Observable<any> {
+    
+    return this.http.get(`${this.serverUrl}/${this.route}/complianceReport?Fin_Year=${FinYear}&SchemeId=${SchemeId}&SubschemeId=${SubschemeId}&CompId=${CompId}`)
   }
 
 }
