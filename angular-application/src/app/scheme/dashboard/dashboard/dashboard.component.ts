@@ -140,8 +140,6 @@ export class DashboardComponent implements OnInit {
           }
           break;
           case 'scheme_2':{
-            console.log("this.subsidyReleasedNFSMOS", this.subsidyReleasedNFSMOS);
-            
             this.IncentivePaymentNFSMOS = +e.subsidyReleased;
             this.totalSubsidyReleasedNFSMOS = (+this.subsidyReleasedNFSMOS + +this.IncentivePaymentNFSMOS).toFixed(2)
             
@@ -160,7 +158,6 @@ export class DashboardComponent implements OnInit {
       this.piechartData[0] = this.totalSubsidyReleasedNFSM;
       this.piechartData[1] =  this.totalSubsidyReleasedNFSMOS
       this.piechartData[2] = this.totalSubsidyReleasedStatePlan
-      console.log(this.piechartData);
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);

@@ -2,7 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { CdaoService } from 'src/app/services/cdao/cdao.service';
 import { LayoutserviceService } from 'src/app/services/layoutservice.service';
- 
+import { ChartType, ChartOptions } from 'chart.js';
+import {
+  SingleDataSet,
+  Label,
+  monkeyPatchChartJsLegend,
+  monkeyPatchChartJsTooltip
+} from 'ng2-charts';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,9 +36,38 @@ export class DashboardComponent implements OnInit {
   IncentivePaymentNFSM: any;
   IncentivePaymentNFSMOS: any;
   IncentivePaymentStatePlan: any;
+  totalInputCostReleased: any;
   totalSubsidyReleasedNFSM: any;
   totalSubsidyReleasedNFSMOS: any;
   totalSubsidyReleasedStatePlan: any;
+
+  public chart: any;  // events
+
+
+  piechartData: any = [];
+  public pieChartOptions: ChartOptions = {
+    responsive: true
+  };
+  public pieChartLabels: Label[] = [
+    ['NFSM'],
+    ['NFSM OS'],
+    'STATEPLAN'
+  ];
+  public pieChartData: SingleDataSet = this.piechartData;
+  public pieChartType: ChartType = 'pie';
+  public pieChartLegend = true;
+  public pieChartPlugins = [];
+  public chartClicked(e:any):void {
+    console.log(e);
+  }
+ 
+  public chartHovered(e:any):void {
+    console.log(e);
+  }
+  public pieChartColors: Array < any > = [{
+    backgroundColor: ['pink', 'bisque', 'aqua'],
+    borderColor: ['rgba(135,206,250,1)', 'rgba(106,90,205,1)', 'rgba(148,159,177,1)']
+ }];
 
   constructor(
     private cdaoService: CdaoService,
@@ -102,25 +137,30 @@ export class DashboardComponent implements OnInit {
         switch (schemeId) {
           case 'scheme_1':{
             this.IncentivePaymentNFSM = +e.subsidyReleased;
-            this.totalSubsidyReleasedNFSM = +this.subsidyReleasedNFSM + +this.IncentivePaymentNFSM        
+            this.totalSubsidyReleasedNFSM = (+this.subsidyReleasedNFSM + +this.IncentivePaymentNFSM).toFixed(2)        
             
           }
           break;
           case 'scheme_2':{
             this.IncentivePaymentNFSMOS = +e.subsidyReleased;
-            this.totalSubsidyReleasedNFSMOS = +this.subsidyReleasedNFSMOS + +this.IncentivePaymentNFSMOS
+            this.totalSubsidyReleasedNFSMOS = (+this.subsidyReleasedNFSMOS + +this.IncentivePaymentNFSMOS).toFixed(2)
             
           }
           break;
           case 'scheme_3':{
             this.IncentivePaymentStatePlan = +e.subsidyReleased;
-            this.totalSubsidyReleasedStatePlan = +this.subsidyReleasedStatePlan + +this.IncentivePaymentStatePlan          
+            this.totalSubsidyReleasedStatePlan = (+this.subsidyReleasedStatePlan + +this.IncentivePaymentStatePlan).toFixed(2)          
             
           }
           break;
         }
+        this.totalInputCostReleased = (+this.totalSubsidyReleasedNFSM + +this.totalSubsidyReleasedNFSMOS + +this.totalSubsidyReleasedStatePlan).toFixed(2)
         
       });
+      this.piechartData[0] = this.totalSubsidyReleasedNFSM;
+      this.piechartData[1] =  this.totalSubsidyReleasedNFSMOS
+      this.piechartData[2] = this.totalSubsidyReleasedStatePlan
+      console.log(this.piechartData);
     } catch (e) {
       this.toastr.error('Sorry. Server problem. Please try again.');
       console.error(e);

@@ -1,125 +1,86 @@
-<div class="page-body">
-    <div class="row">
-        <div class="col-md-6 col-xl-4">
-            <div class="card client-blocks dark-primary-border">
-                <div class="card-block">
-                    <h2 class="text-primary" style="font-weight:500;" >DEMONSTRATION ID</h2>
-                    <ul>
-                        <li>
-                            <!-- <i class="ion-ios-personadd"></i> -->
-                        </li>
-                        <li class="text-right">
-                            {{ DemonstrationIdCount.totaldemonstrationid }} <br> <br>
-                        </li>
-                    </ul>
-                </div>
+
+<div class="card">
+    <div class="container">
+        <div class="card rectangle " style="width: 30%;background-color:chartreuse;">
+            <div class="card-block">
+                <h2 class="card-title">DEMONSTRATION ID</h2>
+                <h5 class="card-title">{{ DemonstrationIdCount.totaldemonstrationid }} </h5>
+            </div>
+        </div><br>
+        <div class="card rectangle " style="width: 30%;background-color:bisque;">
+            <div class="card-block">
+                <h2 class="card-title" >TOTAL FARMER INVOLVED</h2>
+                <h5 class="card-title">{{ DemonstrationIdCount.totalfarmer }} </h5>
             </div>
         </div>
-        <div class="col-md-6 col-xl-4">
-            <div class="card client-blocks warning-border">
-                <div class="card-block">
-                    <h2 class="text-primary" style="font-weight:500;" >FARMER INVOLVED</h2>
-                    <ul>
-                        <li>
-                            <i class="ion-ios-people text-warning"></i>
-                        </li>
-                        <li class="text-right text-warning">
-                            {{ DemonstrationIdCount.totalfarmer }}
-                        </li>
-                    </ul>
-                </div>
+    <ol class="level-2-wrapper">
+      <li>
+        <div class="card rectangle" style="margin-right: 10px;background-color:aqua;">
+            <div class="card-block">
+                <h2  class="card-title" >FARMER (GEN)</h2>
+                <h5 class="card-title">{{ DemonstrationIdCount.GenFarmer }} </h5>
             </div>
         </div>
-        <div class="col-md-6 col-xl-4">
-            <div class="card client-blocks success-border">
-                <div class="card-block">
-                    <h2 class="text-primary" style="font-weight:500;" >FARMER (GEN)</h2>
-                    <ul>
-                        <li>
-                            <i class="icon-people text-success"></i>
-                        </li>
-                        <li class="text-right text-success">
-                            {{ DemonstrationIdCount.GenFarmer }}
-                        </li>
-                    </ul>
-                </div>
+      </li>
+      <li>
+        <div class="card rectangle" style="background-color:aqua;">
+            <div class="card-block">
+                <h2 class="card-title">FARMER (SC)</h2>
+                <h5 class="card-title">{{ DemonstrationIdCount.SCFarmer }} </h5>
             </div>
         </div>
-        <div class="col-md-6 col-xl-4">
-            <div class="card client-blocks dark-primary-border">
-                <div class="card-block">
-                    <h2 class="text-primary" style="font-weight:500;" >FARMER (SC) <br> <br></h2>
-                    <ul>
-                        <li>
-                            <i class="icon-people"></i>
-                        </li>
-                        <li class="text-right">
-                            {{ DemonstrationIdCount.SCFarmer }}
-                        </li>
-                    </ul>
-                </div>
+      </li>
+      <li>
+           <div class="card rectangle" style="margin-left: 10px;background-color:aqua;">
+            <div class="card-block">
+                <h2 class="card-title" >FARMER (ST)</h2>
+                <h5 class="card-title">{{ DemonstrationIdCount.STFarmer }} </h5>
             </div>
         </div>
-        <div class="col-md-6 col-xl-4">
-            <div class="card client-blocks warning-border">
-                <div class="card-block">
-                    <h2 class="text-primary" style="font-weight:500;" >FARMER (ST) <br> <br> </h2>
-                    <ul>
-                        <li>
-                            <i class="icon-people text-warning"></i>
-                        </li>
-                        <li class="text-right text-warning">
-                            {{ DemonstrationIdCount.STFarmer }}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-4">
-            <div class="card client-blocks success-border">
-                <div class="card-block">
-                    <h2 class="text-primary" style="font-weight:500;" >INPUT COST RELEASED (NFSM)</h2>
-                    <ul>
-                        <li>
-                            <i class="fa fa-inr text-success"></i>
-                        </li>
-                        <li class="text-right text-success">
-                            {{ totalSubsidyReleasedNFSM || 0 }}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-4">
-            <div class="card client-blocks dark-primary-border">
-                <div class="card-block">
-                    <h2 class="text-primary" style="font-weight:500;" > INPUT COST RELEASED (NFSM-OS)</h2>
-                    <ul>
-                        <li>
-                            <i class="fa fa-inr"></i>
-                        </li>
-                        <li class="text-right">
-                            {{ totalSubsidyReleasedNFSMOS || 0 }}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-4">
-            <div class="card client-blocks success-border">
-                <div class="card-block">
-                    <h2 class="text-primary" style="font-weight:500;" > INPUT COST RELEASED (STATE PLAN)</h2>
-                    <ul>
-                        <li>
-                            <i class="fa fa-inr text-success"></i>
-                        </li>
-                        <li class="text-right text-success">
-                            {{ totalSubsidyReleasedStatePlan || 0 }}
-                        </li>
-                    </ul>
-                </div>
-            </div>
+      </li>
+    </ol>
+  </div>
+  <br>
+  <br>
+  <div class="container">
+    <div class="card rectangle " style="width: 30%;background-color:bisque;">
+      <div class="card-block">
+          <h2 class="card-title" >TOTAL COST RELEASED</h2>
+          <h5 class="card-title">{{ totalInputCostReleased || 0 }} </h5>
+      </div>
+  </div>
+<ol class="level-2-wrapper">
+  <li>
+    <div class="card rectangle" style="margin-right: 10px;background-color:aqua;">
+        <div class="card-block">
+            <h2 class="card-title" >INPUT COST RELEASED (NFSM)</h2>
+            <h5 class="card-title"> {{ totalSubsidyReleasedNFSM || 0 }} </h5>
         </div>
     </div>
+  </li>
+  <li>
+    <div class="card rectangle" style="background-color:aqua;">
+        <div class="card-block">
+            <h2 class="card-title">INPUT COST RELEASED (NFSM-OS)</h2>
+            <h5 class="card-title">{{ totalSubsidyReleasedNFSMOS || 0 }} </h5>
+        </div>
+    </div>
+  </li>
+  <li>
+       <div class="card rectangle" style="margin-left: 10px;background-color:aqua;">
+        <div class="card-block">
+            <h2 class="card-title">INPUT COST RELEASED (STATE PLAN)</h2>
+            <h5 class="card-title"> {{ totalSubsidyReleasedStatePlan || 0 }}</h5>
+        </div>
+    </div>
+  </li>
+</ol>
 </div>
-
+<br>
+<br>
+<div style="display: block;">
+<canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+[options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend" [colors]="pieChartColors">
+</canvas>
+</div>
+</div>

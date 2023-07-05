@@ -10,6 +10,10 @@ const routes: Routes = [
     path: 'cluster-details',
     loadChildren: () => import('./cluster-details/cluster-details.module').then(module => module.ClusterDetailsModule)
   },
+  {
+    path: 'compliance-report',
+    loadChildren: () => import('./compliance-report/compliance-report.module').then(module => module.ComplianceReportModule)
+  },
 ];
 
 @NgModule({

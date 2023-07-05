@@ -1445,7 +1445,7 @@ exports.getCalculatedInputCost = async (req,res) => {
          const queryText1 = `SELECT a."schemeId", SUM(cast(a.totaleligiblesubsidy as numeric )) AS "subsidyReleased"
          FROM "PaymentMaster" a
          INNER JOIN "Farmer_Permit" b ON a."Permit_NO" = b."Permit_NO"
-         WHERE a."TransId" IS NOT NULL AND b."Dist_Code" = '${req.payload.Dist_Code}'
+         WHERE a."PymntSt" = '0' AND b."Dist_Code" = '${req.payload.Dist_Code}'
          GROUP BY a."schemeId"`
          const result = await db.sequelize.query(queryText1);
          res.send(result[0]);
@@ -1460,7 +1460,7 @@ exports.getCalculatedIncentiveCost = async (req,res) => {
          const queryText1 = `SELECT a."schemeId",SUM(cast(a."totalEligibleIncentive" as numeric )) AS "subsidyReleased"
          FROM "InctvPaymentMaster" a
          INNER JOIN "Farmer_Permit" b ON a."Permit_NO" = b."Permit_NO"
-         WHERE a."TransId" IS NOT NULL AND b."Dist_Code" = '${req.payload.Dist_Code}'
+         WHERE a."PymntSt" = '0' AND b."Dist_Code" = '${req.payload.Dist_Code}'
          GROUP BY a."schemeId"`
          const result = await db.sequelize.query(queryText1);
          res.send(result[0]);
